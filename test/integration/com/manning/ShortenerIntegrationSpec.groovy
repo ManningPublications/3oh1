@@ -11,7 +11,7 @@ class ShortenerIntegrationSpec extends Specification {
         def uniqueShortenedUrl = "http://mng.bz/123"
         def shortenerWithValidUrl = new Shortener(
                 destinationUrl: "http://example.com",
-                shortenedUrl: uniqueShortenedUrl,
+                shortenerKey: uniqueShortenedUrl,
                 userCreated: "Dummy User",
                 validFrom: new Date(),
                 validUntil: new Date() + 1
@@ -22,7 +22,7 @@ class ShortenerIntegrationSpec extends Specification {
         and: "there is another shortener with the same shortened url"
         def shortenerWithDuplicatedUrl = new Shortener(
                 destinationUrl: "http://example2.com",
-                shortenedUrl: uniqueShortenedUrl,
+                shortenerKey: uniqueShortenedUrl,
                 userCreated: "Dummy User2",
                 validFrom: new Date(),
                 validUntil: new Date() + 1
@@ -35,7 +35,7 @@ class ShortenerIntegrationSpec extends Specification {
         !saveWasSuccessful
 
         and: "unique was the error that leads to a failing save"
-        def errorCodesForShortenedUrl = shortenerWithDuplicatedUrl.errors.getFieldError("shortenedUrl").codes
+        def errorCodesForShortenedUrl = shortenerWithDuplicatedUrl.errors.getFieldError("shortenerKey").codes
         errorCodesForShortenedUrl.contains("unique")
 
     }

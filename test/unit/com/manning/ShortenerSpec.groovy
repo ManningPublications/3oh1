@@ -9,7 +9,7 @@ class ShortenerSpec extends Specification {
     Shortener shortener
 
     def setup() {
-        shortener = createValidShortenedUrl()
+        shortener = createValidShortener()
     }
 
     void "destination url is required"() {
@@ -31,7 +31,7 @@ class ShortenerSpec extends Specification {
 
     void "shortened url is required"() {
         setup:
-        shortener.shortenedUrl = null
+        shortener.shortenerKey = null
         when:
         def shortenerIsValid = shortener.validate()
 
@@ -39,7 +39,7 @@ class ShortenerSpec extends Specification {
         !shortenerIsValid
 
         when:
-        shortener.shortenedUrl = "http://mng.bz/123"
+        shortener.shortenerKey = "abc"
         shortenerIsValid = shortener.validate()
 
         then:
@@ -58,12 +58,12 @@ class ShortenerSpec extends Specification {
 
     }
 
-    private Shortener createValidShortenedUrl() {
+    private Shortener createValidShortener() {
         def now = new Date()
 
         new Shortener(
                 destinationUrl: "http://example.com",
-                shortenedUrl: "http://mng.bz/123",
+                shortenerKey: "abc",
                 userCreated: "Dummy User",
                 validFrom: now,
                 validUntil: now + 1

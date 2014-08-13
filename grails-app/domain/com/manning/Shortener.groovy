@@ -3,7 +3,7 @@ package com.manning
 class Shortener {
 
     String destinationUrl
-    String shortenedUrl
+    String shortenerKey
 
     Date validFrom
     Date validUntil
@@ -11,7 +11,11 @@ class Shortener {
     String userCreated
 
     static constraints = {
-        shortenedUrl unique: true
+        shortenerKey unique: true
         validUntil nullable: true
+    }
+
+    static mapping = {
+        shortenerKey index: 'shortenerKey_idx'
     }
 }
