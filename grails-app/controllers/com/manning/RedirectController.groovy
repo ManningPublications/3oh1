@@ -2,18 +2,26 @@ package com.manning
 
 class RedirectController {
 
+    def redirectFinderService
+
     def index() {
 
         def key = params.shortenerKey
         def destinationUrl = null
 
         if (key) {
-            destinationUrl = Shortener.findByShortenerKey(key).destinationUrl
+            destinationUrl = redirectFinderService.findRedirectionUrlForKey(key)
         }
         else {
             destinationUrl = 'http://www.manning.com'
         }
 
-        redirect url: destinationUrl, permanent: true
+        if (!destinationUrl) {
+            render status: 404
+        }
+        else {
+            redirect url: destinationUrl, permanent: true
+        }
+
     }
 }
