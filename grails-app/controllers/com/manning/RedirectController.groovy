@@ -1,5 +1,7 @@
 package com.manning
 
+import org.springframework.http.HttpStatus
+
 class RedirectController {
 
     def redirectFinderService
@@ -17,7 +19,7 @@ class RedirectController {
         }
 
         if (!destinationUrl) {
-            render status: 404
+            render status: HttpStatus.NOT_FOUND, view: '/error'
         }
         else {
             redirect url: destinationUrl, permanent: true

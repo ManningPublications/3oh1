@@ -8,8 +8,8 @@ class RedirectFinderService {
     public String findRedirectionUrlForKey(String shortenerKey) {
         def shortener = Shortener.findByShortenerKey(shortenerKey)
 
-
         def destinationUrl = null
+
         if (isInValidRedirectionDate(shortener)) {
             destinationUrl =  shortener.destinationUrl
         }
