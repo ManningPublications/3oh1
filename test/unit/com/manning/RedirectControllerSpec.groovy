@@ -2,8 +2,6 @@ package com.manning
 
 import grails.test.mixin.Mock
 import grails.test.mixin.TestFor
-import static org.springframework.http.HttpStatus.*
-import spock.lang.Ignore
 import spock.lang.Specification
 
 import static org.springframework.http.HttpStatus.*
