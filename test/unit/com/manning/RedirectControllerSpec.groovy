@@ -20,18 +20,6 @@ class RedirectControllerSpec extends Specification {
         controller.redirectFinderService = redirectFinderMock
     }
 
-    void 'if no shortenerKey is given a redirect to manning.com will be executed'() {
-
-        when:
-        params.shortenerKey = null
-        controller.index()
-
-        then:
-        response.redirectedUrl == 'http://www.manning.com'
-        response.status == MOVED_PERMANENTLY.value()
-    }
-
-
     void 'for a valid shortener entry a redirect should occur to the destination url'() {
 
         when:
@@ -55,7 +43,7 @@ class RedirectControllerSpec extends Specification {
 
         then:
         response.status == NOT_FOUND.value()
-        view == '/error'
+        view == '/notFound'
 
         and: 'the mock was asked once and returned the correct value'
         1 * redirectFinderMock.findRedirectionUrlForKey('abc') >> null

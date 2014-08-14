@@ -9,17 +9,14 @@ class RedirectController {
     def index() {
 
         def key = params.shortenerKey
-        def destinationUrl = null
+        def destinationUrl
 
         if (key) {
             destinationUrl = redirectFinderService.findRedirectionUrlForKey(key)
         }
-        else {
-            destinationUrl = 'http://www.manning.com'
-        }
 
         if (!destinationUrl) {
-            render status: HttpStatus.NOT_FOUND, view: '/error'
+            render status: HttpStatus.NOT_FOUND, view: '/notFound'
         }
         else {
             redirect url: destinationUrl, permanent: true
