@@ -51,6 +51,10 @@ grails.project.dependency.resolution = {
         // runtime 'mysql:mysql-connector-java:5.1.29'
         // runtime 'org.postgresql:postgresql:9.3-1101-jdbc41'
         test "org.grails:grails-datastore-test-support:1.0-grails-2.4"
+
+        test "org.seleniumhq.selenium:selenium-firefox-driver:2.41.0"
+        test "org.gebish:geb-spock:0.9.3"
+
     }
 
     plugins {
@@ -67,10 +71,9 @@ grails.project.dependency.resolution = {
         runtime ":database-migration:1.4.0"
         runtime ":jquery:1.11.1"
 
-        // Uncomment these to enable additional asset-pipeline capabilities
-        //compile ":sass-asset-pipeline:1.9.0"
-        //compile ":less-asset-pipeline:1.10.0"
-        //compile ":coffee-asset-pipeline:1.8.0"
-        //compile ":handlebars-asset-pipeline:1.3.0.3"
+        // stuff for functional testing
+        compile ":geb:0.9.3"
+        compile ":rest-client-builder:2.0.3"
+
     }
 }
