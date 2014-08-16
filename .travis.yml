@@ -4,5 +4,5 @@ jdk:
   - oraclejdk7
  
 script: ./grailsw refresh-dependencies
-     && ./grailsw test-app unit:
-     && ./grailsw test-app integration:
+     && ./grailsw "test-app unit:"
+     && ./grailsw "test-app integration:"
