@@ -1,9 +1,9 @@
 package com.manning
 
-import grails.transaction.Transactional
 
-@Transactional
 class RedirectFinderService {
+
+    static transactional = false
 
     public String findRedirectionUrlForKey(String shortenerKey) {
         def shortener = Shortener.findByShortenerKey(shortenerKey)

@@ -1,21 +1,27 @@
 package com.manning
 
-import grails.test.mixin.Mock
-import grails.test.mixin.TestFor
-import spock.lang.Specification
 
-@TestFor(RedirectFinderService)
-@Mock(Shortener)
-class RedirectFinderServiceSpec extends Specification {
+import spock.lang.*
 
+class RedirectFinderServiceIntegrationSpec extends Specification {
+
+
+    private service
+
+    def setup() {
+        service  = new RedirectFinderService()
+    }
 
     void 'a valid shortenerKey will find the correct destination url'() {
+
         setup:
+
         def expectedDestinationUrl = 'http://example.com'
         createShortener(shortenerKey: 'abc', destinationUrl: expectedDestinationUrl)
 
+        this.service = new RedirectFinderService()
         when:
-        def actualDestinationUrl = service.findRedirectionUrlForKey('abc')
+        def actualDestinationUrl = this.service.findRedirectionUrlForKey('abc')
 
         then:
         actualDestinationUrl == expectedDestinationUrl
@@ -23,6 +29,7 @@ class RedirectFinderServiceSpec extends Specification {
 
 
     void 'a invalid shortenerKey will find the no destination url'() {
+
         setup:
         createShortener(shortenerKey: 'abc')
 
@@ -35,6 +42,7 @@ class RedirectFinderServiceSpec extends Specification {
 
 
     void 'a future shortener will find no destination url'() {
+
         setup:
         def tomorrow = new Date() + 1
         createShortener(shortenerKey: 'abc', validFrom: tomorrow)
@@ -47,6 +55,7 @@ class RedirectFinderServiceSpec extends Specification {
     }
 
     void 'a past shortenerKey will find no destination url'() {
+
         setup:
         def yesterday = new Date() - 1
         createShortener(shortenerKey: 'abc', validUntil: yesterday)
@@ -72,5 +81,4 @@ class RedirectFinderServiceSpec extends Specification {
 
         new Shortener(defaultValues + params).save(failOnError: true)
     }
-
 }
