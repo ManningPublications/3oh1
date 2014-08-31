@@ -29,7 +29,24 @@ class ShortenerSpec extends Specification {
         shortenerIsValid
     }
 
-    void "shortened url is required"() {
+    void "destination url has to be a valid url"() {
+        setup:
+        shortener.destinationUrl = "abc"
+        when:
+        def shortenerIsValid = shortener.validate()
+
+        then:
+        !shortenerIsValid
+
+        when:
+        shortener.destinationUrl = "http://example.com"
+        shortenerIsValid = shortener.validate()
+
+        then:
+        shortenerIsValid
+    }
+
+    void "shortened key is required"() {
         setup:
         shortener.shortenerKey = null
         when:

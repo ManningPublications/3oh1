@@ -58,22 +58,34 @@ grails.project.dependency.resolution = {
     }
 
     plugins {
-        // plugins for the build system only
+        // grails default plugins
         build ":tomcat:7.0.55"
-
-        // plugins for the compile step
+        runtime ":hibernate4:4.3.5.5"
+        runtime ":database-migration:1.4.0"
         compile ":scaffolding:2.1.2"
         compile ':cache:1.1.6'
-        compile ":asset-pipeline:1.9.6"
 
-        // plugins needed at runtime but not for compilation
-        runtime ":hibernate4:4.3.5.5" // or ":hibernate:3.6.10.17"
-        runtime ":database-migration:1.4.0"
+
+        // how to deliver static assets to the client
+        compile ":asset-pipeline:1.9.9"
+        compile ":less-asset-pipeline:1.10.0"
+
+        // for a good looking frontend
+        compile ":twitter-bootstrap:3.2.0.2"
         runtime ":jquery:1.11.1"
+
+
 
         // stuff for functional testing
         compile ":geb:0.9.3"
         compile ":rest-client-builder:2.0.3"
+
+
+        // hashids library for creating unique String shortenerKeys
+        compile ':hashids:0.1.0'
+
+        // fields plugin makes creating forms a breeze
+        compile ":fields:1.3"
 
     }
 }
