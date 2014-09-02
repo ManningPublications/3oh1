@@ -16,9 +16,10 @@
     <h2><g:message code="default.list.label" args="[entityName]"/></h2>
 
 <div class="btn-group">
-    <g:link class="btn btn-default ${params.validity == 'expired' ? 'active' : ''}" params="[validity: 'expired']">expired</g:link>
-    <g:link class="btn btn-default ${params.validity == 'active' ? 'active' : ''}" params="[validity: 'active']">active</g:link>
-    <g:link class="btn btn-default ${params.validity == 'future' ? 'active' : ''}" params="[validity: 'future']">future</g:link>
+    <s:shortenerValidityButton property="expired" />
+    <s:shortenerValidityButton property="active" />
+    <s:shortenerValidityButton property="future" />
+
 </div>
 
     <table class="table table-striped">

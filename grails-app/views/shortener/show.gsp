@@ -37,8 +37,7 @@
 
 
                 <td>
-                    <g:formatDate date="${shortenerInstance.validFrom}" style="SHORT"/> -
-                    <g:formatDate date="${shortenerInstance.validUntil}" style="SHORT"/>
+                    <s:showValidity bean="${shortenerInstance}" />
                 </td>
             </tr>
 

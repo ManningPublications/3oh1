@@ -12,7 +12,8 @@ class UrlMappings {
             }
         }
 
-        '/' redirect: 'http://www.manning.com', permanent: true
+        '/' (controller: 'shortener')
+        //'/' redirect: 'http://www.manning.com', permanent: true
         '404'(view:'/notFound')
         '500'(view:'/error')
 	}
