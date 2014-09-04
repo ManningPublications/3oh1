@@ -75,6 +75,12 @@ class ShortenerSpec extends Specification {
 
     }
 
+    def "a shortener has autostamping due to the existence of dateCreated and lastUpdated"() {
+
+        expect:
+        shortener.hasProperty('dateCreated') && shortener.hasProperty('lastUpdated')
+    }
+
     private Shortener createValidShortener() {
         def now = new Date()
 
