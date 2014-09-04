@@ -8,6 +8,10 @@ class Shortener {
     Date validFrom
     Date validUntil
 
+    Date dateCreated
+    Date lastUpdated
+
+
     String userCreated
 
     static constraints = {
