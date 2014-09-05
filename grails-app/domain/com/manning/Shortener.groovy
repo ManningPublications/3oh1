@@ -15,7 +15,11 @@ class Shortener {
     String userCreated
 
     static constraints = {
-        shortenerKey unique: true, nullable: false
+        /*
+          nullable has to be true in order to create a temp shortener (with an id). This shortener is used directly
+          after creation for generating the shortenerKey from the id, which is then persisted
+         */
+        shortenerKey unique: true, nullable: true
         destinationUrl url: true, nullable: false
         validUntil nullable: true
     }

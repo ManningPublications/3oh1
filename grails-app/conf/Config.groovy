@@ -124,3 +124,16 @@ grails.plugins.twitterbootstrap.fixtaglib = true
 grails.assets.less.compile = 'less4j'
 grails.assets.plugin."twitter-bootstrap".excludes = ["**/*.less"]
 grails.assets.plugin."twitter-bootstrap".includes = ["bootstrap.less"]
+
+
+
+grails.plugin.hashids.salt = "manning"
+
+// The Alphabet to use for generating hash ids.
+grails.plugin.hashids.alphabet = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890"
+
+// The minimum hash length.
+grails.plugin.hashids.min_hash_length = 3
+
+// If true, the plugin will not add hashid and findByHashId methods to your domain objects.
+grails.plugin.hashidsanemic_domain = true

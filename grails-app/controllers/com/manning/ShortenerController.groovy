@@ -1,22 +1,20 @@
 package com.manning
 
-
+import grails.transaction.Transactional
 
 import static org.springframework.http.HttpStatus.*
-import grails.transaction.Transactional
 
 class ShortenerController {
 
     static allowedMethods = [save: "POST", update: "PUT", delete: "DELETE"]
 
+    ShortenerService shortenerService
+
     def index(Integer max) {
         params.validity = params.validity ?: 'active'
         params.max = Math.min(max ?: 10, 100)
 
-
-
         def shortenerList = Shortener.withValidityState(params.validity, params)
-
 
         respond shortenerList.list(params), model: [shortenerInstanceCount: shortenerList.count()]
     }
@@ -29,19 +27,15 @@ class ShortenerController {
         respond new Shortener(params)
     }
 
-    @Transactional
-    def save(Shortener shortenerInstance) {
-        if (shortenerInstance == null) {
-            notFound()
-            return
-        }
+    def save() {
+
+
+        def shortenerInstance = shortenerService.createShortener(params)
 
         if (shortenerInstance.hasErrors()) {
             respond shortenerInstance.errors, view: 'create'
             return
         }
-
-        shortenerInstance.save flush: true
 
         request.withFormat {
             form multipartForm {

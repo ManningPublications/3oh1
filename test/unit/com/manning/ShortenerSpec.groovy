@@ -13,8 +13,10 @@ class ShortenerSpec extends Specification {
     }
 
     void "destination url is required"() {
-        setup:
+
+        given:
         shortener.destinationUrl = null
+
         when:
         def shortenerIsValid = shortener.validate()
 
@@ -30,8 +32,10 @@ class ShortenerSpec extends Specification {
     }
 
     void "destination url has to be a valid url"() {
-        setup:
+
+        given:
         shortener.destinationUrl = "abc"
+
         when:
         def shortenerIsValid = shortener.validate()
 
@@ -46,25 +50,25 @@ class ShortenerSpec extends Specification {
         shortenerIsValid
     }
 
-    void "shortened key is required"() {
-        setup:
+    /**
+     *  this is because the key will be generated after the shortener was saved.
+     *  It is derived from the id, that is provided by the db
+     */
+    void "shortenerKey is not required"() {
+
+        given:
         shortener.shortenerKey = null
+
         when:
         def shortenerIsValid = shortener.validate()
 
         then:
-        !shortenerIsValid
-
-        when:
-        shortener.shortenerKey = "abc"
-        shortenerIsValid = shortener.validate()
-
-        then:
         shortenerIsValid
+
     }
 
     void "a valid until date is not required"() {
-        setup:
+        given:
         shortener.validUntil = null
 
         when:
@@ -75,7 +79,7 @@ class ShortenerSpec extends Specification {
 
     }
 
-    def "a shortener has autostamping due to the existence of dateCreated and lastUpdated"() {
+    def "a shortener has autoTimestamping feature activated due to the existence of dateCreated and lastUpdated"() {
 
         expect:
         shortener.hasProperty('dateCreated') && shortener.hasProperty('lastUpdated')

@@ -11,7 +11,6 @@ class ShortenerControllerSpec extends Specification {
 
     def populateValidParams(params) {
         assert params != null
-        params["shortenerKey"] = 'someKey'
         params["validFrom"] = new Date()
         params["validUntil"] = new Date() + 1
         params["destinationUrl"] = 'http://www.google.com'
@@ -36,30 +35,54 @@ class ShortenerControllerSpec extends Specification {
         model.shortenerInstance != null
     }
 
-    void "Test the save action correctly persists an instance"() {
+    void "Test the save action does not persists an invalid instance"() {
+
+        given:
+        controller.shortenerService = Mock(ShortenerService)
+
+        def invalidShortener = new Shortener()
+        invalidShortener.validate()
+
+        1 * controller.shortenerService.createShortener(_) >> invalidShortener
 
         when: "The save action is executed with an invalid instance"
         request.contentType = FORM_CONTENT_TYPE
         request.method = 'POST'
-        def shortener = new Shortener()
-        shortener.validate()
-        controller.save(shortener)
+
+        params.destinationUrl = "notAValidDomain"
+        controller.save()
 
         then: "The create view is rendered again with the correct model"
         model.shortenerInstance != null
         view == 'create'
 
-        when: "The save action is executed with a valid instance"
-        response.reset()
-        populateValidParams(params)
-        shortener = new Shortener(params)
+    }
 
-        controller.save(shortener)
+    void "Test the save action correctly persists an instance"() {
+
+        given: "a form is send"
+        request.contentType = FORM_CONTENT_TYPE
+        request.method = 'POST'
+
+        and: "a Mock for a shortener Service is used"
+        controller.shortenerService = Mock(ShortenerService)
+
+        and: "a valid shortener is returned from the service mock"
+        populateValidParams(params)
+        def validShortener = new Shortener(params)
+
+        validShortener.validate()
+        validShortener.id = 1
+
+        1 * controller.shortenerService.createShortener(params) >> validShortener
+
+        when: "The save action is executed with a valid instance"
+        controller.save()
 
         then: "A redirect is issued to the show action"
         response.redirectedUrl == '/shorteners/1'
         controller.flash.message != null
-        Shortener.count() == 1
+
     }
 
     void "Test that the show action returns the correct model"() {
