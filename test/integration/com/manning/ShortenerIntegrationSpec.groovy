@@ -8,7 +8,7 @@ class ShortenerIntegrationSpec extends Specification {
     void "a shortened url can only occur once in the db"() {
 
         setup: "there is a shortener with a valid url"
-        def uniqueShortenedUrl = "http://mng.bz/123"
+        def uniqueShortenedUrl = "123"
         def shortenerWithValidUrl = new Shortener(
                 destinationUrl: "http://example.com",
                 shortenerKey: uniqueShortenedUrl,
