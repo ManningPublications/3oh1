@@ -2,22 +2,23 @@ package com.manning
 
 class ShortenerTagLib {
 
-    static namespace = 's'
+    static namespace = 'shortener'
 
-    def showValidity = { attrs, body ->
-        def shortener = attrs.bean
+    def shortUrl = { attrs, body ->
+        def shortener = attrs.shortener
 
-        if (!shortener) throwTagError("a bean has to be set")
+        if (!shortener) throwTagError("a shortener has to be set")
 
-        if (shortener.validUntil) {
-            out << g.formatDate(date: shortener.validFrom, style: 'SHORT')
-            out << ' - '
-            out << g.formatDate(date: shortener.validUntil, style: 'SHORT')
-        }
-        else {
-            out << g.message(code: 'shortener.validFrom.label')
-            out << ': '
-            out << g.formatDate(date: shortener.validFrom, style: 'SHORT')
+        out << g.createLink(absolute:'true', uri:'/' + shortener.shortenerKey)
+    }
+
+    def shortLink = { attrs, body ->
+        def shortener = attrs.shortener
+
+        if (!shortener) throwTagError("a shortener has to be set")
+
+        out << g.link(absolute: true, uri:'/' + shortener.shortenerKey) {
+            shortUrl(shortener: shortener)
         }
     }
 }

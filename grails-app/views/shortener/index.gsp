@@ -25,10 +25,10 @@
     <table class="table table-striped">
         <thead>
         <tr>
-            <g:sortableColumn property="shortenerKey" title="${message(code: 'shortener.shortenerKey.label')}"/>
+            <g:sortableColumn property="shortenerKey" title="${message(code: 'shortener.shortUrl.label')}"/>
             <g:sortableColumn property="destinationUrl" title="${message(code: 'shortener.destinationUrl.label')}"/>
-            <g:sortableColumn property="userCreated" title="${message(code: 'shortener.userCreated.label')}"/>
-            <g:sortableColumn property="validFrom" title="${message(code: 'shortener.validity.label')}"/>
+            <g:sortableColumn property="validFrom" title="${message(code: 'shortener.validFrom.label')}"/>
+            <g:sortableColumn property="validFrom" title="${message(code: 'shortener.validUntil.label')}"/>
         </tr>
         </thead>
         <tbody>

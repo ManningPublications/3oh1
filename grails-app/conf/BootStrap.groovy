@@ -4,11 +4,10 @@ class BootStrap {
 
     def init = {
 
-
-
-
         environments {
+
             development {
+
                 25.times {
                     new Shortener(
                             shortenerKey: 'abc' + it,
@@ -20,9 +19,12 @@ class BootStrap {
                 }
 
             }
-            test {
+
+            //test {
+
                 createTestFixtures()
-            }
+
+            //}
         }
 
 

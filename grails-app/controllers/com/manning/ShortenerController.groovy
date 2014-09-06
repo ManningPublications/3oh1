@@ -28,8 +28,6 @@ class ShortenerController {
     }
 
     def save() {
-
-
         def shortenerInstance = shortenerService.createShortener(params)
 
         if (shortenerInstance.hasErrors()) {
@@ -39,7 +37,8 @@ class ShortenerController {
 
         request.withFormat {
             form multipartForm {
-                flash.message = message(code: 'default.created.message', args: [message(code: 'shortener.label'), shortenerInstance.shortenerKey])
+
+                flash.message = message(code: 'default.created.message', args: [shortener.shortUrl(shortener: shortenerInstance)])
                 redirect shortenerInstance
             }
             '*' { respond shortenerInstance, [status: CREATED] }
@@ -66,7 +65,7 @@ class ShortenerController {
 
         request.withFormat {
             form multipartForm {
-                flash.message = message(code: 'default.updated.message', args: [message(code: 'shortener.label'), shortenerInstance.shortenerKey])
+                flash.message = message(code: 'default.updated.message', args: [shortener.shortUrl(shortener: shortenerInstance)])
                 redirect shortenerInstance
             }
             '*' { respond shortenerInstance, [status: OK] }
@@ -85,7 +84,7 @@ class ShortenerController {
 
         request.withFormat {
             form multipartForm {
-                flash.message = message(code: 'default.deleted.message', args: [message(code: 'shortener.label'), shortenerInstance.shortenerKey])
+                flash.message = message(code: 'default.deleted.message', args: [shortener.shortUrl(shortener: shortenerInstance)])
                 redirect action: "index", method: "GET"
             }
             '*' { render status: NO_CONTENT }

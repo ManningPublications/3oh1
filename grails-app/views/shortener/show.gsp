@@ -17,8 +17,8 @@
 
         <table class="table table-striped">
             <tr>
-                <th><g:message code="shortener.shortenerKey.label"/></th>
-                <td><g:fieldValue bean="${shortenerInstance}" field="shortenerKey"/></td>
+                <th><g:message code="shortener.shortUrl.label"/></th>
+                <td><shortener:shortLink shortener="${shortenerInstance}" /></td>
             </tr>
             <tr>
                 <th><g:message code="shortener.destinationUrl.label"/></th>
@@ -33,13 +33,17 @@
                 <td><g:fieldValue bean="${shortenerInstance}" field="userCreated"/></td>
             </tr>
             <tr>
-                <th><g:message code="shortener.validity.label"/></th>
-
-
-                <td>
-                    <s:showValidity bean="${shortenerInstance}" />
-                </td>
+                <th><g:message code="shortener.validFrom.label"/></th>
+                <td><g:formatDate date="${shortenerInstance.validFrom}"/></td>
             </tr>
+
+            <g:if test="${shortenerInstance.validUntil}">
+                <tr>
+                    <th><g:message code="shortener.validUntil.label"/></th>
+                    <td><g:formatDate date="${shortenerInstance.validUntil}"/></td>
+                </tr>
+
+            </g:if>
 
         </table>
     </div>
@@ -48,7 +52,7 @@
 
         <g:link class="btn btn-default btn-block" action="edit" resource="${shortenerInstance}">
             <span class="glyphicon glyphicon-pencil"></span>
-            <g:message code="default.button.edit.label" />
+            <g:message code="default.button.edit.label"/>
         </g:link>
 
 
@@ -56,7 +60,7 @@
 
             <button type="submit" class="btn btn-block btn-danger" onclick="submit();">
                 <span class="glyphicon glyphicon-remove"></span>
-                <g:message code="default.button.delete.label" />
+                <g:message code="default.button.delete.label"/>
             </button>
 
         </g:form>

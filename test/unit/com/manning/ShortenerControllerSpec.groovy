@@ -17,6 +17,12 @@ class ShortenerControllerSpec extends Specification {
         params["userCreated"] = 'admin'
     }
 
+    def setup() {
+
+        // the shortener taglib is mocked
+        controller.metaClass.shortener = [shortUrl: {"shortUrl"}]
+    }
+
     void "Test the index action returns the correct model"() {
 
         when: "The index action is executed"
