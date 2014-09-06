@@ -10,17 +10,11 @@ class RedirectFinderService {
 
         def destinationUrl = null
 
-        if (isInValidRedirectionDate(shortener)) {
-            destinationUrl =  shortener.destinationUrl
+        if (shortener?.isActive()) {
+            destinationUrl = shortener.destinationUrl
         }
 
         return destinationUrl
-    }
-
-    boolean isInValidRedirectionDate(Shortener shortener) {
-        def now = new Date()
-
-        return shortener && shortener.validFrom < now && now < shortener.validUntil
     }
 
 }

@@ -39,4 +39,16 @@ class Shortener {
             case 'future' : Shortener.where { validFrom > now }; break;
         }
     }
+
+    boolean isStarted() {
+        validFrom.before(new Date())
+    }
+
+    boolean isEnded() {
+        validUntil?.before(new Date())
+    }
+
+    boolean isActive() {
+        isStarted() && !isEnded()
+    }
 }

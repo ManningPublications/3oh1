@@ -6,7 +6,9 @@ class BootStrap {
 
         environments {
 
+            /*
             development {
+
 
                 25.times {
                     new Shortener(
@@ -19,6 +21,7 @@ class BootStrap {
                 }
 
             }
+            */
 
             //test {
 

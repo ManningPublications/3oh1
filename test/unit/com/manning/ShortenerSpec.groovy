@@ -7,9 +7,16 @@ import spock.lang.Specification
 class ShortenerSpec extends Specification {
 
     Shortener shortener
+    Date yesterday
+    Date tomorrow
+    Date now
 
     def setup() {
         shortener = createValidShortener()
+
+        now = new Date()
+        yesterday = now - 1
+        tomorrow = now + 1
     }
 
     void "destination url is required"() {
@@ -84,6 +91,81 @@ class ShortenerSpec extends Specification {
         expect:
         shortener.hasProperty('dateCreated') && shortener.hasProperty('lastUpdated')
     }
+
+
+    def "a shortener is started when a validFrom is before now"() {
+
+        when:
+        shortener = new Shortener(validFrom: yesterday)
+
+        then:
+        shortener.isStarted()
+
+        when:
+        shortener = new Shortener(validFrom: tomorrow)
+
+        then:
+        !shortener.isStarted()
+
+    }
+
+    def "a shortener is ended when a validUntil is before now"() {
+
+        when:
+        shortener = new Shortener(validUntil: yesterday)
+
+        then:
+        shortener.isEnded()
+
+        when:
+        shortener = new Shortener(validUntil: tomorrow)
+
+        then:
+        !shortener.isEnded()
+
+    }
+
+    def "if a shortener has no validUntil set, it is never ended"() {
+
+        when:
+        shortener = new Shortener(validUntil: null)
+
+        then:
+        !shortener.isEnded()
+
+    }
+
+    def "a shortener is active, if is has started yesterday and ends tomorrow"() {
+
+        expect:
+        new Shortener(validFrom: yesterday, validUntil: tomorrow).isActive()
+
+    }
+
+    def "a shortener is active if it is already started and has no end"() {
+
+        expect:
+        new Shortener(validFrom: yesterday).isActive()
+    }
+
+    def "a shortener is not active if it has not started"() {
+
+        when:
+        shortener = new Shortener(validFrom: tomorrow)
+
+        then:
+        !shortener.isActive()
+    }
+
+    def "a shortener is not active if it has ended"() {
+
+        when:
+        shortener = new Shortener(validFrom: tomorrow)
+
+        then:
+        !shortener.isActive()
+    }
+
 
     private Shortener createValidShortener() {
         def now = new Date()
