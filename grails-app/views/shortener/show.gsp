@@ -18,7 +18,7 @@
         <table class="table table-striped">
             <tr>
                 <th><g:message code="shortener.shortUrl.label"/></th>
-                <td><shortener:shortLink shortener="${shortenerInstance}" /></td>
+                <td id="shortUrl"><shortener:shortLink shortener="${shortenerInstance}" /></td>
             </tr>
             <tr>
                 <th><g:message code="shortener.destinationUrl.label"/></th>

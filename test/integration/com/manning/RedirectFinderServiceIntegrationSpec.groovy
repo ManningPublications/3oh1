@@ -40,6 +40,18 @@ class RedirectFinderServiceIntegrationSpec extends Specification {
         !destinationUrl
     }
 
+    void "an active shortener with no validUntil value set will be redirected"() {
+
+        given:
+        createShortener(validUntil: null)
+
+        when:
+        def destinationUrl = service.findRedirectionUrlForKey('abc')
+
+        then:
+        destinationUrl
+    }
+
 
     void 'a future shortener will find no destination url'() {
 

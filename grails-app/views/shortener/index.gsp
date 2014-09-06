@@ -9,7 +9,7 @@
 
 <body>
 
-    <g:link class="btn btn-default pull-right" action="create">
+    <g:link elementId="addShortener" class="btn btn-default pull-right" action="create">
         <span class="glyphicon glyphicon-plus"></span>
         <g:message code="default.new.label" args="[entityName]"/>
     </g:link>
