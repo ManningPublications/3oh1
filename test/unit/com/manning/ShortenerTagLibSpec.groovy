@@ -9,38 +9,44 @@ class ShortenerTagLibSpec extends Specification {
 
 
 
-    void "s:showValidity needs a bean attribute"() {
+    void "shortener:shortUrl needs a bean attribute"() {
 
         when:
-        applyTemplate('<s:showValidity />')
+        applyTemplate('<shortener:shortUrl />')
 
         then:
         thrown GrailsTagException
     }
 
-    def "s:showValidity joins validFrom and validUntil with a dash"() {
+    def "shortener:shortUrl returns the base url combines with the shortenerKey as a http url "() {
 
         given:
-        def now = new Date()
-        def shortener = new Shortener(validFrom: now, validUntil: now + 1)
+        def shortener = new Shortener(shortenerKey: "abc")
         when:
-        def actualHtml = applyTemplate('<s:showValidity bean="${shortener}"/>', [shortener: shortener])
+        def actualUrl = applyTemplate('<shortener:shortUrl shortener="${shortener}"/>', [shortener: shortener])
 
         then:
-        actualHtml.contains(' - ')
+        actualUrl == 'http://localhost:8080/abc'
     }
 
-    def "s:showValidity prints only the validFrom if no validUntil is set"() {
+    void "shortener:shortLink needs a bean attribute"() {
 
-        given:
-        messageSource.addMessage('shortener.validFrom.label', request.locale, 'validFrom')
-        def now = new Date()
-        def shortener = new Shortener(validFrom: now)
         when:
-        def actualHtml = applyTemplate('<s:showValidity bean="${shortener}"/>', [shortener: shortener])
+        applyTemplate('<shortener:shortLink />')
 
         then:
-        actualHtml.contains('validFrom')
+        thrown GrailsTagException
+    }
+
+    def "shortener:shortLink returns the base url combines with the shortenerKey as a html link "() {
+
+        given:
+        def shortener = new Shortener(shortenerKey: "abc")
+        when:
+        def actualUrl = applyTemplate('<shortener:shortLink shortener="${shortener}"/>', [shortener: shortener])
+
+        then:
+        actualUrl == '<a href="http://localhost:8080/abc">http://localhost:8080/abc</a>'
     }
 
 
