@@ -13,6 +13,11 @@ class ShortenerCreatePage extends Page {
         _saveButton { $("button.save") }
     }
 
+    void createShortener(String destinationUrl, String userCreated) {
+        setFormValues(destinationUrl,userCreated)
+        save()
+    }
+
     void setFormValues(String destinationUrl, String userCreated) {
 
         _destinationUrl = destinationUrl
