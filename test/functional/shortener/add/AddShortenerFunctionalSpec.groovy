@@ -2,49 +2,56 @@ package shortener.add
 
 import geb.spock.GebReportingSpec
 import pages.*
-import spock.lang.Stepwise
 
-@Stepwise
 class AddShortenerFunctionalSpec extends GebReportingSpec {
 
 
-    def "when i click on the create button at the index page"() {
-        when:
+    def "a valid shortener will be created and check if the redirection works"() {
+
+        given: "i am at the shortener index page"
         to ShortenerIndexPage
 
+        when: "i click on the create button"
         page.addShortener()
 
-        then:
+        then: "i am at the creation page"
         at ShortenerCreatePage
 
-    }
-
-    def "and i fill in valid information for the shortner"() {
-        given:
-        at ShortenerCreatePage
-
-        when:
+        when: "i fill in valid information for the shortner"
         page.setFormValues("http://www.google.com", "Dummy User")
-
-        and:
         page.save()
 
-        then:
+        then: "the shortener was created successfully"
         at ShortenerShowPage
         page.isSuccessMessageHere()
 
-    }
-
-    def "then i'm at the show page of the new shortener and can follow the generated Short-URL"() {
-
-        when:
+        when: "i follow the generated Short-URL"
         page.clickShortUrl()
 
-        then:
+        then: "i am at the desired destination url"
         driver.currentUrl.contains "google"
-
     }
 
+
+    def "an invalid shortener can not be saved and will display error messages"() {
+
+        given: "i am at the shortener index page"
+        to ShortenerIndexPage
+
+        when: "i click on the create button"
+        page.addShortener()
+
+        then: "i am at the creation page"
+        at ShortenerCreatePage
+
+        when: "i fill in valid information for the shortner"
+        page.setFormValues("noValidUrl", "")
+        page.save()
+
+        then: "the shortener was created successfully"
+        at ShortenerCreatePage
+
+    }
 
 
 }
