@@ -21,7 +21,7 @@
     <g:form url="[resource: shortenerInstance, action: 'update']" method="PUT">
         <g:hiddenField name="version" value="${shortenerInstance?.version}"/>
             <g:render template="form"/>
-            <button type="submit" class="btn btn-success" onclick="submit();">
+            <button type="submit" class="btn btn-success save" onclick="submit();">
                 <span class="glyphicon glyphicon-disk"></span>
                 <g:message code="default.button.update.label" />
             </button>

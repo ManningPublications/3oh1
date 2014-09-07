@@ -10,6 +10,7 @@ class ShortenerShowPage extends Page {
 
         _flash(required: true) { $("div.alert.alert-warning") }
         _shortUrl { $("#shortUrl a") }
+        _editButton { $("#editShortener") }
     }
 
     void clickShortUrl() {
@@ -18,6 +19,10 @@ class ShortenerShowPage extends Page {
 
     void isSuccessMessageHere() {
         _flash.displayed
+    }
+
+    void editShortener() {
+        _editButton.click()
     }
 
 }
