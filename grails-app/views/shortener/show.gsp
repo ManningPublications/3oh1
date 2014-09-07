@@ -50,7 +50,7 @@
 
     <div class="col-sm-3">
 
-        <g:link class="btn btn-default btn-block" action="edit" resource="${shortenerInstance}">
+        <g:link class="btn btn-default btn-block" elementId="editShortener" action="edit" resource="${shortenerInstance}">
             <span class="glyphicon glyphicon-pencil"></span>
             <g:message code="default.button.edit.label"/>
         </g:link>
