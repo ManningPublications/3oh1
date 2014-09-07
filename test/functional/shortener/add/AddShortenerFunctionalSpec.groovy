@@ -18,8 +18,7 @@ class AddShortenerFunctionalSpec extends GebReportingSpec {
         at ShortenerCreatePage
 
         when: "i fill in valid information for the shortner"
-        page.setFormValues("http://www.google.com", "Dummy User")
-        page.save()
+        page.createShortener("http://www.google.com", "Dummy User")
 
         then: "the shortener was created successfully"
         at ShortenerShowPage
@@ -45,8 +44,7 @@ class AddShortenerFunctionalSpec extends GebReportingSpec {
         at ShortenerCreatePage
 
         when: "i fill in valid information for the shortner"
-        page.setFormValues("noValidUrl", "")
-        page.save()
+        page.createShortener("noValidUrl", "")
 
         then: "the shortener was created successfully"
         at ShortenerCreatePage
