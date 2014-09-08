@@ -9,7 +9,7 @@ class ShortenerTagLibSpec extends Specification {
 
 
 
-    void "shortener:shortUrl needs a bean attribute"() {
+    void "shortener:shortUrl needs a shortener attribute"() {
 
         when:
         applyTemplate('<shortener:shortUrl />')
@@ -29,7 +29,7 @@ class ShortenerTagLibSpec extends Specification {
         actualUrl == 'http://localhost:8080/abc'
     }
 
-    void "shortener:shortLink needs a bean attribute"() {
+    void "shortener:shortLink needs a shortener attribute"() {
 
         when:
         applyTemplate('<shortener:shortLink />')
@@ -38,15 +38,76 @@ class ShortenerTagLibSpec extends Specification {
         thrown GrailsTagException
     }
 
-    def "shortener:shortLink returns the base url combines with the shortenerKey as a html link "() {
+    def "shortener:shortLink returns only the url without a link if the shortener is not active"() {
 
         given:
-        def shortener = new Shortener(shortenerKey: "abc")
+        def tomorrow = new Date() + 1
+        def shortener = new Shortener(shortenerKey: "abc", validFrom: tomorrow)
+
         when:
         def actualUrl = applyTemplate('<shortener:shortLink shortener="${shortener}"/>', [shortener: shortener])
 
         then:
-        actualUrl == '<a href="http://localhost:8080/abc">http://localhost:8080/abc</a>'
+        actualUrl == 'http://localhost:8080/abc'
+    }
+
+
+
+
+
+    void "shortener:showRedirectionValidityMessage needs a shortener attribute"() {
+
+        when:
+        applyTemplate('<shortener:shortUrl />')
+
+        then:
+        thrown GrailsTagException
+    }
+
+    def "shortener:showWarningIfNotActive returns a danger alert if the shortener is not started"() {
+
+        given:
+        messageSource.addMessage('shortener.redirection.validFrom.disabled', request.locale, 'validFromDisabled')
+        def tomorrow = new Date() + 1
+        def shortener = new Shortener(shortenerKey: "abc", validFrom: tomorrow)
+
+        when:
+        def actualHtml = applyTemplate('<shortener:showWarningIfNotActive shortener="${shortener}"/>', [shortener: shortener])
+
+        then:
+        actualHtml.contains "alert-danger"
+        actualHtml.contains "validFromDisabled"
+    }
+
+
+    def "shortener:showWarningIfNotActive returns a danger alert if the shortener is ended"() {
+
+        given:
+        messageSource.addMessage('shortener.redirection.validUntil.disabled', request.locale, 'validUntilDisabled')
+        def yesterday = new Date() - 1
+        def shortener = new Shortener(shortenerKey: "abc", validFrom: new Date(), validUntil: yesterday)
+
+        when:
+        def actualHtml = applyTemplate('<shortener:showWarningIfNotActive shortener="${shortener}"/>', [shortener: shortener])
+
+        then:
+        actualHtml.contains "alert-danger"
+        actualHtml.contains "validUntilDisabled"
+
+    }
+
+    def "shortener:showWarningIfNotActive returns nothing if shortener is active"() {
+
+        given:
+        def yesterday = new Date() - 1
+        def shortener = new Shortener(shortenerKey: "abc", validFrom: yesterday)
+
+        when:
+        def actualHtml = applyTemplate('<shortener:showWarningIfNotActive shortener="${shortener}"/>', [shortener: shortener])
+
+        then:
+        !actualHtml
+
     }
 
 
