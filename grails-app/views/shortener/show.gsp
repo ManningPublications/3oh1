@@ -9,6 +9,9 @@
 
 <body>
 
+
+<shortener:showWarningIfNotActive shortener="${shortenerInstance}" />
+
 <h1><g:message code="default.show.label" args="[entityName]"/></h1>
 
 <div class="row">
@@ -18,7 +21,7 @@
         <table class="table table-striped">
             <tr>
                 <th><g:message code="shortener.shortUrl.label"/></th>
-                <td id="shortUrl"><shortener:shortLink shortener="${shortenerInstance}" /></td>
+                <td id="shortUrl"><shortener:shortLink shortener="${shortenerInstance}"/></td>
             </tr>
             <tr>
                 <th><g:message code="shortener.destinationUrl.label"/></th>
@@ -50,7 +53,8 @@
 
     <div class="col-sm-3">
 
-        <g:link class="btn btn-default btn-block" elementId="editShortener" action="edit" resource="${shortenerInstance}">
+        <g:link class="btn btn-default btn-block" elementId="editShortener" action="edit"
+                resource="${shortenerInstance}">
             <span class="glyphicon glyphicon-pencil"></span>
             <g:message code="default.button.edit.label"/>
         </g:link>
