@@ -1,5 +1,6 @@
 package com.manning
 
+import com.manning.security.User
 import spock.lang.*
 
 class ShortenerIntegrationSpec extends Specification {
@@ -8,11 +9,12 @@ class ShortenerIntegrationSpec extends Specification {
     void "a shortened url can only occur once in the db"() {
 
         setup: "there is a shortener with a valid url"
+        def user = User.findByUsername("user")
         def uniqueShortenedUrl = "123"
         def shortenerWithValidUrl = new Shortener(
                 destinationUrl: "http://example.com",
                 shortenerKey: uniqueShortenedUrl,
-                userCreated: "Dummy User",
+                userCreated: user,
                 validFrom: new Date(),
                 validUntil: new Date() + 1
         )
@@ -23,7 +25,7 @@ class ShortenerIntegrationSpec extends Specification {
         def shortenerWithDuplicatedUrl = new Shortener(
                 destinationUrl: "http://example2.com",
                 shortenerKey: uniqueShortenedUrl,
-                userCreated: "Dummy User2",
+                userCreated: user,
                 validFrom: new Date(),
                 validUntil: new Date() + 1
         )

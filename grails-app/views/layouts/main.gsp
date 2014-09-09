@@ -16,13 +16,24 @@
 
 <div class="container">
     <div class="header">
-        <ul class="nav nav-pills pull-right">
-            <li class="active">
-                <g:link action="index">
+            <sec:ifLoggedIn>
+
+                <g:form controller="logout" method="POST">
+                    <button id="logout" type="submit" class="btn btn-danger pull-right" title="<g:message code="default.button.logout.label"/>" style="margin-left:10px;">
+                        <span class="glyphicon glyphicon-off"></span>
+                    </button>
+
+                </g:form>
+
+                <g:link action="index" class="btn btn-primary pull-right">
                     <span class="glyphicon glyphicon-th-list"></span>
                     <g:message code="default.list.label" args="[message(code: 'shortener.label')]"/>
-                </g:link></li>
-        </ul>
+                </g:link>
+
+
+
+
+            </sec:ifLoggedIn>
         <asset:image src="logo.png" class="pull-left" id="logo"/>
         <h3 class="text-muted">Manning Url-Shortener</h3>
     </div>

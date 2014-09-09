@@ -7,9 +7,13 @@ class ShortenerService {
 
     def hashidsService
 
+    def springSecurityService
+
     def createShortener(def params) {
 
         def shortener = new Shortener(params)
+
+        shortener.userCreated = springSecurityService.currentUser
 
         if (shortener.save(flush: true)) {
 

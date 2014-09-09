@@ -1,5 +1,12 @@
 import org.openqa.selenium.firefox.FirefoxDriver
+import org.openqa.selenium.firefox.FirefoxProfile
 
 driver = {
-    new FirefoxDriver()
+
+    def forcedLocale = "en"
+
+    FirefoxProfile p = new FirefoxProfile();
+    p.setPreference( "intl.accept_languages", forcedLocale );
+
+    new FirefoxDriver(p)
 }

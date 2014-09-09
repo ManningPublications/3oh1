@@ -1,7 +1,9 @@
 package com.manning
 
+import grails.plugin.springsecurity.annotation.Secured
 import org.springframework.http.HttpStatus
 
+@Secured(['permitAll'])
 class RedirectController {
 
     def redirectFinderService

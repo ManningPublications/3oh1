@@ -1,5 +1,7 @@
 package com.manning
 
+import com.manning.security.User
+
 class Shortener {
 
     String destinationUrl
@@ -12,7 +14,7 @@ class Shortener {
     Date lastUpdated
 
 
-    String userCreated
+    User userCreated
 
     static constraints = {
         /*
@@ -21,6 +23,7 @@ class Shortener {
          */
         shortenerKey unique: true, nullable: true
         destinationUrl url: true, nullable: false
+        userCreated nullable: false
         validUntil nullable: true
     }
 

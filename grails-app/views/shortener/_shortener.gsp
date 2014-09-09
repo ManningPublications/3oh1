@@ -2,11 +2,12 @@
 
     <td>
         <g:link action="show" id="${shortener.id}">
-            <shortener:shortUrl shortener="${shortener}" />
+            ${fieldValue(bean: shortener, field: "shortenerKey")}
         </g:link>
     </td>
 
     <td>${fieldValue(bean: shortener, field: "destinationUrl")}</td>
+    <td>${fieldValue(bean: shortener.userCreated, field: "username")}</td>
 
     <td>
         <g:formatDate date="${shortener.validFrom}" />

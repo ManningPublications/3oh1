@@ -139,3 +139,22 @@ grails.plugin.hashids.min_hash_length = 3
 grails.plugin.hashidsanemic_domain = true
 
 
+
+
+// Added by the Spring Security Core plugin:
+grails.plugin.springsecurity.userLookup.userDomainClassName = 'com.manning.security.User'
+grails.plugin.springsecurity.userLookup.authorityJoinClassName = 'com.manning.security.UserRole'
+grails.plugin.springsecurity.authority.className = 'com.manning.security.Role'
+grails.plugin.springsecurity.controllerAnnotations.staticRules = [
+	'/shorteners':                     ['isAuthenticated()'],
+	'/dbconsole':                     ['permitAll'],
+	'/':                              ['permitAll'],
+	'/index':                         ['permitAll'],
+	'/index.gsp':                     ['permitAll'],
+	'/assets/**':                     ['permitAll'],
+	'/**/js/**':                      ['permitAll'],
+	'/**/css/**':                     ['permitAll'],
+	'/**/images/**':                  ['permitAll'],
+	'/**/favicon.ico':                ['permitAll']
+]
+

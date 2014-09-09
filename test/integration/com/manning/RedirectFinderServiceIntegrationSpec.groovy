@@ -1,6 +1,6 @@
 package com.manning
 
-
+import com.manning.security.User
 import spock.lang.*
 
 class RedirectFinderServiceIntegrationSpec extends Specification {
@@ -82,11 +82,12 @@ class RedirectFinderServiceIntegrationSpec extends Specification {
 
     def createShortener(Map params) {
         def now = new Date()
+        def user = User.findByUsername("user")
 
         def defaultValues = [
                 shortenerKey: 'abc',
                 destinationUrl: 'http://example.com',
-                userCreated: 'Dummy user',
+                userCreated: user,
                 validFrom: now,
                 validUntil: now + 1
         ]

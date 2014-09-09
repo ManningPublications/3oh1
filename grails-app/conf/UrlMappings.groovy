@@ -1,6 +1,10 @@
 class UrlMappings {
 
 	static mappings = {
+
+        "/login/$action?"(controller: "login")
+        "/logout/$action?"(controller: "logout")
+
         "/shorteners"(resources:"shortener")
 
 
@@ -16,5 +20,7 @@ class UrlMappings {
         //'/' redirect: 'http://www.manning.com', permanent: true
         '404'(view:'/notFound')
         '500'(view:'/error')
+
+
 	}
 }

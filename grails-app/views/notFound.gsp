@@ -2,7 +2,6 @@
 <html>
 	<head>
 		<title>404 - File not Found</title>
-        <meta name="layout" content="main">
 	</head>
 	<body>
         <div class="center">

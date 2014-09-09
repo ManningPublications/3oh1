@@ -9,9 +9,14 @@ class ShortenerIndexPage extends Page {
     static content = {
 
         _addButton { $("#addShortener") }
+        _logoutButton { $("#logout") }
     }
 
     void addShortener() {
         _addButton.click()
+    }
+
+    void logout() {
+        _logoutButton.click()
     }
 }

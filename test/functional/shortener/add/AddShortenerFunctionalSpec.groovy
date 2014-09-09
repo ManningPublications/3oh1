@@ -6,10 +6,22 @@ import pages.*
 class AddShortenerFunctionalSpec extends GebReportingSpec {
 
 
+
+    def setup() {
+        via ShortenerIndexPage
+        at LoginPage
+        page.login("user", "user")
+        at ShortenerIndexPage
+    }
+
+    def cleanup() {
+        to ShortenerIndexPage
+        page.logout()
+    }
+
+
     def "a valid shortener will be created and check if the redirection works"() {
 
-        given: "i am at the shortener index page"
-        to ShortenerIndexPage
 
         when: "i click on the create button"
         page.addShortener()
@@ -18,7 +30,7 @@ class AddShortenerFunctionalSpec extends GebReportingSpec {
         at ShortenerCreatePage
 
         when: "i fill in valid information for the shortner"
-        page.createShortener("http://www.google.com", "Dummy User")
+        page.createShortener("http://www.google.com")
 
         then: "the shortener was created successfully"
         at ShortenerShowPage
@@ -29,13 +41,12 @@ class AddShortenerFunctionalSpec extends GebReportingSpec {
 
         then: "i am at the desired destination url"
         driver.currentUrl.contains "google"
+
     }
 
 
     def "an invalid shortener can not be saved and will display error messages"() {
 
-        given: "i am at the shortener index page"
-        to ShortenerIndexPage
 
         when: "i click on the create button"
         page.addShortener()
@@ -44,10 +55,11 @@ class AddShortenerFunctionalSpec extends GebReportingSpec {
         at ShortenerCreatePage
 
         when: "i fill in valid information for the shortner"
-        page.createShortener("noValidUrl", "")
+        page.createShortener("noValidUrl")
 
         then: "the shortener was created successfully"
         at ShortenerCreatePage
+
 
     }
 

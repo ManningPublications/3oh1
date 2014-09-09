@@ -87,5 +87,7 @@ grails.project.dependency.resolution = {
         // fields plugin makes creating forms a breeze
         compile ":fields:1.3"
 
+        compile ':spring-security-core:2.0-RC4'
+
     }
 }

@@ -1,9 +1,11 @@
 package com.manning
 
 import grails.transaction.Transactional
+import grails.plugin.springsecurity.annotation.Secured
 
 import static org.springframework.http.HttpStatus.*
 
+@Secured(['isAuthenticated()'])
 class ShortenerController {
 
     static allowedMethods = [save: "POST", update: "PUT", delete: "DELETE"]

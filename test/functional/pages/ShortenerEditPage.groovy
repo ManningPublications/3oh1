@@ -8,19 +8,17 @@ class ShortenerEditPage extends Page {
     static content = {
 
         _destinationUrl { $("#destinationUrl") }
-        _userCreated { $("#userCreated") }
         _saveButton { $("button.save") }
     }
 
-    void updateShortener(String destinationUrl, String userCreated) {
-        setFormValues(destinationUrl,userCreated)
+    void updateShortener(String destinationUrl) {
+        setFormValues(destinationUrl)
         save()
     }
 
-    void setFormValues(String destinationUrl, String userCreated) {
+    void setFormValues(String destinationUrl, Date validFrom = null, Date validUntil = null) {
 
         _destinationUrl = destinationUrl
-        _userCreated = userCreated
 
     }
 

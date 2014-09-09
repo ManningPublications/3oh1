@@ -1,7 +1,6 @@
 package com.manning
 
-
-
+import com.manning.security.User
 import grails.test.mixin.*
 import spock.lang.*
 
@@ -14,7 +13,7 @@ class ShortenerControllerSpec extends Specification {
         params["validFrom"] = new Date()
         params["validUntil"] = new Date() + 1
         params["destinationUrl"] = 'http://www.google.com'
-        params["userCreated"] = 'admin'
+        params["userCreated"] = new User(username: "Dummy User")
     }
 
     def setup() {
@@ -300,7 +299,7 @@ class ShortenerControllerSpec extends Specification {
                     destinationUrl: 'http://www.twitter.com/' + it,
                     validFrom: validFrom,
                     validUntil: validUntil,
-                    userCreated: "Dummy User"
+                    userCreated: new User(username: "Dummy User")
             ).save(failOnError: true)
         }
     }

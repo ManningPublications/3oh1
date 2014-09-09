@@ -1,5 +1,6 @@
 package com.manning
 
+import com.manning.security.User
 import grails.test.mixin.TestFor
 import spock.lang.Specification
 
@@ -85,6 +86,28 @@ class ShortenerSpec extends Specification {
         shortenerIsValid
 
     }
+
+
+    void "userCreated is required"() {
+
+        given:
+        shortener.userCreated = null
+
+        when:
+        def shortenerIsValid = shortener.validate()
+
+        then:
+        !shortenerIsValid
+
+        when:
+        shortener.userCreated = new User(username: "Dummy User")
+        shortenerIsValid = shortener.validate()
+
+        then:
+        shortenerIsValid
+    }
+
+
 
     def "a shortener has autoTimestamping feature activated due to the existence of dateCreated and lastUpdated"() {
 
@@ -173,7 +196,7 @@ class ShortenerSpec extends Specification {
         new Shortener(
                 destinationUrl: "http://example.com",
                 shortenerKey: "abc",
-                userCreated: "Dummy User",
+                userCreated: new User(username: "Dummy User"),
                 validFrom: now,
                 validUntil: now + 1
         )

@@ -9,24 +9,25 @@
 
 <body>
 
-    <g:link elementId="addShortener" class="btn btn-default pull-right" action="create">
-        <span class="glyphicon glyphicon-plus"></span>
-        <g:message code="default.new.label" args="[entityName]"/>
-    </g:link>
     <h2><g:message code="default.list.label" args="[entityName]"/></h2>
 
 <div class="btn-group">
     <s:shortenerValidityButton property="expired" />
     <s:shortenerValidityButton property="active" />
     <s:shortenerValidityButton property="future" />
-
 </div>
+<g:link elementId="addShortener" class="btn btn-default pull-right" action="create">
+    <span class="glyphicon glyphicon-plus"></span>
+    <g:message code="default.new.label" args="[entityName]"/>
+</g:link>
 
-    <table class="table table-striped">
+
+    <table class="table table-striped table-condensed" style="margin-top:20px;">
         <thead>
         <tr>
             <g:sortableColumn property="shortenerKey" title="${message(code: 'shortener.shortUrl.label')}"/>
             <g:sortableColumn property="destinationUrl" title="${message(code: 'shortener.destinationUrl.label')}"/>
+            <g:sortableColumn property="userCreated" title="${message(code: 'shortener.userCreated.label')}"/>
             <g:sortableColumn property="validFrom" title="${message(code: 'shortener.validFrom.label')}"/>
             <g:sortableColumn property="validFrom" title="${message(code: 'shortener.validUntil.label')}"/>
         </tr>
