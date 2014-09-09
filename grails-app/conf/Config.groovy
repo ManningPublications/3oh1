@@ -137,3 +137,5 @@ grails.plugin.hashids.min_hash_length = 3
 
 // If true, the plugin will not add hashid and findByHashId methods to your domain objects.
 grails.plugin.hashidsanemic_domain = true
+
+
