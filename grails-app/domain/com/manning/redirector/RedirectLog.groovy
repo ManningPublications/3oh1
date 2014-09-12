@@ -15,4 +15,8 @@ class RedirectLog {
     static constraints = {
         referer nullable: true
     }
+
+    static mapping = {
+        sort dateCreated: "desc"
+    }
 }

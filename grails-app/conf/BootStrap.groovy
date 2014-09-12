@@ -1,4 +1,5 @@
 import com.manning.Shortener
+import com.manning.redirector.RedirectLog
 import com.manning.security.Role
 import com.manning.security.User
 import com.manning.security.UserRole
@@ -13,28 +14,10 @@ class BootStrap {
 
             createAdmin()
 
-            /*
-            development {
+            createTestFixtures()
+            createLastRedirects()
 
 
-                25.times {
-                    new Shortener(
-                            shortenerKey: 'abc' + it,
-                            destinationUrl: 'http://www.twitter.com/' + it,
-                            validFrom: new Date(),
-                            validUntil: new Date() + it,
-                            userCreated: "Dummy User"
-                    ).save(failOnError: true)
-                }
-
-            }
-            */
-
-            //test {
-
-                createTestFixtures()
-
-            //}
         }
 
 
@@ -93,4 +76,23 @@ class BootStrap {
 
 
     }
+
+
+    private void createLastRedirects() {
+
+        50.times {
+
+            def shortener = Shortener.get(it % 4)
+
+            new RedirectLog(
+                    shortener: shortener,
+                    userAgent: "Mozilla/5.0 (compatible; MSIE 9.0; Windows NT 6.1; WOW64; Trident/5.0)",
+                    clientIp: "192.168.0." + (it + 1),
+                    referer: "http://www.google.com"
+            ).save()
+
+        }
+
+    }
+
 }

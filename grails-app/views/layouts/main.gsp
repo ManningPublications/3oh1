@@ -19,16 +19,43 @@
             <sec:ifLoggedIn>
 
                 <g:form controller="logout" method="POST">
-                    <button id="logout" type="submit" class="btn btn-danger pull-right" title="<g:message code="default.button.logout.label"/>" style="margin-left:10px;">
+                    <button
+                            id="logout"
+                            type="submit"
+                            class="btn btn-danger pull-right"
+                            style="margin-left:10px;"
+                            data-toggle="tooltip"
+                            data-placement="bottom"
+                            title="${message(code: 'default.button.logout.label')}"
+                    >
                         <span class="glyphicon glyphicon-off"></span>
                     </button>
 
                 </g:form>
 
-                <g:link action="index" class="btn btn-primary pull-right">
-                    <span class="glyphicon glyphicon-th-list"></span>
-                    <g:message code="default.list.label" args="[message(code: 'shortener.label')]"/>
+                <g:link
+                        controller="statistics"
+                        action="index"
+                        class="btn btn-primary pull-right"
+                        style="margin-left:10px;"
+                        data-toggle="tooltip"
+                        data-placement="bottom"
+                        title="${message(code: 'button.statistics.label')}"
+                >
+                    <span class="glyphicon glyphicon-stats"></span>
                 </g:link>
+
+                <g:link
+                        controller="shortener"
+                        action="index"
+                        class="btn btn-primary pull-right"
+                        data-toggle="tooltip"
+                        data-placement="bottom"
+                        title="${message(code: 'default.list.label', args: [message(code: 'shortener.label')])}"
+                >
+                    <span class="glyphicon glyphicon-th-list"></span>
+                </g:link>
+
 
 
 

@@ -61,7 +61,7 @@ class ButtonTagLibSpec extends Specification {
         )
 
         then:
-        actualHtml.@href == '?validity=future'
+        actualHtml.@href.text().contains '?validity=future'
     }
 
 

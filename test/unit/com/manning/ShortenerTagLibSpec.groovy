@@ -110,5 +110,51 @@ class ShortenerTagLibSpec extends Specification {
 
     }
 
+    def "prettyDestinationUrl removes http:// from the url"() {
+
+        given:
+        def shortener = new Shortener(destinationUrl: 'http://google.com')
+        when:
+        def actualHtml = applyTemplate('<shortener:prettyDestinationUrl shortener="${shortener}"/>', [shortener: shortener])
+
+        then:
+        actualHtml == 'google.com'
+    }
+
+    def "prettyDestinationUrl removes www. from the url"() {
+
+        given:
+        def shortener = new Shortener(destinationUrl: 'www.google.com')
+        when:
+        def actualHtml = applyTemplate('<shortener:prettyDestinationUrl shortener="${shortener}"/>', [shortener: shortener])
+
+        then:
+        actualHtml == 'google.com'
+    }
+
+
+    def "prettyDestinationUrl cuts the url after 25 chars"() {
+
+        given:
+        def shortener = new Shortener(destinationUrl: ('a' * 25) + '.com')
+        when:
+        def actualHtml = applyTemplate('<shortener:prettyDestinationUrl shortener="${shortener}"/>', [shortener: shortener])
+
+        then:
+        actualHtml == ('a' * 25) + '...'
+    }
+
+
+    def "prettyDestinationUrl creates can create a link to the correct url"() {
+
+        given:
+        def shortener = new Shortener(destinationUrl: 'www.google.com')
+        when:
+        def actualHtml = applyTemplate('<shortener:prettyDestinationUrl shortener="${shortener}" link="${true}"/>', [shortener: shortener, true: true])
+
+        then:
+        actualHtml.contains '<a href="www.google.com"'
+    }
+
 
 }

@@ -9,7 +9,10 @@
 
 <body>
 
-    <h2><g:message code="default.list.label" args="[entityName]"/></h2>
+    <h2>
+        <span class="glyphicon glyphicon-th-list"></span>
+        <g:message code="default.list.label" args="[entityName]"/>
+    </h2>
 
 <div class="btn-group">
     <s:shortenerValidityButton property="expired" />

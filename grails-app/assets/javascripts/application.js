@@ -9,3 +9,6 @@
 //= require bootstrap
 //= require_tree .
 //= require_self
+
+
+$('[data-toggle=tooltip]').tooltip();

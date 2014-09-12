@@ -57,6 +57,33 @@ class ShortenerTagLib {
 
     }
 
+    def prettyDestinationUrl = { attrs, body ->
+        def shortener = attrs.shortener
+
+        if (!shortener) throwTagError("a shortener has to be set")
+
+        String destinationUrl = shortener.destinationUrl
+
+        destinationUrl -= "http://"
+        destinationUrl -= "www."
+
+
+        def stringSizeLimit = 25
+
+        if (destinationUrl.length() >= stringSizeLimit) {
+            destinationUrl = destinationUrl.substring(0, stringSizeLimit) + '...'
+        }
+
+        if (attrs.link) {
+            out << g.link(uri: shortener.destinationUrl) {
+                destinationUrl
+            }
+        }
+        else {
+            out << destinationUrl
+        }
+    }
+
 
 
 }
