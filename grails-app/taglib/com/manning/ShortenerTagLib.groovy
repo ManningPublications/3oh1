@@ -36,7 +36,7 @@ class ShortenerTagLib {
         if (!shortener.isActive()) {
             def messageKey = null
 
-            out << '<div class="alert alert-danger alert-dismissible" role="alert">'
+            out << '<div id="shortener-not-active-warning" class="alert alert-danger alert-dismissible" role="alert">'
             out << '<span class="glyphicon glyphicon-time"></span> '
 
             if (!shortener.isStarted()) {

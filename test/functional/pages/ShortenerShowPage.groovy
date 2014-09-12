@@ -9,6 +9,8 @@ class ShortenerShowPage extends Page {
     static content = {
 
         _flash(required: true) { $("div.alert.alert-warning") }
+        _notActiveMessage(required: true) { $("#shortener-not-active-warning") }
+
         _shortUrl { $("#shortUrl a") }
         _editButton { $("#editShortener") }
     }
@@ -17,12 +19,16 @@ class ShortenerShowPage extends Page {
         _shortUrl.click()
     }
 
-    void isSuccessMessageHere() {
+    boolean isSuccessMessageHere() {
         _flash.displayed
     }
 
     void editShortener() {
         _editButton.click()
+    }
+
+    boolean isShortenerActive() {
+        !_notActiveMessage.displayed
     }
 
 }
