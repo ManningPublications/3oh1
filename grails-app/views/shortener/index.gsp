@@ -1,4 +1,4 @@
-<%@ page import="com.manning.Shortener" %>
+<%@ page import="com.manning.redirector.RedirectLog; com.manning.Shortener" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -38,6 +38,7 @@
     </table>
 
         <g:paginate total="${shortenerInstanceCount ?: 0}" action="index" controller="shortener" params="['validity' : params.validity]"/>
+
 </body>
 </html>
 

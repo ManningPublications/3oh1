@@ -3,41 +3,40 @@ package com.manning
 import com.manning.security.User
 import spock.lang.*
 
-class RedirectFinderServiceIntegrationSpec extends Specification {
+class ShortenerServiceFindIntegrationSpec extends Specification {
 
 
     private service
 
     def setup() {
-        service  = new RedirectFinderService()
+        service  = new ShortenerService()
     }
 
-    void 'a valid shortenerKey will find the correct destination url'() {
+    void 'a valid shortenerKey will find the correct shortener'() {
 
         setup:
 
         def expectedDestinationUrl = 'http://example.com'
         createShortener(shortenerKey: 'abc', destinationUrl: expectedDestinationUrl)
 
-        this.service = new RedirectFinderService()
         when:
-        def actualDestinationUrl = this.service.findRedirectionUrlForKey('abc')
+        def actualShortener = this.service.findActiveShortenerByKey('abc')
 
         then:
-        actualDestinationUrl == expectedDestinationUrl
+        actualShortener.destinationUrl == expectedDestinationUrl
     }
 
 
-    void 'a invalid shortenerKey will find the no destination url'() {
+    void 'a invalid shortenerKey will find no shortener'() {
 
         setup:
         createShortener(shortenerKey: 'abc')
 
         when:
-        def destinationUrl = service.findRedirectionUrlForKey('invalidKey')
+        def actualShortener = service.findActiveShortenerByKey('invalidKey')
 
         then:
-        !destinationUrl
+        !actualShortener
     }
 
     void "an active shortener with no validUntil value set will be redirected"() {
@@ -46,37 +45,37 @@ class RedirectFinderServiceIntegrationSpec extends Specification {
         createShortener(validUntil: null)
 
         when:
-        def destinationUrl = service.findRedirectionUrlForKey('abc')
+        def actualShortener = service.findActiveShortenerByKey('abc')
 
         then:
-        destinationUrl
+        actualShortener
     }
 
 
-    void 'a future shortener will find no destination url'() {
+    void 'a future shortener will find no shortener'() {
 
         setup:
         def tomorrow = new Date() + 1
         createShortener(shortenerKey: 'abc', validFrom: tomorrow)
 
         when:
-        def destinationUrl = service.findRedirectionUrlForKey('abc')
+        def actualShortener = service.findActiveShortenerByKey('abc')
 
         then:
-        !destinationUrl
+        !actualShortener
     }
 
-    void 'a past shortenerKey will find no destination url'() {
+    void 'a past shortenerKey will find no shortener'() {
 
         setup:
         def yesterday = new Date() - 1
         createShortener(shortenerKey: 'abc', validUntil: yesterday)
 
         when:
-        def destinationUrl = service.findRedirectionUrlForKey('abc')
+        def actualShortener = service.findActiveShortenerByKey('abc')
 
         then:
-        !destinationUrl
+        !actualShortener
     }
 
 

@@ -26,6 +26,17 @@ class ShortenerService {
 
     }
 
+    public Shortener findActiveShortenerByKey(String shortenerKey) {
+        def shortener = Shortener.findByShortenerKey(shortenerKey)
+
+        if (shortener?.isActive()) {
+            return shortener
+        }
+
+        return null
+    }
+
+
     private void createShortenerKey(Shortener shortener) {
         shortener.shortenerKey = hashidsService.encrypt(shortener.id)
     }

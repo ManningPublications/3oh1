@@ -6,7 +6,7 @@ import grails.plugin.springsecurity.SpringSecurityUtils
 import hashids.HashidsService
 import spock.lang.Specification
 
-class ShortenerServiceIntegrationSpec extends Specification {
+class ShortenerServiceCreateIntegrationSpec extends Specification {
 
     def grailsApplication
     ShortenerService service

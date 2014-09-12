@@ -6,23 +6,31 @@ import org.springframework.http.HttpStatus
 @Secured(['permitAll'])
 class RedirectController {
 
-    def redirectFinderService
+        def shortenerService
 
-    def index() {
+        def redirectLoggingService
 
-        def key = params.shortenerKey
-        def destinationUrl
+        def index() {
 
-        if (key) {
-            destinationUrl = redirectFinderService.findRedirectionUrlForKey(key)
+            def key = params.shortenerKey
+            def shortener
+
+            if (key) {
+                shortener = shortenerService.findActiveShortenerByKey(key)
+            }
+
+            if (!shortener) {
+                render status: HttpStatus.NOT_FOUND, view: '/notFound'
+            }
+            else {
+                redirectLoggingService.log(
+                        shortener: shortener,
+                        userAgent: request.getHeader("user-agent"),
+                        referer: request.getHeader("referer"),
+                        clientIp: request.remoteAddr
+                )
+                redirect url: shortener.destinationUrl, permanent: true
+            }
+
         }
-
-        if (!destinationUrl) {
-            render status: HttpStatus.NOT_FOUND, view: '/notFound'
-        }
-        else {
-            redirect url: destinationUrl, permanent: true
-        }
-
-    }
 }

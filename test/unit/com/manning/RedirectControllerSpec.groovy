@@ -1,6 +1,6 @@
 package com.manning
 
-import grails.test.mixin.Mock
+import com.manning.redirector.RedirectLoggingService
 import grails.test.mixin.TestFor
 import spock.lang.Specification
 
@@ -11,11 +11,15 @@ import static org.springframework.http.HttpStatus.*
 class RedirectControllerSpec extends Specification {
 
 
-    def redirectFinderMock
+    def shortenerServiceMock
+    def redirectLoggingServiceMock
 
     def setup() {
-        redirectFinderMock = Mock(RedirectFinderService)
-        controller.redirectFinderService = redirectFinderMock
+        shortenerServiceMock = Mock(ShortenerService)
+        controller.shortenerService = shortenerServiceMock
+
+        redirectLoggingServiceMock = Mock(RedirectLoggingService)
+        controller.redirectLoggingService = redirectLoggingServiceMock
     }
 
     void 'for a valid shortener entry a redirect should occur to the destination url'() {
@@ -29,7 +33,25 @@ class RedirectControllerSpec extends Specification {
         response.status == MOVED_PERMANENTLY.value()
 
         and: 'the mock was asked once and returned the correct value'
-        1 * redirectFinderMock.findRedirectionUrlForKey('abc') >> 'http://www.example.com'
+        1 * shortenerServiceMock.findActiveShortenerByKey('abc') >> new Shortener(destinationUrl: 'http://www.example.com')
+
+    }
+
+
+    void 'a log is created for a valid redirection'() {
+
+        when:
+        params.shortenerKey = 'abc'
+        controller.request.addHeader("referer", "http://www.google.com")
+        controller.index()
+
+        then:
+        response.redirectedUrl == 'http://www.example.com'
+        response.status == MOVED_PERMANENTLY.value()
+
+        and: 'the mock was asked once and returned the correct value'
+        1 * shortenerServiceMock.findActiveShortenerByKey(_) >> new Shortener(destinationUrl: "http://www.example.com")
+        1 * redirectLoggingServiceMock.log(_)
 
     }
 
@@ -44,7 +66,7 @@ class RedirectControllerSpec extends Specification {
         view == '/notFound'
 
         and: 'the mock was asked once and returned the correct value'
-        1 * redirectFinderMock.findRedirectionUrlForKey('abc') >> null
+        1 * shortenerServiceMock.findActiveShortenerByKey('abc') >> null
     }
 
 
