@@ -9,6 +9,7 @@
 
 grails.config.locations = []
 if (System.properties["${appName}.config.location"]) {
+    println "Adding " + System.properties["${appName}.config.location"] + " as a config location"
     grails.config.locations << "file:" + System.properties["${appName}.config.location"]
 }
 
