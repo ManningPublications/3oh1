@@ -21,7 +21,7 @@ class ButtonTagLib {
             classes << 'active'
         }
 
-        out << g.link( class: classes.join(" "), params: [validity: attrs.property] ) {
+        out << g.link( class: classes.join(" "), params: [validity: attrs.property, search:params.search] ) {
             g.message(code: "shortener.${attrs.property}.label")
         }
     }

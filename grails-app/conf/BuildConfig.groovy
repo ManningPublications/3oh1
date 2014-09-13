@@ -89,6 +89,8 @@ grails.project.dependency.resolution = {
         compile ":fields:1.3"
 
         compile ':spring-security-core:2.0-RC4'
+        compile ":quick-search:0.2.6"
+
 
     }
 }

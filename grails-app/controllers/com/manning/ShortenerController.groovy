@@ -2,6 +2,7 @@ package com.manning
 
 import grails.transaction.Transactional
 import grails.plugin.springsecurity.annotation.Secured
+import org.grails.plugins.quickSearch.QuickSearchService
 
 import static org.springframework.http.HttpStatus.*
 
@@ -11,14 +12,31 @@ class ShortenerController {
     static allowedMethods = [save: "POST", update: "PUT", delete: "DELETE"]
 
     ShortenerService shortenerService
+    QuickSearchService quickSearchService
 
     def index(Integer max) {
         params.validity = params.validity ?: 'active'
         params.max = Math.min(max ?: 10, 100)
+        params.offset = 0
 
-        def shortenerList = Shortener.withValidityState(params.validity, params)
 
-        respond shortenerList.list(params), model: [shortenerInstanceCount: shortenerList.count()]
+        def query = params.search ?: ''
+
+        def searchParams = [/*sort: 'destinationUrl', order: 'asc',*/ max: params.max, offset: params.offset]
+        def searchProperties = [destinationUrl: 'destinationUrl',
+                                shortenerKey  : 'shortenerKey',
+/*
+                                userCreated   : 'userCreated',
+*/
+                                validUntil    : 'validUntil',
+                                validFrom     : 'validFrom']
+        def shortenerList = quickSearchService.search(domainClass: Shortener, searchParams: searchParams,
+                searchProperties: searchProperties, query: query)
+
+        //def shortenerList = Shortener.withValidityState(params.validity, params)
+
+//        respond shortenerList.list(params), model: [shortenerInstanceCount: shortenerList.size()]
+        respond shortenerList.asList(), model: [shortenerInstanceCount: shortenerList.size()]
     }
 
     def show(Shortener shortenerInstance) {
