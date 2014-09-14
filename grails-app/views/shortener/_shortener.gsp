@@ -1,10 +1,12 @@
 <tr>
 
-    <td width="20%">
+    <td>
+
 
         <g:link action="show" id="${shortener.id}">
-            ${fieldValue(bean: shortener, field: "shortenerKey")}
+            <shortener:shortUrl shortener="${shortener}"/>
         </g:link>
+
         <g:link
                 class="pull-right"
                 target="_blank"
@@ -23,8 +25,9 @@
     </td>
 
 
+<td>
     <g:if test="${shortener.validUntil}">
-        <td><g:formatDate date="${shortener.validUntil}" /></td>
+        <g:formatDate date="${shortener.validUntil}" />
     </g:if>
-
+</td>
 </tr>

@@ -37,7 +37,6 @@ class Shortener {
 
     def static getCustomClosureByValidity(def validity) {
 
-
         def now = new Date()
 
         switch (validity) {
@@ -51,10 +50,12 @@ class Shortener {
     def static getValidityActiveClosure(Date now) {
         return {
             le('validFrom', now)
-            and
-                    {
-                        ge('validUntil', now)
-                    }
+            and {
+                or {
+                    isNull('validUntil')
+                    ge('validUntil', now)
+                }
+            }
 
         }
     }

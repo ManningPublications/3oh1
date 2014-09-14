@@ -10,15 +10,12 @@ class BootStrap {
 
     def init = {
 
-        environments {
 
             createAdmin()
 
             createTestFixtures()
             createLastRedirects()
 
-
-        }
 
 
     }

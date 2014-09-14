@@ -8,27 +8,54 @@
 </head>
 
 <body>
-<g:form url="[resource: shortenerInstance, action: 'index']" method="get">
-    <input id="search" name="search" type="text" value="${params.search}" />
-    <button type="submit" styleClass="btn btn-default"><span class="glyphicon glyphicon-search"></span> <g:message code="default.search.label"/></button>
-
-    <input name="validity" type="hidden" value="${params.validity}" />
-</g:form>
 
 <h2>
     <span class="glyphicon glyphicon-th-list"></span>
     <g:message code="default.list.label" args="[entityName]"/>
 </h2>
 
-<div class="btn-group">
-    <s:shortenerValidityButton property="expired"/>
-    <s:shortenerValidityButton property="active"/>
-    <s:shortenerValidityButton property="future"/>
+<div class="row">
+
+    <div class="col-sm-4">
+
+        <div class="btn-group">
+            <s:shortenerValidityButton property="expired"/>
+            <s:shortenerValidityButton property="active"/>
+            <s:shortenerValidityButton property="future"/>
+        </div>
+    </div>
+
+    <div class="col-sm-4">
+
+        <g:form url="[resource: shortenerInstance, action: 'index']" method="get">
+
+            <div class="form-group">
+                <input
+                        id="search"
+                        class="form-control"
+                        placeholder="<g:message code="default.search.label"/>"
+                        name="search"
+                        type="text"
+                        value="${params.search}"
+                />
+
+                <input name="validity" type="hidden" value="${params.validity}" />
+            </div>
+        </g:form>
+    </div>
+
+    <div class="col-sm-2 col-sm-push-2">
+
+        <g:link elementId="addShortener" class="btn btn-default pull-right" action="create">
+            <span class="glyphicon glyphicon-plus"></span>
+            <g:message code="default.new.label" args="[entityName]"/>
+        </g:link>
+
+    </div>
 </div>
-<g:link elementId="addShortener" class="btn btn-default pull-right" action="create">
-    <span class="glyphicon glyphicon-plus"></span>
-    <g:message code="default.new.label" args="[entityName]"/>
-</g:link>
+
+
+
 
 
 <table class="table table-striped table-condensed" style="margin-top:20px;">
