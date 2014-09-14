@@ -12,6 +12,7 @@
     <input id="search" name="search" type="text" value="${params.search}" />
     <button type="submit" styleClass="btn btn-default"><span class="glyphicon glyphicon-search"></span> <g:message code="default.search.label"/></button>
 
+    <input name="validity" type="hidden" value="${params.validity}" />
 </g:form>
 
 <h2>

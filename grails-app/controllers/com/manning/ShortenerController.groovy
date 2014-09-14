@@ -25,19 +25,19 @@ class ShortenerController {
         def searchParams = [/*sort: 'destinationUrl', order: 'asc',*/ max: params.max, offset: params.offset]
         def searchProperties = [destinationUrl: 'destinationUrl',
                                 shortenerKey  : 'shortenerKey',
-/*
-                                userCreated   : 'userCreated',
-*/
                                 validUntil    : 'validUntil',
                                 validFrom     : 'validFrom']
+
+
+        def customClosure = Shortener.getCustomClosureByValidity(params.validity)
+
+
         def shortenerList = quickSearchService.search(domainClass: Shortener, searchParams: searchParams,
-                searchProperties: searchProperties, query: query)
+                searchProperties: searchProperties, customClosure: customClosure, query: query)
 
-        //def shortenerList = Shortener.withValidityState(params.validity, params)
-
-//        respond shortenerList.list(params), model: [shortenerInstanceCount: shortenerList.size()]
-        respond shortenerList.asList(), model: [shortenerInstanceCount: shortenerList.size()]
+        respond shortenerList, model: [shortenerInstanceCount: shortenerList.size()]
     }
+
 
     def show(Shortener shortenerInstance) {
         respond shortenerInstance

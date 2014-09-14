@@ -2,10 +2,11 @@ package com.manning
 
 import com.manning.security.User
 import grails.test.mixin.*
+import org.grails.plugins.quickSearch.QuickSearchService
 import spock.lang.*
 
 @TestFor(ShortenerController)
-@Mock(Shortener)
+@Mock([Shortener])
 class ShortenerControllerSpec extends Specification {
 
     def populateValidParams(params) {
@@ -19,17 +20,24 @@ class ShortenerControllerSpec extends Specification {
     def setup() {
 
         // the shortener taglib is mocked
-        controller.metaClass.shortener = [shortUrl: {"shortUrl"}]
+        controller.metaClass.shortener = [shortUrl: { "shortUrl" }]
     }
 
     void "Test the index action returns the correct model"() {
+        setup:
+        def shortenerList = generateActiveShorteners(3)
+
+        def quickSearchService = Mock(QuickSearchService){
+            1 * search(_) >> shortenerList
+        }
+        controller.quickSearchService = quickSearchService
 
         when: "The index action is executed"
         controller.index()
 
         then: "The model is correct"
-        !model.shortenerInstanceList
-        model.shortenerInstanceCount == 0
+        model.shortenerInstanceList == shortenerList
+        model.shortenerInstanceCount == 3
     }
 
     void "Test the create action returns the correct model"() {
@@ -85,7 +93,7 @@ class ShortenerControllerSpec extends Specification {
         controller.save()
 
         then: "A redirect is issued to the show action"
-        response.redirectedUrl == '/shorteners/1'
+        response.redirectedUrl == '/shortener/show/1'
         controller.flash.message != null
 
     }
@@ -129,7 +137,7 @@ class ShortenerControllerSpec extends Specification {
         controller.update(null)
 
         then: "A 404 error is returned"
-        response.redirectedUrl == '/shorteners'
+        response.redirectedUrl == '/shortener/index'
         flash.message != null
 
 
@@ -150,7 +158,7 @@ class ShortenerControllerSpec extends Specification {
         controller.update(shortener)
 
         then: "A redirect is issues to the show action"
-        response.redirectedUrl == "/shorteners/$shortener.id"
+        response.redirectedUrl == "/shortener/show/$shortener.id"
         flash.message != null
     }
 
@@ -161,7 +169,7 @@ class ShortenerControllerSpec extends Specification {
         controller.delete(null)
 
         then: "A 404 is returned"
-        response.redirectedUrl == '/shorteners'
+        response.redirectedUrl == '/shortener/index'
         flash.message != null
 
         when: "A domain instance is created"
@@ -177,14 +185,21 @@ class ShortenerControllerSpec extends Specification {
 
         then: "The instance is deleted"
         Shortener.count() == 0
-        response.redirectedUrl == '/shorteners'
+        response.redirectedUrl == '/shortener/index'
         flash.message != null
     }
 
     def "when no validity params is set, active is used"() {
 
-        given:
+        setup:
         params.validity = null
+
+        def shortenerList = generateActiveShorteners(3)
+
+        def quickSearchService = Mock(QuickSearchService){
+            1 * search(_) >> shortenerList
+        }
+        controller.quickSearchService = quickSearchService
 
         when:
         controller.index(10)
@@ -194,18 +209,22 @@ class ShortenerControllerSpec extends Specification {
 
     }
 
+
     def "when active validity params is set, only active results are shown"() {
-
-        given:
-
+        setup: 'create and save 12 shorteners '
 
         def expectedCountOfActiveShorteners = 10
 
         generateExpiredShorteners(1)
-        generateActiveShorteners(expectedCountOfActiveShorteners)
+        def shortenerList = generateActiveShorteners(expectedCountOfActiveShorteners)
         generateFutureShorteners(1)
 
         params.validity = 'active'
+
+        def quickSearchService = Mock(QuickSearchService) {
+            1 * search(_) >> shortenerList
+        }
+        controller.quickSearchService = quickSearchService
 
 
         when:
@@ -214,6 +233,7 @@ class ShortenerControllerSpec extends Specification {
         def actualShorteners = model.shortenerInstanceList
         then:
         actualShorteners.size() == expectedCountOfActiveShorteners
+        model.shortenerInstanceCount == expectedCountOfActiveShorteners
 
         and:
         def now = new Date()
@@ -231,10 +251,15 @@ class ShortenerControllerSpec extends Specification {
         def expectedCountOfFutureShorteners = 10
 
         generateExpiredShorteners(1)
-        generateFutureShorteners(expectedCountOfFutureShorteners)
+        def shortenerList = generateFutureShorteners(expectedCountOfFutureShorteners)
         generateActiveShorteners(1)
 
         params.validity = 'future'
+
+        def quickSearchService = Mock(QuickSearchService) {
+            1 * search(_) >> shortenerList
+        }
+        controller.quickSearchService = quickSearchService
 
 
         when:
@@ -258,12 +283,16 @@ class ShortenerControllerSpec extends Specification {
 
         def expectedCountOfExpiredShorteners = 10
 
-        generateExpiredShorteners(expectedCountOfExpiredShorteners)
+        def shortenerList = generateExpiredShorteners(expectedCountOfExpiredShorteners)
         generateFutureShorteners(1)
         generateActiveShorteners(1)
 
         params.validity = 'expired'
 
+        def quickSearchService = Mock(QuickSearchService) {
+            1 * search(_) >> shortenerList
+        }
+        controller.quickSearchService = quickSearchService
 
         when:
         controller.index(100)
@@ -293,14 +322,20 @@ class ShortenerControllerSpec extends Specification {
     }
 
     def generateShorteners(Date validFrom, Date validUntil, int count) {
+
+        def list = []
+
         count.times {
-            new Shortener(
+            def shortnener = new Shortener(
                     shortenerKey: 'abc' + it,
                     destinationUrl: 'http://www.twitter.com/' + it,
                     validFrom: validFrom,
                     validUntil: validUntil,
                     userCreated: new User(username: "Dummy User")
             ).save(failOnError: true)
+            list.add(shortnener)
         }
+
+        list
     }
 }

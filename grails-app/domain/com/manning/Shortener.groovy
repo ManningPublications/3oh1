@@ -4,6 +4,10 @@ import com.manning.security.User
 
 class Shortener {
 
+    enum Validity {
+        ACTIVE, EXPIRED, FUTURE
+    }
+
     String destinationUrl
     String shortenerKey
 
@@ -31,17 +35,38 @@ class Shortener {
         shortenerKey index: 'shortenerKey_idx'
     }
 
+    def static getCustomClosureByValidity(def validity) {
 
-    def static withValidityState(String validity = 'active', def params) {
 
         def now = new Date()
 
-        switch(validity) {
-            case 'active' : Shortener.where { validFrom <= now && validUntil >= now}; break;
-            case 'expired' : Shortener.where { validUntil < now }; break;
-            case 'future' : Shortener.where { validFrom > now }; break;
+        switch (validity) {
+            case 'active': getValidityActiveClosure(now); break;
+            case 'expired': getValidityExpiredClosure(now); break;
+            case 'future': getValidityFutureClosure(now); break;
+        }
+
+    }
+
+    def static getValidityActiveClosure(Date now) {
+        return {
+            le('validFrom', now)
+            and
+                    {
+                        ge('validUntil', now)
+                    }
+
         }
     }
+
+    def static getValidityExpiredClosure(Date now) {
+        return { lt("validUntil", now) }
+    }
+
+    def static getValidityFutureClosure(Date now) {
+        return { gt("validFrom", now) }
+    }
+
 
     boolean isStarted() {
         validFrom.before(new Date())
