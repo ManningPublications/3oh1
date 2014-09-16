@@ -93,7 +93,7 @@ class ShortenerControllerSpec extends Specification {
         controller.save()
 
         then: "A redirect is issued to the show action"
-        response.redirectedUrl == '/shortener/show/1'
+        response.redirectedUrl == '/shorteners/1'
         controller.flash.message != null
 
     }
@@ -137,7 +137,7 @@ class ShortenerControllerSpec extends Specification {
         controller.update(null)
 
         then: "A 404 error is returned"
-        response.redirectedUrl == '/shortener/index'
+        response.redirectedUrl == '/shorteners'
         flash.message != null
 
 
@@ -158,7 +158,7 @@ class ShortenerControllerSpec extends Specification {
         controller.update(shortener)
 
         then: "A redirect is issues to the show action"
-        response.redirectedUrl == "/shortener/show/$shortener.id"
+        response.redirectedUrl == "/shorteners/$shortener.id"
         flash.message != null
     }
 
@@ -169,7 +169,7 @@ class ShortenerControllerSpec extends Specification {
         controller.delete(null)
 
         then: "A 404 is returned"
-        response.redirectedUrl == '/shortener/index'
+        response.redirectedUrl == '/shorteners'
         flash.message != null
 
         when: "A domain instance is created"
@@ -185,7 +185,7 @@ class ShortenerControllerSpec extends Specification {
 
         then: "The instance is deleted"
         Shortener.count() == 0
-        response.redirectedUrl == '/shortener/index'
+        response.redirectedUrl == '/shorteners'
         flash.message != null
     }
 
