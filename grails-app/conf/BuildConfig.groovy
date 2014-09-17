@@ -56,6 +56,10 @@ grails.project.dependency.resolution = {
         test "org.seleniumhq.selenium:selenium-support:2.41.0"
         test "org.gebish:geb-spock:0.9.3"
 
+        test( "com.github.detro.ghostdriver:phantomjsdriver:1.1.0" ) {
+            transitive = false
+        }
+
     }
 
     plugins {
