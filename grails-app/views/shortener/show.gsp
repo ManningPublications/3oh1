@@ -1,4 +1,3 @@
-<%@ page import="com.manning.redirector.RedirectLog; com.manning.Shortener" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -94,7 +93,7 @@
 
         <p>
             Redirect-Counter: <span class="badge">
-            ${RedirectLog.where { shortener == shortenerInstance }.count()}
+            ${io.threeohone.RedirectLog.where { shortener == shortenerInstance }.count()}
         </span>
         </p>
 

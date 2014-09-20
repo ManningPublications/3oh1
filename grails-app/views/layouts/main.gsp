@@ -62,7 +62,7 @@
 
             </sec:ifLoggedIn>
         <asset:image src="logo.png" class="pull-left" id="logo"/>
-        <h3 class="text-muted">Manning Url-Shortener</h3>
+        <h3 class="text-muted">3oh1 URL-Shortener</h3>
     </div>
 
 
@@ -87,7 +87,6 @@
     <g:layoutBody/>
 
     <div class="footer">
-        <p>&copy; Manning Publications Co. 2014</p>
     </div>
 
 </div>

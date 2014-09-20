@@ -8,6 +8,8 @@ class UrlMappings {
             }
         }
 
+        "/dbconsole"(controller: "db")
+
         "/shorteners"(resources:"shortener")
 
 
@@ -20,7 +22,7 @@ class UrlMappings {
         }
 
         '/' (controller: 'shortener')
-        //'/' redirect: 'http://www.manning.com', permanent: true
+        //'/' redirect: 'http://www.threeohone.com', permanent: true
         '404'(view:'/notFound')
         '500'(view:'/error')
 

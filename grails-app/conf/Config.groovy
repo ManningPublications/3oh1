@@ -129,7 +129,7 @@ grails.assets.plugin."twitter-bootstrap".includes = ["bootstrap.less"]
 
 
 
-grails.plugin.hashids.salt = "manning"
+grails.plugin.hashids.salt = "threeohone"
 
 // The Alphabet to use for generating hash ids.
 grails.plugin.hashids.alphabet = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890"
@@ -144,9 +144,9 @@ grails.plugin.hashidsanemic_domain = true
 
 
 // Added by the Spring Security Core plugin:
-grails.plugin.springsecurity.userLookup.userDomainClassName = 'com.manning.security.User'
-grails.plugin.springsecurity.userLookup.authorityJoinClassName = 'com.manning.security.UserRole'
-grails.plugin.springsecurity.authority.className = 'com.manning.security.Role'
+grails.plugin.springsecurity.userLookup.userDomainClassName = 'io.threeohone.security.User'
+grails.plugin.springsecurity.userLookup.authorityJoinClassName = 'io.threeohone.security.UserRole'
+grails.plugin.springsecurity.authority.className = 'io.threeohone.security.Role'
 grails.plugin.springsecurity.controllerAnnotations.staticRules = [
 	'/shorteners':                     ['isAuthenticated()'],
 	'/dbconsole':                     ['permitAll'],

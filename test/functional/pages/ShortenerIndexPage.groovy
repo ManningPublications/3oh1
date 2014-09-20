@@ -3,7 +3,7 @@ package pages
 import geb.Page
 
 class ShortenerIndexPage extends Page {
-    static url = "/redirector/shorteners?lang=en"
+    static url = "/3oh1/shorteners?lang=en"
     static at = { title == "Shortener List" }
 
     static content = {

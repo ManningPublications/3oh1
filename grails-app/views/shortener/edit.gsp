@@ -1,4 +1,3 @@
-<%@ page import="com.manning.Shortener" %>
 <!DOCTYPE html>
 <html>
 <head>

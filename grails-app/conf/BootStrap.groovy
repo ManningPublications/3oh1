@@ -1,22 +1,16 @@
-import com.manning.Shortener
-import com.manning.redirector.RedirectLog
-import com.manning.security.Role
-import com.manning.security.User
-import com.manning.security.UserRole
+import io.threeohone.RedirectLog
+import io.threeohone.Shortener
+import io.threeohone.security.Role
+import io.threeohone.security.User
+import io.threeohone.security.UserRole
 
 class BootStrap {
 
-    def springSecurityService
-
     def init = {
 
-
             createAdmin()
-
             createTestFixtures()
             createLastRedirects()
-
-
 
     }
 

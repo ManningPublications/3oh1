@@ -1,7 +1,6 @@
-import com.manning.RedirectController
+import io.threeohone.RedirectController
 import grails.test.mixin.Mock
 import grails.test.mixin.TestFor
-import junit.framework.AssertionFailedError
 import spock.lang.Ignore
 import spock.lang.Specification
 
@@ -45,11 +44,11 @@ class UrlMappingsSpec extends Specification {
     }
 
     @Ignore
-    def "the root url will redirect to manning.com"() {
+    def "the root url will redirect to 3oh1.com"() {
 
-        // TODO: create unit test for redirection to manning.com
+        // TODO: create unit test for redirection to 3oh1.com
         expect:
-        assertUrlMapping('/', redirect: 'http://www.manning.com')
+        assertUrlMapping('/', redirect: 'http://www.3oh1.com')
 
     }
 

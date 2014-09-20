@@ -4,7 +4,7 @@ import geb.Page
 import pages.modules.ShortenerForm
 
 class ShortenerCreatePage extends Page {
-    static url = "/shorteners/create"
+
     static at = { title == "Create Shortener" }
 
     static content = {
