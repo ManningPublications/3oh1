@@ -26,6 +26,7 @@ class ShortenerController {
         def searchProperties = [destinationUrl: 'destinationUrl',
                                 shortenerKey  : 'shortenerKey',
                                 validUntil    : 'validUntil',
+                                username      : 'userCreated.username',
                                 validFrom     : 'validFrom']
 
 
