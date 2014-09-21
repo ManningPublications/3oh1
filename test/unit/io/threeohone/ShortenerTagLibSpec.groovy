@@ -121,6 +121,17 @@ class ShortenerTagLibSpec extends Specification {
         actualHtml == 'google.com'
     }
 
+    def "prettyDestinationUrl removes https:// from the url"() {
+
+        given:
+        def shortener = new Shortener(destinationUrl: 'https://google.com')
+        when:
+        def actualHtml = applyTemplate('<shortener:prettyDestinationUrl shortener="${shortener}"/>', [shortener: shortener])
+
+        then:
+        actualHtml == 'google.com'
+    }
+
     def "prettyDestinationUrl removes www. from the url"() {
 
         given:

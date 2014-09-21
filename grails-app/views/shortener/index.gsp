@@ -57,7 +57,7 @@
 
 
 
-<table class="table table-striped table-condensed" style="margin-top:20px;">
+<table id="shortenerList" class="table table-striped table-condensed" style="margin-top:20px;">
     <thead>
     <tr>
         <g:sortableColumn property="shortenerKey" title="${message(code: 'shortener.shortUrl.label')}"/>

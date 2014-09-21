@@ -45,6 +45,7 @@ class AddShortenerFunctionalSpec extends GebReportingSpec {
     }
 
 
+
     def "an invalid shortener can not be saved and will display error messages"() {
 
 
@@ -60,6 +61,36 @@ class AddShortenerFunctionalSpec extends GebReportingSpec {
         then: "the shortener was created successfully"
         at ShortenerCreatePage
 
+
+    }
+
+
+
+    // shows the bugfix for #23 (https://github.com/ManningPublications/3oh1/issues/23)
+    def "a shortener with no validUntil value set will be listed in the active list"() {
+
+        when: "i click on the create button"
+        page.addShortener()
+
+        then: "i am at the creation page"
+        at ShortenerCreatePage
+
+        when: "i fill in valid information for the shortner"
+        page.createShortener("http://www.endoftheinternet.com/")
+
+        then: "the shortener was created successfully"
+        at ShortenerShowPage
+        page.isSuccessMessageHere()
+
+        when: "i go to the shortener list"
+        to ShortenerIndexPage
+
+        and: "i search for the new shortener"
+        page.showValidity("active")
+        page.search("endoftheinternet.com")
+
+        then: "the shortener for google.com is not found"
+        page.containsShortener("endoftheinternet.com")
 
     }
 

@@ -65,6 +65,7 @@ class ShortenerTagLib {
         String destinationUrl = shortener.destinationUrl
 
         destinationUrl -= "http://"
+        destinationUrl -= "https://"
         destinationUrl -= "www."
 
 
