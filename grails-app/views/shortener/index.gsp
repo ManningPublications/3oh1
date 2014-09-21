@@ -72,6 +72,13 @@
     </tbody>
 </table>
 
+<g:if test="${!shortenerInstanceList}">
+    <div class="alert alert-danger">
+        <span class="glyphicon glyphicon-remove"></span>
+        <g:message code="search.noResults" />
+    </div>
+</g:if>
+
 <g:paginate total="${shortenerInstanceCount ?: 0}" action="index" controller="shortener"
             params="['validity': params.validity]"/>
 
