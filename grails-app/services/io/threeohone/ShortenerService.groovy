@@ -45,10 +45,8 @@ class ShortenerService {
     public def search(Map params) {
 
         def url = grailsApplication.config.grails.serverURL
-        def port = grailsApplication.config.grails.serverPort
-        def appName = grails.util.Metadata.current.'app.name'
 
-        def wholeUrl = "${url}:${port}/${appName}/"
+        def wholeUrl = "${url}/"
 
         def query = params.search ?: ''
         query -= wholeUrl
