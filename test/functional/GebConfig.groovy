@@ -30,22 +30,4 @@ environments {
             new FirefoxDriver(p)
         }
     }
-
-    // "grails test-app functional: -Dgeb.env=chrome"
-    'chrome' {
-//        driver = {
-//
-//            System.setProperty('webdriver.chrome.driver', '/Users/tomaslin/drivers/chromedriver')
-//            new ChromeDriver()
-//        }
-
-        FirefoxBinary firefoxBinary = new FirefoxBinary()
-          FirefoxProfile profile = new FirefoxProfile()
-
-        driver = {
-            new FirefoxDriver(firefoxBinary, profile)
-        }
-    }
-
-
 }

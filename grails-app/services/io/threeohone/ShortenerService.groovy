@@ -53,7 +53,8 @@ class ShortenerService {
 
         def searchParams = [/*sort: 'destinationUrl', order: 'asc',*/ max: params.max, offset: params.offset]
         def searchProperties = [destinationUrl: 'destinationUrl',
-                                shortenerKey  : 'shortenerKey'
+                                shortenerKey  : 'shortenerKey',
+                                username      : 'userCreated.username'
         ]
 
         def customClosure = Shortener.getCustomClosureByValidity(params.validity)
