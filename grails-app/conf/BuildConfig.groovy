@@ -14,7 +14,7 @@ grails.project.fork = [
     // configure settings for the test-app JVM, uses the daemon by default
     test: [maxMemory: 768, minMemory: 64, debug: false, maxPerm: 256, daemon:true],
     // configure settings for the run-app JVM
-    //run: [maxMemory: 768, minMemory: 64, debug: false, maxPerm: 256, forkReserve:false],
+    run: [maxMemory: 768, minMemory: 64, debug: false, maxPerm: 256, forkReserve:false],
     // configure settings for the run-war JVM
     war: [maxMemory: 768, minMemory: 64, debug: false, maxPerm: 256, forkReserve:false],
     // configure settings for the Console UI JVM
@@ -31,6 +31,9 @@ grails.project.dependency.resolution = {
     log "error" // log level of Ivy resolver, either 'error', 'warn', 'info', 'debug' or 'verbose'
     checksums true // Whether to verify checksums on resolve
     legacyResolve false // whether to do a secondary resolve on plugin installation, not advised and here for backwards compatibility
+
+    def gebVersion = "0.9.3"
+    def seleniumVersion = "2.43.1"
 
     repositories {
         inherits true // Whether to inherit repository definitions from plugins
@@ -52,9 +55,10 @@ grails.project.dependency.resolution = {
         // runtime 'org.postgresql:postgresql:9.3-1101-jdbc41'
         test "org.grails:grails-datastore-test-support:1.0-grails-2.4"
 
-        test "org.seleniumhq.selenium:selenium-firefox-driver:2.41.0"
-        test "org.seleniumhq.selenium:selenium-support:2.41.0"
-        test "org.gebish:geb-spock:0.9.3"
+        test("org.seleniumhq.selenium:selenium-firefox-driver:$seleniumVersion")
+
+        test "org.gebish:geb-spock:$gebVersion"
+        test "org.gebish:geb-junit4:$gebVersion"
 
         test( "com.github.detro.ghostdriver:phantomjsdriver:1.1.0" ) {
             transitive = false
@@ -82,7 +86,7 @@ grails.project.dependency.resolution = {
 
 
         // stuff for functional testing
-        compile ":geb:0.9.3"
+        test ":geb:$gebVersion"
         compile ":rest-client-builder:2.0.3"
 
 

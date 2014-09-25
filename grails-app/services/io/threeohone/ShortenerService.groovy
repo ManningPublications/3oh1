@@ -1,6 +1,8 @@
 package io.threeohone
 
 import fm.jiecao.lib.Hashids
+import grails.orm.PagedResultList
+import org.grails.plugins.quickSearch.QuickSearchService
 
 
 class ShortenerService {
@@ -11,9 +13,8 @@ class ShortenerService {
 
 
     def springSecurityService
-
-
-
+    QuickSearchService quickSearchService
+    def grailsApplication
 
 
     /**
@@ -30,6 +31,29 @@ class ShortenerService {
 
         return null
     }
+
+    public def search(Map params) {
+
+        def url = grailsApplication.config.grails.serverURL
+    
+        def wholeUrl = "${url}/"
+    
+        def query = params.search ?: ''
+        query -= wholeUrl
+    
+        def searchParams = [/*sort: 'destinationUrl', order: 'asc',*/ max: params.max, offset: params.offset]
+        def searchProperties = [destinationUrl: 'destinationUrl',
+                shortenerKey  : 'shortenerKey',
+                username      : 'userCreated.username'
+        ]
+    
+        def customClosure = Shortener.getCustomClosureByValidity(params.validity)
+    
+        quickSearchService.search(domainClass: Shortener, searchParams: searchParams,
+                searchProperties: searchProperties, customClosure: customClosure, query: query)
+
+    }
+
 
     /**
      * creates and persists a new shortener for the given parameters. A new shortnerKey will be generated
@@ -96,4 +120,3 @@ class ShortenerService {
         (1..10).inject("") { a, b -> a += ('a'..'z')[new Random().nextFloat() * 26 as int] }.capitalize()
     }
 }
-

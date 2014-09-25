@@ -1,8 +1,7 @@
 package io.threeohone
 
-import grails.transaction.Transactional
 import grails.plugin.springsecurity.annotation.Secured
-import org.grails.plugins.quickSearch.QuickSearchService
+import grails.transaction.Transactional
 
 import static org.springframework.http.HttpStatus.*
 
@@ -12,36 +11,13 @@ class ShortenerController {
     static allowedMethods = [save: "POST", update: "PUT", delete: "DELETE"]
 
     ShortenerService shortenerService
-    QuickSearchService quickSearchService
-    def grailsApplication
 
     def index(Integer max) {
         params.validity = params.validity ?: 'active'
         params.max = Math.min(max ?: 10, 100)
         params.offset = 0
 
-
-        def query = params.search ?: ''
-        /*
-            remove the server url from the query, because users can search for "http://3oh1.io/abc"
-            but we only store "abc" in the db. "http://3oh1.io/abc" would be found in the db.
-         */
-        query -= grailsApplication.config.grails.serverURL
-        println query
-
-        def searchParams = [/*sort: 'destinationUrl', order: 'asc',*/ max: params.max, offset: params.offset]
-        def searchProperties = [destinationUrl: 'destinationUrl',
-                                shortenerKey  : 'shortenerKey',
-                                validUntil    : 'validUntil',
-                                username      : 'userCreated.username',
-                                validFrom     : 'validFrom']
-
-
-        def customClosure = Shortener.getCustomClosureByValidity(params.validity)
-
-
-        def shortenerList = quickSearchService.search(domainClass: Shortener, searchParams: searchParams,
-                searchProperties: searchProperties, customClosure: customClosure, query: query)
+        def shortenerList = shortenerService.search(params)
 
         respond shortenerList, model: [shortenerInstanceCount: shortenerList.size()]
     }

@@ -1,5 +1,6 @@
 package io.threeohone
 
+import grails.orm.PagedResultList
 import io.threeohone.security.User
 import grails.test.mixin.*
 import org.grails.plugins.quickSearch.QuickSearchService
@@ -27,10 +28,9 @@ class ShortenerControllerSpec extends Specification {
         setup:
         def shortenerList = generateActiveShorteners(3)
 
-        def quickSearchService = Mock(QuickSearchService){
+        controller.shortenerService = Mock(ShortenerService) {
             1 * search(_) >> shortenerList
         }
-        controller.quickSearchService = quickSearchService
 
         when: "The index action is executed"
         controller.index()
@@ -196,10 +196,9 @@ class ShortenerControllerSpec extends Specification {
 
         def shortenerList = generateActiveShorteners(3)
 
-        def quickSearchService = Mock(QuickSearchService){
+        controller.shortenerService = Mock(ShortenerService) {
             1 * search(_) >> shortenerList
         }
-        controller.quickSearchService = quickSearchService
 
         when:
         controller.index(10)
@@ -221,11 +220,9 @@ class ShortenerControllerSpec extends Specification {
 
         params.validity = 'active'
 
-        def quickSearchService = Mock(QuickSearchService) {
+        controller.shortenerService = Mock(ShortenerService) {
             1 * search(_) >> shortenerList
         }
-        controller.quickSearchService = quickSearchService
-
 
         when:
         controller.index(100)
@@ -256,10 +253,9 @@ class ShortenerControllerSpec extends Specification {
 
         params.validity = 'future'
 
-        def quickSearchService = Mock(QuickSearchService) {
+        controller.shortenerService = Mock(ShortenerService) {
             1 * search(_) >> shortenerList
         }
-        controller.quickSearchService = quickSearchService
 
 
         when:
@@ -289,10 +285,9 @@ class ShortenerControllerSpec extends Specification {
 
         params.validity = 'expired'
 
-        def quickSearchService = Mock(QuickSearchService) {
+        controller.shortenerService = Mock(ShortenerService) {
             1 * search(_) >> shortenerList
         }
-        controller.quickSearchService = quickSearchService
 
         when:
         controller.index(100)
@@ -338,4 +333,5 @@ class ShortenerControllerSpec extends Specification {
 
         list
     }
+
 }
