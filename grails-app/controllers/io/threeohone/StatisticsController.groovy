@@ -5,16 +5,12 @@ import grails.plugin.springsecurity.annotation.Secured
 @Secured(['isAuthenticated()'])
 class StatisticsController {
 
+    def statisticsService
+
 
     def index() {
 
-        def top5 = [
-                [shortener: Shortener.first(), counter: 100],
-                [shortener: Shortener.last(), counter: 95],
-                [shortener: Shortener.first(), counter: 74],
-                [shortener: Shortener.last(), counter: 31],
-                [shortener: Shortener.first(), counter: 25],
-        ]
+        def top5 = statisticsService.getTopShorteners()
 
         def totalNumbersPerMonth = [324, 552, 650, 550, 411, 290, 350, 850, 900, 950, 930, 600]
 

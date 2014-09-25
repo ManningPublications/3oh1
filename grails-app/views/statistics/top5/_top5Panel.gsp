@@ -13,15 +13,15 @@
         </tr>
         </thead>
         <tbody>
-            <g:each in="${top5}" var="i">
+            <g:each in="${top5}" var="topEntry">
                 <tr>
                     <td>
-                        <g:link action="show" id="${i.shortener.id}">
-                            ${fieldValue(bean: i.shortener, field: "shortenerKey")}
+                        <g:link action="show" id="${topEntry.shortener.id}">
+                            ${fieldValue(bean: topEntry.shortener, field: "shortenerKey")}
                         </g:link>
                     </td>
-                    <td><shortener:prettyDestinationUrl shortener="${i.shortener}" link="${true}"/></td>
-                    <td>${i.counter}</td>
+                    <td><shortener:prettyDestinationUrl shortener="${topEntry.shortener}" link="${true}"/></td>
+                    <td>${topEntry.redirectCounter}</td>
                 </tr>
             </g:each>
         </tbody>

@@ -4,9 +4,6 @@
     <meta name="layout" content="main">
     <g:set var="entityName" value="${message(code: 'shortener.label')}"/>
     <title><g:message code="default.list.label" args="[entityName]"/></title>
-
-
-    <script src="http://code.highcharts.com/highcharts.js"></script>
 </head>
 
 <body>
@@ -30,49 +27,38 @@
 
 </div>
 
+<div class="row">
+    <div class="col-sm-6">
+        <canvas id="myChart"></canvas>
+    </div>
 
-<div id="test" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
+</div>
 
 
-<g:javascript>
+<asset:script>
+    Chart.defaults.global.responsive = true;
 
-    console.log("hallo");
+    var data = {
+        labels: ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"],
+        datasets: [
+            {
+                label: "My Second dataset",
+                fillColor: "rgba(151,187,205,0.2)",
+                strokeColor: "rgba(151,187,205,1)",
+                pointColor: "rgba(151,187,205,1)",
+                pointStrokeColor: "#fff",
+                pointHighlightFill: "#fff",
+                pointHighlightStroke: "rgba(151,187,205,1)",
+                data: [28, 48, 40, 19, 86, 27, 90, 214, 190, 320, 100, 250]
+            }
+        ]
+    };
 
-    $(function() {
+    var ctx = $("#myChart").get(0).getContext("2d");
+    var myLineChart = new Chart(ctx).Line(data, {});
 
-        console.log("hallo dr");
 
-        $('#test').highcharts({
-            title: {
-                text: 'Total Redirects per Month',
-                x: -20 //center
-            },
-            xAxis: {
-                categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
-                    'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
-            },
-            yAxis: {
-                title: {
-                    text: '# Redirects'
-                },
-                plotLines: [{
-                    value: 0,
-                    width: 1,
-                    color: '#808080'
-                }]
-            },
-            tooltip: {
-                valueSuffix: ''
-            },
-            series: [{
-                name: 'Tokyo',
-                data: [7.0, 6.9, 9.5, 14.5, 18.2, 21.5, 25.2, 26.5, 23.3, 18.3, 13.9, 9.6]
-            }]
-        });
-    });
-
-</g:javascript>
-
+</asset:script>
 </body>
 </html>
 

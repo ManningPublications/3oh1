@@ -12,6 +12,9 @@ class StatisticsControllerSpec extends Specification {
     void "index returns the last 5 redirects"() {
 
         given:
+        def statisticsService = Mock(StatisticsService)
+        controller.statisticsService = statisticsService
+
         def shortener = new Shortener(
                 userCreated: new User(username: "user", password: "user", enabled: true),
                 destinationUrl: "http://www.google.com",
@@ -31,6 +34,8 @@ class StatisticsControllerSpec extends Specification {
 
         then:
         model.redirectLogInstanceList.size() == 5
+
+        1 * statisticsService.getTopShorteners() >> RedirectLog.list(max:5)
 
     }
 }

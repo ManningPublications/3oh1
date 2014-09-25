@@ -1,34 +1,27 @@
 package io.threeohone
 
-import io.threeohone.Shortener
+import fm.jiecao.lib.Hashids
 
 
 class ShortenerService {
 
     static transactional = true
 
-    def hashidsService
+    public static final String DEFAULT_SALT = "3oh1.io"
+
 
     def springSecurityService
 
-    def createShortener(def params) {
 
-        def shortener = new Shortener(params)
 
-        shortener.userCreated = springSecurityService.currentUser
 
-        if (shortener.save(flush: true)) {
 
-            createShortenerKey(shortener)
-
-            shortener.save(flush: true)
-        }
-
-        return shortener
-
-    }
-
-    public Shortener findActiveShortenerByKey(String shortenerKey) {
+    /**
+     * finds a Shortener by a given shortenerKey if the key exists and the shortener is active
+     * @param shortenerKey the key to search for
+     * @return the shortner if found, otherwise null
+     */
+    Shortener findActiveShortenerByKey(String shortenerKey) {
         def shortener = Shortener.findByShortenerKey(shortenerKey)
 
         if (shortener?.isActive()) {
@@ -38,8 +31,69 @@ class ShortenerService {
         return null
     }
 
+    /**
+     * creates and persists a new shortener for the given parameters. A new shortnerKey will be generated
+     * @param params the parameters for the shortener entry.
+     *               The shortenerKey can not be set here (@see ShortenerService.importExistingShortener)
+     * @return the (un)saved shortener
+     */
+    def createShortener(def params) {
+
+        Shortener shortener = tryToSaveShortener(params)
+
+        if (!shortener.hasErrors()) {
+            createShortenerKey(shortener)
+            shortener.save(flush: true)
+        }
+
+        return shortener
+    }
+
+
+    /**
+     * creates and persists a new shortener for the given parameters. A given shortenerKey is required
+     * @param params the parameters for the shortener entry.
+     *               The shortenerKey has to be set here
+     * @return the (un)saved shortener
+     */
+    def importExistingShortener(def params) {
+        return tryToSaveShortener(params)
+    }
+
+    private Shortener tryToSaveShortener(params) {
+
+        params.userCreated = springSecurityService.currentUser
+        def shortener = new Shortener(params)
+        shortener.save(flush: true)
+
+        return shortener
+    }
+
+
 
     private void createShortenerKey(Shortener shortener) {
-        shortener.shortenerKey = hashidsService.encrypt(shortener.id)
+
+        tryToSaveShortenerKeyForShortener(shortener, DEFAULT_SALT)
+
+        while (hasUniqueError(shortener)) {
+            tryToSaveShortenerKeyForShortener(shortener, randomSalt())
+        }
+
+    }
+
+
+
+    private void tryToSaveShortenerKeyForShortener(Shortener shortener, String salt) {
+        shortener.shortenerKey = new Hashids(salt).encode(shortener.id)
+        shortener.save()
+    }
+
+    private boolean hasUniqueError(Shortener shortener) {
+        return shortener.errors?.getFieldError("shortenerKey")?.codes?.contains("unique")
+    }
+
+    private String randomSalt() {
+        (1..10).inject("") { a, b -> a += ('a'..'z')[new Random().nextFloat() * 26 as int] }.capitalize()
     }
 }
+

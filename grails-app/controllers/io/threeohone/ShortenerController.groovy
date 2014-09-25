@@ -13,6 +13,7 @@ class ShortenerController {
 
     ShortenerService shortenerService
     QuickSearchService quickSearchService
+    def grailsApplication
 
     def index(Integer max) {
         params.validity = params.validity ?: 'active'
@@ -21,6 +22,12 @@ class ShortenerController {
 
 
         def query = params.search ?: ''
+        /*
+            remove the server url from the query, because users can search for "http://3oh1.io/abc"
+            but we only store "abc" in the db. "http://3oh1.io/abc" would be found in the db.
+         */
+        query -= grailsApplication.config.grails.serverURL
+        println query
 
         def searchParams = [/*sort: 'destinationUrl', order: 'asc',*/ max: params.max, offset: params.offset]
         def searchProperties = [destinationUrl: 'destinationUrl',

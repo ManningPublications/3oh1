@@ -93,5 +93,6 @@
 
 
 <asset:javascript src="application.js"/>
+<asset:deferredScripts/>
 </body>
 </html>

@@ -8,9 +8,22 @@ class BootStrap {
 
     def init = {
 
-            createAdmin()
-            createTestFixtures()
-            createLastRedirects()
+        createAdmin()
+
+        environments {
+            test {
+                createTestShorteners()
+            }
+
+            development {
+                createLastRedirects()
+            }
+
+            production {
+                createLastRedirects()
+            }
+        }
+
 
     }
 
@@ -18,21 +31,25 @@ class BootStrap {
 
         def adminRole = Role.findByAuthority('ROLE_ADMIN') ?: new Role(authority: 'ROLE_ADMIN').save(failOnError: true)
 
-        def adminUser = User.findByUsername('admin') ?: new User( username: 'admin', password: 'admin', enabled: true).save(failOnError: true)
-        if (!adminUser.authorities.contains(adminRole)) { UserRole.create adminUser, adminRole }
+        def adminUser = User.findByUsername('admin') ?: new User(username: 'admin', password: 'admin', enabled: true).save(failOnError: true)
+        if (!adminUser.authorities.contains(adminRole)) {
+            UserRole.create adminUser, adminRole
+        }
 
 
         def userRole = Role.findByAuthority('ROLE_USER') ?: new Role(authority: 'ROLE_USER').save(failOnError: true)
-        def user = User.findByUsername('user') ?: new User( username: 'user', password: 'user', enabled: true ).save(failOnError: true)
-        if (!user.authorities.contains(userRole)) { UserRole.create user, userRole }
+        def user = User.findByUsername('user') ?: new User(username: 'user', password: 'user', enabled: true).save(failOnError: true)
+        if (!user.authorities.contains(userRole)) {
+            UserRole.create user, userRole
+        }
 
     }
 
-    private void createTestFixtures() {
+    private void createTestShorteners() {
 
         def user = User.findByUsername('user')
 
-        Shortener.findOrSaveWhere (
+        Shortener.findOrSaveWhere(
                 shortenerKey: 'httpsTwitterCom',
                 destinationUrl: 'http://www.twitter.com',
                 validFrom: new Date(),
@@ -40,7 +57,7 @@ class BootStrap {
                 userCreated: user
         )
 
-        Shortener.findOrSaveWhere (
+        Shortener.findOrSaveWhere(
                 shortenerKey: 'httpGoogleCom',
                 destinationUrl: 'http://www.google.com',
                 validFrom: new Date(),
@@ -48,7 +65,7 @@ class BootStrap {
                 userCreated: user
         )
 
-        Shortener.findOrSaveWhere (
+        Shortener.findOrSaveWhere(
                 shortenerKey: 'httpSpec',
                 destinationUrl: 'http://www.w3.org/Protocols/rfc2616/rfc2616.html',
                 validFrom: new Date(),
@@ -57,7 +74,7 @@ class BootStrap {
         )
 
 
-        Shortener.findOrSaveWhere (
+        Shortener.findOrSaveWhere(
                 shortenerKey: 'httpSpecViaHttps',
                 destinationUrl: 'https://www.ietf.org/rfc/rfc2616.txt',
                 validFrom: new Date(),
@@ -73,14 +90,16 @@ class BootStrap {
 
         50.times {
 
-            def shortener = Shortener.get(it % 4)
+            def shortener = Shortener.get((it % 4) + 1)
 
-            new RedirectLog(
-                    shortener: shortener,
-                    userAgent: "Mozilla/5.0 (compatible; MSIE 9.0; Windows NT 6.1; WOW64; Trident/5.0)",
-                    clientIp: "192.168.0." + (it + 1),
-                    referer: "http://www.google.com"
-            ).save()
+            it.times { it2 ->
+                new RedirectLog(
+                        shortener: shortener,
+                        userAgent: "Mozilla/5.0 (compatible; MSIE 9.0; Windows NT 6.1; WOW64; Trident/5.0)",
+                        clientIp: "192.168.0." + (it + 1),
+                        referer: "http://www.google.com"
+                ).save()
+            }
 
         }
 

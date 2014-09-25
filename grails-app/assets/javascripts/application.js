@@ -12,3 +12,5 @@
 
 
 $('[data-toggle=tooltip]').tooltip();
+
+

@@ -86,9 +86,6 @@ grails.project.dependency.resolution = {
         compile ":rest-client-builder:2.0.3"
 
 
-        // hashids library for creating unique String shortenerKeys
-        compile ':hashids:0.1.0'
-
         // fields plugin makes creating forms a breeze
         compile ":fields:1.3"
 
