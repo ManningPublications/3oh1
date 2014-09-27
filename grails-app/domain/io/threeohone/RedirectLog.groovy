@@ -1,7 +1,5 @@
 package io.threeohone
 
-import io.threeohone.Shortener
-
 class RedirectLog {
 
     Shortener shortener
@@ -16,6 +14,8 @@ class RedirectLog {
 
     static constraints = {
         referer nullable: true
+        month nullable: true
+        year nullable: true
     }
 
     static mapping = {

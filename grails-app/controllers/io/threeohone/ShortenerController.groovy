@@ -17,7 +17,10 @@ class ShortenerController {
         params.max = Math.min(max ?: 10, 100)
         params.offset = 0
 
-        def shortenerList = shortenerService.search(params)
+
+        def validity = Shortener.getValidityByString(params.validity)
+
+        def shortenerList = shortenerService.search(params.search, validity, params.max, params.offset)
 
         respond shortenerList, model: [shortenerInstanceCount: shortenerList.size()]
     }

@@ -8,6 +8,13 @@ class Shortener {
         ACTIVE, EXPIRED, FUTURE
     }
 
+    static Shortener.Validity getValidityByString(String validity) {
+        if ((validity.toLowerCase()).equals('active')) return Shortener.Validity.ACTIVE
+        if ((validity.toLowerCase()).equals('expired')) return Shortener.Validity.EXPIRED
+        if ((validity.toLowerCase()).equals('future')) return Shortener.Validity.FUTURE
+        return null
+    }
+
     String destinationUrl
     String shortenerKey
 
@@ -34,40 +41,6 @@ class Shortener {
     static mapping = {
         shortenerKey index: 'shortenerKey_idx'
     }
-
-    def static getCustomClosureByValidity(def validity) {
-
-        def now = new Date()
-
-        switch (validity) {
-            case 'active': getValidityActiveClosure(now); break;
-            case 'expired': getValidityExpiredClosure(now); break;
-            case 'future': getValidityFutureClosure(now); break;
-        }
-
-    }
-
-    def static getValidityActiveClosure(Date now) {
-        return {
-            le('validFrom', now)
-            and {
-                or {
-                    isNull('validUntil')
-                    ge('validUntil', now)
-                }
-            }
-
-        }
-    }
-
-    def static getValidityExpiredClosure(Date now) {
-        return { lt("validUntil", now) }
-    }
-
-    def static getValidityFutureClosure(Date now) {
-        return { gt("validFrom", now) }
-    }
-
 
     boolean isStarted() {
         validFrom.before(new Date())

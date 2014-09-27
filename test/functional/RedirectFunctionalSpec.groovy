@@ -1,8 +1,9 @@
 import geb.spock.GebReportingSpec
+import pages.LoginPage
+import pages.ShortenerIndexPage
 
 class RedirectFunctionalSpec extends GebReportingSpec {
     private static final String BASE_URL = 'http://localhost:8080/3oh1/'
-
 
     def "a http redirect works correctly (google)"() {
         when:

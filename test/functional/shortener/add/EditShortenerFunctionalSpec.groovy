@@ -48,9 +48,6 @@ class EditShortenerFunctionalSpec extends GebReportingSpec {
         driver.currentUrl.contains "ebay"
     }
 
-
-
-
     def "the validFrom value will be set to a future date and after editing no redirect is possible"() {
 
         given: "a shortener to google.com is already saved"
@@ -71,7 +68,6 @@ class EditShortenerFunctionalSpec extends GebReportingSpec {
         !page.isShortenerActive()
 
     }
-
 
     private void createShortenerToGoogle() {
         page.addShortener()
