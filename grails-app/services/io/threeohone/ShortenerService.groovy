@@ -34,13 +34,6 @@ class ShortenerService {
 
     public def search(String query, Shortener.Validity validity, max, offset) {
 
-        def url = grailsApplication.config.grails.serverURL
-
-        def wholeUrl = "${url}/"
-
-        query = query ?: ''
-        query -= wholeUrl
-
         shortenerSearchService.search(query, validity, max, offset)
 
     }

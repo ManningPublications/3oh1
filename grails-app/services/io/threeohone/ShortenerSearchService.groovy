@@ -11,6 +11,7 @@ class ShortenerSearchService {
 
     List<Shortener> search(String query, Shortener.Validity validity, Integer max, Integer offset) {
 
+        if (query == null) query = ''
         tokens = query.split(' ')
         def now = new Date()
 
@@ -46,32 +47,3 @@ class ShortenerSearchService {
         }
     }
 }
-
-//List<Book> findBookByBookTitleAndAuthorNameLike(String bookTitle, String authorName) {
-//    Book.createCriteria().list {
-//        ilike('title', "%${bookTitle}%")
-//        and {
-//            author {
-//                ilike('name', "%${authorName}%")
-//            }
-//        }
-//    }
-//}
-
-//
-//le('validFrom', now)
-//and {
-//    or {
-//        isNull('validUntil')
-//        ge('validUntil', now)
-//    }
-//}
-
-//
-//def static getValidityExpiredClosure(Date now) {
-//    return { lt("validUntil", now) }
-//}
-//
-//def static getValidityFutureClosure(Date now) {
-//    return { gt("validFrom", now) }
-//}
