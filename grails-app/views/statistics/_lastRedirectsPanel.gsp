@@ -12,7 +12,7 @@
         </tr>
         </thead>
         <tbody>
-        <g:render template="lastRedirects/redirectLog" collection="${redirectLogInstanceList}"/>
+        <g:render template="redirectLog" collection="${redirectLogInstanceList}"/>
         </tbody>
     </table>
 </div>

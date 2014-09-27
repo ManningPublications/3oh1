@@ -12,7 +12,7 @@ class StatisticsService {
                 countDistinct 'id', 'myCount'
                 groupProperty 'shortener'
             }
-            order ('myCount', 'desc')
+            order('myCount', 'desc')
         }
 
         def result = queryResult.collect {
@@ -22,4 +22,25 @@ class StatisticsService {
         return result
     }
 
+    def getTotalRedirectsPerMonthBetween(Date start, Date end) {
+
+
+        def c = RedirectLog.createCriteria()
+
+        def queryResult = c.list {
+            between("dateCreated", start, end)
+            projections {
+                countDistinct 'id', 'myCount'
+                groupProperty('year')
+                groupProperty('month')
+            }
+            order('myCount', 'desc')
+        }
+
+        def result = queryResult.collect {
+            [redirectCounter: it[0], month: "${it[2]}/${it[1]}"]
+        }
+
+        return result
+    }
 }

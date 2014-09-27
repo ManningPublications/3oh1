@@ -11,6 +11,8 @@ class RedirectLog {
 
 
     Date dateCreated
+    String month
+    String year
 
     static constraints = {
         referer nullable: true
@@ -18,5 +20,8 @@ class RedirectLog {
 
     static mapping = {
         sort dateCreated: "desc"
+        month formula: 'MONTH(DATE_CREATED)'
+        year formula: 'YEAR(DATE_CREATED)'
+
     }
 }
