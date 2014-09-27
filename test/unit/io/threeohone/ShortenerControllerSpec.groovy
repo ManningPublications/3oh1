@@ -29,7 +29,7 @@ class ShortenerControllerSpec extends Specification {
         def shortenerList = generateActiveShorteners(3)
 
         controller.shortenerService = Mock(ShortenerService) {
-            1 * search(_) >> shortenerList
+            1 * search(_,_,_,_) >> shortenerList
         }
 
         when: "The index action is executed"
@@ -197,7 +197,7 @@ class ShortenerControllerSpec extends Specification {
         def shortenerList = generateActiveShorteners(3)
 
         controller.shortenerService = Mock(ShortenerService) {
-            1 * search(_) >> shortenerList
+            1 * search(_,_,_,_) >> shortenerList
         }
 
         when:
@@ -221,7 +221,7 @@ class ShortenerControllerSpec extends Specification {
         params.validity = 'active'
 
         controller.shortenerService = Mock(ShortenerService) {
-            1 * search(_) >> shortenerList
+            1 * search(_,_,_,_) >> shortenerList
         }
 
         when:
@@ -254,7 +254,7 @@ class ShortenerControllerSpec extends Specification {
         params.validity = 'future'
 
         controller.shortenerService = Mock(ShortenerService) {
-            1 * search(_) >> shortenerList
+            1 * search(_,_,_,_) >> shortenerList
         }
 
 
@@ -286,7 +286,7 @@ class ShortenerControllerSpec extends Specification {
         params.validity = 'expired'
 
         controller.shortenerService = Mock(ShortenerService) {
-            1 * search(_) >> shortenerList
+            1 * search(_,_,_,_) >> shortenerList
         }
 
         when:

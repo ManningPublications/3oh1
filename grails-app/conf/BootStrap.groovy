@@ -16,6 +16,7 @@ class BootStrap {
             }
 
             development {
+                createTestShorteners()
                 createLastRedirects()
             }
 

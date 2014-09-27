@@ -2,6 +2,7 @@ package io.threeohone
 
 import fm.jiecao.lib.Hashids
 import grails.orm.PagedResultList
+import io.threeohone.security.User
 import org.grails.plugins.quickSearch.QuickSearchService
 
 
@@ -13,9 +14,8 @@ class ShortenerService {
 
 
     def springSecurityService
-    QuickSearchService quickSearchService
+    def shortenerSearchService
     def grailsApplication
-
 
     /**
      * finds a Shortener by a given shortenerKey if the key exists and the shortener is active
@@ -32,28 +32,18 @@ class ShortenerService {
         return null
     }
 
-    public def search(Map params) {
+    public def search(String query, Shortener.Validity validity, max, offset) {
 
         def url = grailsApplication.config.grails.serverURL
-    
+
         def wholeUrl = "${url}/"
-    
-        def query = params.search ?: ''
+
+        query = query ?: ''
         query -= wholeUrl
-    
-        def searchParams = [/*sort: 'destinationUrl', order: 'asc',*/ max: params.max, offset: params.offset]
-        def searchProperties = [destinationUrl: 'destinationUrl',
-                shortenerKey  : 'shortenerKey',
-                username      : 'userCreated.username'
-        ]
-    
-        def customClosure = Shortener.getCustomClosureByValidity(params.validity)
-    
-        quickSearchService.search(domainClass: Shortener, searchParams: searchParams,
-                searchProperties: searchProperties, customClosure: customClosure, query: query)
+
+        shortenerSearchService.search(query, validity, max, offset)
 
     }
-
 
     /**
      * creates and persists a new shortener for the given parameters. A new shortnerKey will be generated
@@ -72,7 +62,6 @@ class ShortenerService {
 
         return shortener
     }
-
 
     /**
      * creates and persists a new shortener for the given parameters. A given shortenerKey is required
@@ -94,7 +83,6 @@ class ShortenerService {
     }
 
 
-
     private void createShortenerKey(Shortener shortener) {
 
         tryToSaveShortenerKeyForShortener(shortener, DEFAULT_SALT)
@@ -104,7 +92,6 @@ class ShortenerService {
         }
 
     }
-
 
 
     private void tryToSaveShortenerKeyForShortener(Shortener shortener, String salt) {
