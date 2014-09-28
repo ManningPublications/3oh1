@@ -94,12 +94,14 @@ class BootStrap {
             def shortener = Shortener.get((it % 4) + 1)
 
             it.times { it2 ->
-                new RedirectLog(
+                def log = new RedirectLog(
                         shortener: shortener,
                         userAgent: "Mozilla/5.0 (compatible; MSIE 9.0; Windows NT 6.1; WOW64; Trident/5.0)",
                         clientIp: "192.168.0." + (it + 1),
                         referer: "http://www.google.com"
                 ).save()
+
+                log.dateCreated = new Date() - (it * it2)
             }
 
         }

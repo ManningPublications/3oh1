@@ -12,13 +12,15 @@ class StatisticsController {
 
         def top5 = statisticsService.getTopShorteners()
 
-        def totalNumbersPerMonth = statisticsService.getTotalRedirectsPerMonthBetween(new Date() - 365, new Date())
+        def result = statisticsService.getTotalRedirectsPerMonthBetween(new Date() - 365, new Date())
 
-        def numbers = totalNumbersPerMonth.collect { it.redirectCounter }
+        def totalNumberOfRedirectsPerMonth = [monthNames: [], redirectCounters: []]
+        totalNumberOfRedirectsPerMonth.monthNames = result.collect { "${it.month} / ${it.year}" }
+        totalNumberOfRedirectsPerMonth.redirectCounters = result.collect { it.redirectCounter }
 
-        respond RedirectLog.list(max: 5, fetch: [shortener: "eager"]), model: [
+        respond RedirectLog.list(max: 15, fetch: [shortener: "eager"]), model: [
                 top5: top5,
-                totalNumbersPerMonth: numbers
+                totalNumberOfRedirectsPerMonth: totalNumberOfRedirectsPerMonth
         ]
     }
 }

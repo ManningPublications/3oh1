@@ -22,16 +22,13 @@
 
     <div class="col-sm-6">
         <g:render template="top5Panel" />
-    </div>
 
-</div>
-
-<div class="row">
-    <div class="col-sm-6">
         <g:render template="totalRedirectsPerMonth"/>
+
     </div>
 
 </div>
+
 
 </body>
 </html>

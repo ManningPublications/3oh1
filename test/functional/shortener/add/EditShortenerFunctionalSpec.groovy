@@ -18,7 +18,7 @@ class EditShortenerFunctionalSpec extends GebReportingSpec {
 
     def cleanup() {
         to ShortenerIndexPage
-        page.logout()
+        page.navbar.logout()
     }
 
     def "the destination url of the shortener will be changed and the redirection works for the new url"() {

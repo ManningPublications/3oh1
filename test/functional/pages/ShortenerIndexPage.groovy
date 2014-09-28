@@ -2,6 +2,7 @@ package pages
 
 import geb.Page
 import org.openqa.selenium.Keys
+import pages.modules.Navbar
 import pages.modules.ShortenerTable
 
 class ShortenerIndexPage extends Page {
@@ -10,8 +11,9 @@ class ShortenerIndexPage extends Page {
 
     static content = {
 
+        navbar { module Navbar }
+
         _addButton { $("#addShortener") }
-        _logoutButton { $("#logout") }
         _searchBox { $("#search") }
 
         _shortenerTable { module ShortenerTable, $("#shortenerList") }
@@ -39,7 +41,4 @@ class ShortenerIndexPage extends Page {
         _shortenerTable.hasShortener(destinationUrl)
     }
 
-    void logout() {
-        _logoutButton.click()
-    }
 }

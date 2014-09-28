@@ -1,6 +1,7 @@
 package pages
 
 import geb.Page
+import pages.modules.Navbar
 
 class ShortenerShowPage extends Page {
 
@@ -13,6 +14,8 @@ class ShortenerShowPage extends Page {
 
         _shortUrl { $("#shortUrl a") }
         _editButton { $("#editShortener") }
+
+        navbar { module Navbar }
     }
 
     void clickShortUrl() {

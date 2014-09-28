@@ -9,7 +9,7 @@ import spock.lang.Specification
 @Mock([Shortener, RedirectLog, User])
 class StatisticsControllerSpec extends Specification {
 
-    void "index returns the last 5 redirects"() {
+    void "index returns the last 15 redirects"() {
 
         given:
         def statisticsService = Mock(StatisticsService)
@@ -21,7 +21,8 @@ class StatisticsControllerSpec extends Specification {
                 shortenerKey: "abc",
                 validFrom: new Date()
         ).save(failOnError: true)
-        6.times {
+
+        20.times {
             new RedirectLog(
                     shortener: shortener,
                     clientIp: "127.0.0.1",
@@ -33,9 +34,9 @@ class StatisticsControllerSpec extends Specification {
         controller.index()
 
         then:
-        model.redirectLogInstanceList.size() == 5
+        model.redirectLogInstanceList.size() == 15
 
-        1 * statisticsService.getTopShorteners() >> RedirectLog.list(max:5)
+        1 * statisticsService.getTopShorteners() >> RedirectLog.list(max:15)
 
     }
 }

@@ -1,6 +1,7 @@
 package pages
 
 import geb.Page
+import pages.modules.Navbar
 import pages.modules.ShortenerForm
 
 class ShortenerCreatePage extends Page {
@@ -9,6 +10,8 @@ class ShortenerCreatePage extends Page {
 
     static content = {
         form { module ShortenerForm }
+
+        navbar { module Navbar }
     }
 
     void createShortener(String destinationUrl) {

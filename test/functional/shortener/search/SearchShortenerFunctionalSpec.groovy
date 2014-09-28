@@ -19,7 +19,7 @@ class SearchShortenerFunctionalSpec extends GebReportingSpec {
 
     def cleanup() {
         to ShortenerIndexPage
-        page.logout()
+        page.navbar.logout()
     }
 
 
@@ -123,7 +123,7 @@ class SearchShortenerFunctionalSpec extends GebReportingSpec {
 
     private loginAs(String username) {
         at ShortenerIndexPage
-        page.logout()
+        page.navbar.logout()
         via ShortenerIndexPage
         at LoginPage
         page.login("admin", "admin")

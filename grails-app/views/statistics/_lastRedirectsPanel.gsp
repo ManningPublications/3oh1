@@ -4,7 +4,7 @@
     </div>
 
 
-    <table class="table table-striped table-condensed" style="margin-top:20px;">
+    <table id="lastRedirects" class="table table-striped table-condensed" style="margin-top:20px;">
         <thead>
         <tr>
             <th class="col-sm-9"><g:message code="shortener.destinationUrl.label" /></th>

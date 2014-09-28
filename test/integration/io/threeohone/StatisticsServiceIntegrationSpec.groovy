@@ -59,13 +59,15 @@ class StatisticsServiceIntegrationSpec extends Specification {
         def result = service.getTotalRedirectsPerMonthBetween(date("2015-01-01"), date("2015-12-31"))
 
         then:
-        result[0] == [month: "3/2015", redirectCounter: 3]
-        result[1] == [month: "4/2015", redirectCounter: 2]
-        result[2] == [month: "5/2015", redirectCounter: 1]
+        result[0] == [month: "1", year: "2015", redirectCounter: 0]
+        result[1] == [month: "2", year: "2015", redirectCounter: 0]
+        result[2] == [month: "3", year: "2015", redirectCounter: 3]
+        result[3] == [month: "4", year: "2015", redirectCounter: 2]
+        result[4] == [month: "5", year: "2015", redirectCounter: 1]
 
     }
 
-    void "totalRedirectsPerMonthBetween returns an empty list of months with corresponding total number of redirects"() {
+    void "totalRedirectsPerMonthBetween returns a list with all redirectCounters of 0 when there are no redirects in this time period"() {
 
         given:
         def s = Shortener.findByShortenerKey("httpsTwitterCom")
@@ -75,7 +77,12 @@ class StatisticsServiceIntegrationSpec extends Specification {
         def result = service.getTotalRedirectsPerMonthBetween(date("2016-01-01"), date("2016-12-31"))
 
         then:
-        result == []
+        result.each {
+            assert it.redirectCounter == 0
+        }
+
+        and:
+        result.size() == 12
 
     }
 
@@ -84,6 +91,21 @@ class StatisticsServiceIntegrationSpec extends Specification {
         expect:
         service.getTotalRedirectsPerMonthBetween(date("2016-01-01"), date("2015-01-01")) == []
 
+    }
+
+    void "getMonthList creates an array of hashes with every month between start and end"() {
+
+        when:
+        def monthList = service.getDefaultRedirectPerMonthList(date("2015-01-01"), date("2015-12-01"))
+
+        then:
+        monthList[0] == [month: "1", year: "2015", redirectCounter: 0]
+        monthList[1] == [month: "2", year: "2015", redirectCounter: 0]
+        monthList[11] == [month: "12", year: "2015", redirectCounter: 0]
+
+
+        and:
+        monthList.size() == 12
     }
 
     private RedirectLog createRedirectFor(Shortener shortener, String dateCreated = null) {

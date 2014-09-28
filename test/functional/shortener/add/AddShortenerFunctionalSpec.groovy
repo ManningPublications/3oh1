@@ -16,7 +16,7 @@ class AddShortenerFunctionalSpec extends GebReportingSpec {
 
     def cleanup() {
         to ShortenerIndexPage
-        page.logout()
+        page.navbar.logout()
     }
 
 

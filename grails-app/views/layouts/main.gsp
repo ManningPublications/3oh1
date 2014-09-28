@@ -34,6 +34,7 @@
                 </g:form>
 
                 <g:link
+                        elementId="statistics"
                         controller="statistics"
                         action="index"
                         class="btn btn-primary pull-right"
@@ -46,6 +47,7 @@
                 </g:link>
 
                 <g:link
+                        elementId="shorteners"
                         controller="shortener"
                         action="index"
                         class="btn btn-primary pull-right"
