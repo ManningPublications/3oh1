@@ -54,7 +54,7 @@ class StatisticsService {
     }
 
 
-    def getDefaultRedirectPerMonthList(Date start, Date end) {
+    private def getDefaultRedirectPerMonthList(Date start, Date end) {
         clearDate(start)
         clearDate(end)
 

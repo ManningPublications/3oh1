@@ -93,21 +93,6 @@ class StatisticsServiceIntegrationSpec extends Specification {
 
     }
 
-    void "getMonthList creates an array of hashes with every month between start and end"() {
-
-        when:
-        def monthList = service.getDefaultRedirectPerMonthList(date("2015-01-01"), date("2015-12-01"))
-
-        then:
-        monthList[0] == [month: "1", year: "2015", redirectCounter: 0]
-        monthList[1] == [month: "2", year: "2015", redirectCounter: 0]
-        monthList[11] == [month: "12", year: "2015", redirectCounter: 0]
-
-
-        and:
-        monthList.size() == 12
-    }
-
     private RedirectLog createRedirectFor(Shortener shortener, String dateCreated = null) {
         def log = new RedirectLog(
                 shortener: shortener,
