@@ -13,6 +13,11 @@
 </h2>
 
 
+<p>
+    Redirect-Counter (Total): <span class="badge">${redirectCounterTotal}</span>
+
+</p>
+
 <div class="row">
     <div class="col-sm-6">
         <g:render template="lastRedirectsPanel" />

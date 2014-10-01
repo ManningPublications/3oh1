@@ -21,8 +21,8 @@ class StatisticsService {
         return result
     }
 
-    def getTotalRedirectsPerMonthBetween(Date start, Date end) {
 
+    def getTotalRedirectsPerMonthBetween(Date start, Date end, Shortener shortener = null) {
 
         if(end.before(start)) {
             return []
@@ -31,6 +31,9 @@ class StatisticsService {
         def c = RedirectLog.createCriteria()
 
         def queryResult = c.list {
+            if (shortener) {
+                eq "shortener", shortener
+            }
             between("dateCreated", start, end)
             projections {
                 countDistinct 'id', 'myCount'

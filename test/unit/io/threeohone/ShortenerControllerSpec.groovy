@@ -22,6 +22,8 @@ class ShortenerControllerSpec extends Specification {
 
         // the shortener taglib is mocked
         controller.metaClass.shortener = [shortUrl: { "shortUrl" }]
+
+        controller.statisticsService = Mock(StatisticsService)
     }
 
     void "Test the index action returns the correct model"() {
@@ -99,6 +101,7 @@ class ShortenerControllerSpec extends Specification {
     }
 
     void "Test that the show action returns the correct model"() {
+
         when: "The show action is executed with a null domain"
         controller.show(null)
 

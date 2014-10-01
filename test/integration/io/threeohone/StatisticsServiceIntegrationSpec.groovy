@@ -67,6 +67,27 @@ class StatisticsServiceIntegrationSpec extends Specification {
 
     }
 
+
+
+    def "totalRedirectPerMonthBetween with a given shortener returns the total numbers only for this shortener"() {
+
+        given:
+        def twitter = Shortener.findByShortenerKey("httpsTwitterCom")
+        def google = Shortener.findByShortenerKey("httpGoogleCom")
+
+        and: "there are two redirects in total in may, but only one for twitter"
+        createRedirectFor(twitter, "2015-05-01")
+        createRedirectFor(google, "2015-05-01")
+
+        when:
+        def result = service.getTotalRedirectsPerMonthBetween(date("2015-01-01"), date("2015-12-31"), twitter)
+
+        then:
+        result[4] == [month: "5", year: "2015", redirectCounter: 1]
+
+    }
+
+
     void "totalRedirectsPerMonthBetween returns a list with all redirectCounters of 0 when there are no redirects in this time period"() {
 
         given:

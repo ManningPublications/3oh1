@@ -10,6 +10,9 @@ class ShortenerController {
 
     static allowedMethods = [save: "POST", update: "PUT", delete: "DELETE"]
 
+
+    StatisticsService statisticsService
+
     ShortenerService shortenerService
 
     def index(Integer max) {
@@ -27,7 +30,21 @@ class ShortenerController {
 
 
     def show(Shortener shortenerInstance) {
-        respond shortenerInstance
+
+
+        def result = statisticsService.getTotalRedirectsPerMonthBetween(new Date() - 365, new Date(), shortenerInstance)
+
+        def totalNumberOfRedirectsPerMonth = [monthNames: [], redirectCounters: []]
+        totalNumberOfRedirectsPerMonth.monthNames = result.collect { "${it.month} / ${it.year}" }
+        totalNumberOfRedirectsPerMonth.redirectCounters = result.collect { it.redirectCounter }
+
+        def redirectCounter = RedirectLog.where { shortener == shortenerInstance }.count()
+
+
+        respond shortenerInstance, model: [
+                totalNumberOfRedirectsPerMonth: totalNumberOfRedirectsPerMonth,
+                redirectCounter: redirectCounter
+        ]
     }
 
     def create() {

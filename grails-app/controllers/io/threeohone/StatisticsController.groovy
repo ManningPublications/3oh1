@@ -11,6 +11,7 @@ class StatisticsController {
     def index() {
 
         def top5 = statisticsService.getTopShorteners()
+        def redirectCounterTotal = RedirectLog.count()
 
         def result = statisticsService.getTotalRedirectsPerMonthBetween(new Date() - 365, new Date())
 
@@ -20,7 +21,8 @@ class StatisticsController {
 
         respond RedirectLog.list(max: 15, fetch: [shortener: "eager"]), model: [
                 top5: top5,
-                totalNumberOfRedirectsPerMonth: totalNumberOfRedirectsPerMonth
+                totalNumberOfRedirectsPerMonth: totalNumberOfRedirectsPerMonth,
+                redirectCounterTotal: redirectCounterTotal
         ]
     }
 }
