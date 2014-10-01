@@ -1,13 +1,11 @@
 package io.threeohone
 
-import grails.orm.PagedResultList
 import io.threeohone.security.User
 import grails.test.mixin.*
-import org.grails.plugins.quickSearch.QuickSearchService
 import spock.lang.*
 
 @TestFor(ShortenerController)
-@Mock([Shortener])
+@Mock([Shortener, RedirectLog])
 class ShortenerControllerSpec extends Specification {
 
     def populateValidParams(params) {
