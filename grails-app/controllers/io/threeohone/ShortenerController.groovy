@@ -8,6 +8,8 @@ import static org.springframework.http.HttpStatus.*
 @Secured(['isAuthenticated()'])
 class ShortenerController {
 
+    static responseFormats = ['html', 'json']
+
     static allowedMethods = [save: "POST", update: "PUT", delete: "DELETE"]
 
 

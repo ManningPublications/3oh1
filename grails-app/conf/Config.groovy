@@ -168,3 +168,11 @@ grails.plugin.springsecurity.controllerAnnotations.staticRules = [
         '/**/favicon.ico': ['permitAll']
 ]
 
+
+// Basic Auth Configuration for the API
+grails.plugin.springsecurity.useBasicAuth = true
+grails.plugin.springsecurity.basic.realmName = "3oh1.io"
+grails.plugin.springsecurity.filterChain.chainMap = [
+        '/api/shorteners/**': 'JOINED_FILTERS,-exceptionTranslationFilter',
+        '/**': 'JOINED_FILTERS,-basicAuthenticationFilter,-basicExceptionTranslationFilter'
+]

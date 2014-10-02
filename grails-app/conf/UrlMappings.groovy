@@ -11,6 +11,8 @@ class UrlMappings {
         "/dbconsole"(controller: "db")
 
         "/shorteners"(resources:"shortener")
+        "/api/shorteners"(resources:"shortener")
+
 
 
         "/$shortenerKey" {
