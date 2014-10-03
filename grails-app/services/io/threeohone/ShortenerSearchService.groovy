@@ -9,13 +9,13 @@ class ShortenerSearchService {
 
     def tokens
 
-    List<Shortener> search(String query, Shortener.Validity validity, Integer max, offset) {
+    List<Shortener> search(String query, Shortener.Validity validity, Integer max, offset, sort, order) {
 
         if (query == null) query = ''
         tokens = query.split(' ')
         def now = new Date()
 
-        Shortener.createCriteria().list([max: max, offset: offset]) {
+        Shortener.createCriteria().list([max: max, offset: offset, sort: sort, order: order]) {
             createAlias('userCreated', 'u', JoinType.LEFT_OUTER_JOIN)
             for (token in tokens) {
                 and {

@@ -39,7 +39,7 @@ class ShortenerControllerSpec extends Specification {
         }
 
         controller.shortenerService = Mock(ShortenerService) {
-            1 * search(_, _, _, _) >> pagedList
+            1 * search(_, _, _, _, _, _) >> pagedList
         }
 
         when: "The index action is executed"
@@ -217,7 +217,7 @@ class ShortenerControllerSpec extends Specification {
         }
 
         controller.shortenerService = Mock(ShortenerService) {
-            1 * search(_, _, _, _) >> pagedList
+            1 * search(_, _, _, _, _, _) >> pagedList
         }
 
         when:
@@ -250,7 +250,7 @@ class ShortenerControllerSpec extends Specification {
         }
 
         controller.shortenerService = Mock(ShortenerService) {
-            1 * search(_, _, _, _) >> pagedList
+            1 * search(_, _, _, _, _, _) >> pagedList
         }
 
         when:
@@ -292,7 +292,7 @@ class ShortenerControllerSpec extends Specification {
         }
 
         controller.shortenerService = Mock(ShortenerService) {
-            1 * search(_, _, _, _) >> pagedList
+            1 * search(_, _, _, _, _, _) >> pagedList
         }
 
         when:
@@ -332,7 +332,7 @@ class ShortenerControllerSpec extends Specification {
         }
 
         controller.shortenerService = Mock(ShortenerService) {
-            1 * search(_, _, _, _) >> pagedList
+            1 * search(_, _, _, _, _, _) >> pagedList
         }
 
         when:

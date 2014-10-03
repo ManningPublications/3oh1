@@ -20,9 +20,11 @@ class ShortenerServiceSearchIntegrationSpec extends Specification {
         def offset = 5
         def query = 'test'
         def validity = Shortener.Validity.ACTIVE
+        def sort = 'id'
+        def order = 'asc'
 
         when:
-        def results = service.search(query, validity, max, offset)
+        def results = service.search(query, validity, max, offset, sort, order)
 
         then:
         results.size() == 5
@@ -39,9 +41,11 @@ class ShortenerServiceSearchIntegrationSpec extends Specification {
         def offset = 0
         def query = 'test'
         def validity = Shortener.Validity.ACTIVE
+        def sort = 'id'
+        def order = 'asc'
 
         when:
-        def results = service.search(query, validity, max, offset)
+        def results = service.search(query, validity, max, offset, sort, order)
 
         then:
         results.size() == 5
@@ -54,9 +58,11 @@ class ShortenerServiceSearchIntegrationSpec extends Specification {
         def offset = 0
         def query = 'twitter user'
         def validity = Shortener.Validity.ACTIVE
+        def sort = 'id'
+        def order = 'asc'
 
         when:
-        def results = service.search(query, validity, max, offset)
+        def results = service.search(query, validity, max, offset, sort, order)
 
         then:
         results.size() == 1
@@ -70,9 +76,11 @@ class ShortenerServiceSearchIntegrationSpec extends Specification {
         def offset = 0
         def query = 'twitter user someThingNotBeFound'
         def validity = Shortener.Validity.ACTIVE
+        def sort = 'id'
+        def order = 'asc'
 
         when:
-        def results = service.search(query, validity, max, offset)
+        def results = service.search(query, validity, max, offset, sort, order)
 
         then:
         results.isEmpty()
@@ -84,10 +92,12 @@ class ShortenerServiceSearchIntegrationSpec extends Specification {
         def offset = 0
         def query = 'goo'
         def validity = Shortener.Validity.ACTIVE
+        def sort = 'id'
+        def order = 'asc'
 
 
         when:
-        def results = service.search(query, validity, max, offset)
+        def results = service.search(query, validity, max, offset, sort, order)
 
         then:
         results.size() == 1
@@ -110,10 +120,12 @@ class ShortenerServiceSearchIntegrationSpec extends Specification {
         def offset = 0
         def query = 'tom'
         def validity = Shortener.Validity.ACTIVE
+        def sort = 'id'
+        def order = 'asc'
 
 
         when:
-        def results = service.search(query, validity, max, offset)
+        def results = service.search(query, validity, max, offset, sort, order)
 
         then:
         results.size() == 1
@@ -137,10 +149,12 @@ class ShortenerServiceSearchIntegrationSpec extends Specification {
         def offset = 0
         def query = 'tom'
         def validity = Shortener.Validity.FUTURE
+        def sort = 'id'
+        def order = 'asc'
 
 
         when:
-        def results = service.search(query, validity, max, offset)
+        def results = service.search(query, validity, max, offset, sort, order)
 
         then:
         results.size() == 1
