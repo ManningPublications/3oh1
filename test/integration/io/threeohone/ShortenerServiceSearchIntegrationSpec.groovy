@@ -13,6 +13,41 @@ class ShortenerServiceSearchIntegrationSpec extends Specification {
     def setup() {
     }
 
+
+    def 'find shortener by destinationUrl with max= 5 and offset 5'() {
+        setup:
+        def max = 5
+        def offset = 5
+        def query = 'test'
+        def validity = Shortener.Validity.ACTIVE
+
+        when:
+        def results = service.search(query, validity, max, offset)
+
+        then:
+        results.size() == 5
+        results*.destinationUrl*.contains('test5').count(true) == 1
+        results*.destinationUrl*.contains('test6').count(true) == 1
+        results*.destinationUrl*.contains('test7').count(true) == 1
+        results*.destinationUrl*.contains('test8').count(true) == 1
+        results*.destinationUrl*.contains('test9').count(true) == 1
+    }
+
+    def 'find shortener by destinationUrl with max= 5'() {
+        setup:
+        def max = 5
+        def offset = 0
+        def query = 'test'
+        def validity = Shortener.Validity.ACTIVE
+
+        when:
+        def results = service.search(query, validity, max, offset)
+
+        then:
+        results.size() == 5
+        !results*.destinationUrl*.contains('test').contains(false)
+    }
+
     def 'find shortener by destinationUrl and username'() {
         setup:
         def max = 10

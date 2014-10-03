@@ -9,7 +9,7 @@ class ShortenerSearchService {
 
     def tokens
 
-    List<Shortener> search(String query, Shortener.Validity validity, Integer max, Integer offset) {
+    List<Shortener> search(String query, Shortener.Validity validity, Integer max, offset) {
 
         if (query == null) query = ''
         tokens = query.split(' ')

@@ -18,14 +18,14 @@ class ShortenerController {
     def index(Integer max) {
         params.validity = params.validity ?: 'active'
         params.max = Math.min(max ?: 10, 100)
-        params.offset = 0
-
+        params.offset = params.offset ?: 0
+        params.search = params.search ?: ''
 
         def validity = Shortener.getValidityByString(params.validity)
 
         def shortenerList = shortenerService.search(params.search, validity, params.max, params.offset)
 
-        respond shortenerList, model: [shortenerInstanceCount: shortenerList.size()]
+        respond shortenerList, model: [shortenerInstanceCount: shortenerList.getTotalCount()]
     }
 
 
@@ -43,7 +43,7 @@ class ShortenerController {
 
         respond shortenerInstance, model: [
                 totalNumberOfRedirectsPerMonth: totalNumberOfRedirectsPerMonth,
-                redirectCounter: redirectCounter
+                redirectCounter               : redirectCounter
         ]
     }
 

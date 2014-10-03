@@ -82,6 +82,8 @@
 <g:paginate total="${shortenerInstanceCount ?: 0}" action="index" controller="shortener"
             params="['validity': params.validity]"/>
 
+
+${shortenerInstanceCount ?: 'nix'}
 </body>
 </html>
 
