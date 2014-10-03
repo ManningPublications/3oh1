@@ -2,6 +2,7 @@ package io.threeohone
 
 import grails.plugin.springsecurity.annotation.Secured
 import grails.transaction.Transactional
+import org.codehaus.groovy.grails.web.servlet.HttpHeaders
 
 import static org.springframework.http.HttpStatus.*
 
@@ -53,8 +54,19 @@ class ShortenerController {
         respond new Shortener(params)
     }
 
-    def save() {
-        def shortenerInstance = shortenerService.createShortener(params)
+    def save(Shortener shortenerInstance) {
+        def shortenerParams = [
+                shortenerKey: shortenerInstance.shortenerKey,
+                destinationUrl: shortenerInstance.destinationUrl,
+                validFrom: shortenerInstance.validFrom ?: new Date(),
+                validUntil: shortenerInstance.validUntil
+        ]
+
+        if (shortenerInstance.shortenerKey) {
+            shortenerInstance = shortenerService.importExistingShortener(shortenerParams)
+        } else {
+            shortenerInstance = shortenerService.createShortener(shortenerParams)
+        }
 
         if (shortenerInstance.hasErrors()) {
             respond shortenerInstance.errors, view: 'create'
@@ -67,7 +79,14 @@ class ShortenerController {
                 flash.message = message(code: 'default.created.message', args: [shortener.shortUrl(shortener: shortenerInstance)])
                 redirect shortenerInstance
             }
-            '*' { respond shortenerInstance, [status: CREATED] }
+            '*' {
+
+                response.addHeader(HttpHeaders.LOCATION,
+                        g.createLink(
+                                resource: "shortener", action: 'show', id: shortenerInstance.id))
+
+                respond shortenerInstance, [status: CREATED]
+            }
         }
     }
 
@@ -94,7 +113,12 @@ class ShortenerController {
                 flash.message = message(code: 'default.updated.message', args: [shortener.shortUrl(shortener: shortenerInstance)])
                 redirect shortenerInstance
             }
-            '*' { respond shortenerInstance, [status: OK] }
+            '*' {
+                response.addHeader(HttpHeaders.LOCATION,
+                        g.createLink(
+                                resource: this.controllerName, action: 'show', id: shortenerInstance.id, absolute: true))
+                respond shortenerInstance, [status: OK]
+            }
         }
     }
 

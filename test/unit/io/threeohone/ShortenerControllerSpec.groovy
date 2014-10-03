@@ -71,7 +71,7 @@ class ShortenerControllerSpec extends Specification {
 
     }
 
-    void "Test the save action correctly persists an instance"() {
+    void "save without a shortenerKey creates an instance with a generated key"() {
 
         given: "a form is send"
         request.contentType = FORM_CONTENT_TYPE
@@ -87,7 +87,37 @@ class ShortenerControllerSpec extends Specification {
         validShortener.validate()
         validShortener.id = 1
 
-        1 * controller.shortenerService.createShortener(params) >> validShortener
+        1 * controller.shortenerService.createShortener(_) >> validShortener
+
+        when: "The save action is executed with a valid instance"
+        controller.save()
+
+        then: "A redirect is issued to the show action"
+        response.redirectedUrl == '/shorteners/1'
+        controller.flash.message != null
+
+    }
+
+
+    void "save with a given shortenerKey creates an instance with the given key"() {
+
+        given: "a form is send"
+        request.contentType = FORM_CONTENT_TYPE
+        request.method = 'POST'
+
+        and: "a Mock for a shortener Service is used"
+        controller.shortenerService = Mock(ShortenerService)
+
+        and: "a valid shortener is returned from the service mock"
+        populateValidParams(params)
+        params.shortenerKey = "alreadyExistingKey"
+
+        def validShortener = new Shortener(params)
+
+        validShortener.validate()
+        validShortener.id = 1
+
+        1 * controller.shortenerService.importExistingShortener(_) >> validShortener
 
         when: "The save action is executed with a valid instance"
         controller.save()

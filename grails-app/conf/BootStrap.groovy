@@ -44,6 +44,11 @@ class BootStrap {
             UserRole.create user, userRole
         }
 
+        def apiUser = User.findByUsername('apiUser') ?: new User(username: 'apiUser', password: 'apiUser', enabled: true).save(failOnError: true)
+        if (!apiUser.authorities.contains(userRole)) {
+            UserRole.create user, userRole
+        }
+
     }
 
     private void createTestShorteners() {
