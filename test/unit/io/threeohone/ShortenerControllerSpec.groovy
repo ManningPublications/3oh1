@@ -1,5 +1,6 @@
 package io.threeohone
 
+import grails.orm.PagedResultList
 import io.threeohone.security.User
 import grails.test.mixin.*
 import spock.lang.*
@@ -28,8 +29,17 @@ class ShortenerControllerSpec extends Specification {
         setup:
         def shortenerList = generateActiveShorteners(3)
 
+        def mockC = mockFor(org.hibernate.Criteria)
+        mockC.demand.list { return [] } //PagedResultList constructor calls this
+        def pagedList = new PagedResultList(null, mockC.createMock()) {
+            {
+                list = shortenerList
+                totalCount = shortenerList.size()
+            }
+        }
+
         controller.shortenerService = Mock(ShortenerService) {
-            1 * search(_,_,_,_) >> shortenerList
+            1 * search(_, _, _, _, _, _) >> pagedList
         }
 
         when: "The index action is executed"
@@ -227,8 +237,17 @@ class ShortenerControllerSpec extends Specification {
 
         def shortenerList = generateActiveShorteners(3)
 
+        def mockC = mockFor(org.hibernate.Criteria)
+        mockC.demand.list { return [] } //PagedResultList constructor calls this
+        def pagedList = new PagedResultList(null, mockC.createMock()) {
+            {
+                list = shortenerList
+                totalCount = shortenerList.size()
+            }
+        }
+
         controller.shortenerService = Mock(ShortenerService) {
-            1 * search(_,_,_,_) >> shortenerList
+            1 * search(_, _, _, _, _, _) >> pagedList
         }
 
         when:
@@ -251,8 +270,17 @@ class ShortenerControllerSpec extends Specification {
 
         params.validity = 'active'
 
+        def mockC = mockFor(org.hibernate.Criteria)
+        mockC.demand.list { return [] } //PagedResultList constructor calls this
+        def pagedList = new PagedResultList(null, mockC.createMock()) {
+            {
+                list = shortenerList
+                totalCount = shortenerList.size()
+            }
+        }
+
         controller.shortenerService = Mock(ShortenerService) {
-            1 * search(_,_,_,_) >> shortenerList
+            1 * search(_, _, _, _, _, _) >> pagedList
         }
 
         when:
@@ -284,10 +312,18 @@ class ShortenerControllerSpec extends Specification {
 
         params.validity = 'future'
 
-        controller.shortenerService = Mock(ShortenerService) {
-            1 * search(_,_,_,_) >> shortenerList
+        def mockC = mockFor(org.hibernate.Criteria)
+        mockC.demand.list { return [] } //PagedResultList constructor calls this
+        def pagedList = new PagedResultList(null, mockC.createMock()) {
+            {
+                list = shortenerList
+                totalCount = shortenerList.size()
+            }
         }
 
+        controller.shortenerService = Mock(ShortenerService) {
+            1 * search(_, _, _, _, _, _) >> pagedList
+        }
 
         when:
         controller.index(100)
@@ -316,8 +352,17 @@ class ShortenerControllerSpec extends Specification {
 
         params.validity = 'expired'
 
+        def mockC = mockFor(org.hibernate.Criteria)
+        mockC.demand.list { return [] } //PagedResultList constructor calls this
+        def pagedList = new PagedResultList(null, mockC.createMock()) {
+            {
+                list = shortenerList
+                totalCount = shortenerList.size()
+            }
+        }
+
         controller.shortenerService = Mock(ShortenerService) {
-            1 * search(_,_,_,_) >> shortenerList
+            1 * search(_, _, _, _, _, _) >> pagedList
         }
 
         when:

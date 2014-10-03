@@ -55,6 +55,10 @@ class BootStrap {
 
         def user = User.findByUsername('user')
 
+        25.times {
+            createActiveShortenerBySimpleName('test' + it)
+        }
+
         Shortener.findOrSaveWhere(
                 shortenerKey: 'httpsTwitterCom',
                 destinationUrl: 'http://www.twitter.com',
@@ -91,6 +95,16 @@ class BootStrap {
 
     }
 
+    def createActiveShortenerBySimpleName(String s) {
+        def user = User.findByUsername('user')
+        Shortener.findOrSaveWhere(
+                shortenerKey: s,
+                destinationUrl: 'http://www.' + s + '.com',
+                validFrom: new Date(),
+                validUntil: new Date() + 1,
+                userCreated: user
+        )
+    }
 
     private void createLastRedirects() {
 

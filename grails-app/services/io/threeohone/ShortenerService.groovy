@@ -12,7 +12,6 @@ class ShortenerService {
 
     public static final String DEFAULT_SALT = "3oh1.io"
 
-
     def springSecurityService
     def shortenerSearchService
     def grailsApplication
@@ -32,10 +31,19 @@ class ShortenerService {
         return null
     }
 
-    public def search(String query, Shortener.Validity validity, max, offset) {
 
-        shortenerSearchService.search(query, validity, max, offset)
-
+    /**
+     *
+     * @param query query string for searching
+     * @param validity the shorteners validity
+     * @param max max result per page
+     * @param offset
+     * @param sort
+     * @param order
+     * @return the found resultlist as orm.PagedResultList
+     */
+    public def search(String query, Shortener.Validity validity, max, offset, sort, order) {
+        shortenerSearchService.search(query, validity, max, offset, sort, order)
     }
 
     /**

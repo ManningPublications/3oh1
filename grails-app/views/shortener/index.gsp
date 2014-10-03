@@ -35,10 +35,9 @@
                         placeholder="<g:message code="default.search.label"/>"
                         name="search"
                         type="text"
-                        value="${params.search}"
-                />
+                        value="${params.search}"/>
 
-                <input name="validity" type="hidden" value="${params.validity}" />
+                <input name="validity" type="hidden" value="${params.validity}"/>
             </div>
         </g:form>
     </div>
@@ -53,18 +52,24 @@
     </div>
 </div>
 
-
-
-
-
 <table id="shortenerList" class="table table-striped table-condensed" style="margin-top:20px;">
     <thead>
     <tr>
-        <g:sortableColumn property="shortenerKey" title="${message(code: 'shortener.shortUrl.label')}"/>
-        <g:sortableColumn property="destinationUrl" title="${message(code: 'shortener.destinationUrl.label')}"/>
-        <g:sortableColumn property="userCreated" title="${message(code: 'shortener.userCreated.label')}"/>
-        <g:sortableColumn property="validFrom" title="${message(code: 'shortener.validFrom.label')}"/>
-        <g:sortableColumn property="validFrom" title="${message(code: 'shortener.validUntil.label')}"/>
+        <g:sortableColumn property="shortenerKey" title="${message(code: 'shortener.shortUrl.label')}"
+                          params="[search  : params.search,
+                                   validity: params.validity]"/>
+        <g:sortableColumn property="destinationUrl" title="${message(code: 'shortener.destinationUrl.label')}"
+                          params="[search  : params.search,
+                                   validity: params.validity]"/>
+        <g:sortableColumn property="userCreated" title="${message(code: 'shortener.userCreated.label')}"
+                          params="[search  : params.search,
+                                   validity: params.validity]"/>
+        <g:sortableColumn property="validFrom" title="${message(code: 'shortener.validFrom.label')}"
+                          params="[search  : params.search,
+                                   validity: params.validity]"/>
+        <g:sortableColumn property="validFrom" title="${message(code: 'shortener.validUntil.label')}"
+                          params="[search  : params.search,
+                                   validity: params.validity]"/>
     </tr>
     </thead>
     <tbody>
@@ -75,13 +80,12 @@
 <g:if test="${!shortenerInstanceList}">
     <div class="alert alert-danger">
         <span class="glyphicon glyphicon-remove"></span>
-        <g:message code="search.noResults" />
+        <g:message code="search.noResults"/>
     </div>
 </g:if>
 
 <g:paginate total="${shortenerInstanceCount ?: 0}" action="index" controller="shortener"
-            params="['validity': params.validity]"/>
-
+            params="['validity': params.validity, search: params.search]"/>
 </body>
 </html>
 
