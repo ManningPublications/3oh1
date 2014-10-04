@@ -28,6 +28,9 @@ class UrlMappings {
         '404'(view:'/notFound')
         '500'(view:'/error')
 
+        name apiDocs: "/docs/api"(view:"docs/api")
 
-	}
+
+
+    }
 }

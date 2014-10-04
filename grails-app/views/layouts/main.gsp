@@ -89,6 +89,9 @@
     <g:layoutBody/>
 
     <div class="footer">
+
+        <g:link mapping="apiDocs">API</g:link>
+
     </div>
 
 </div>

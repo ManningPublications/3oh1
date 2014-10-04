@@ -157,6 +157,7 @@ grails.plugin.springsecurity.userLookup.authorityJoinClassName = 'io.threeohone.
 grails.plugin.springsecurity.authority.className = 'io.threeohone.security.Role'
 grails.plugin.springsecurity.controllerAnnotations.staticRules = [
         '/shorteners'    : ['isAuthenticated()'],
+        '/docs/**'       : ['permitAll'],
         '/dbconsole'     : ['permitAll'],
         '/'              : ['permitAll'],
         '/index'         : ['permitAll'],
