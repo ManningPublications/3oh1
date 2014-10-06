@@ -9,7 +9,6 @@ import pages.ShortenerShowPage
 class SearchShortenerFunctionalSpec extends GebReportingSpec {
 
 
-
     def setup() {
         via ShortenerIndexPage
         at LoginPage
@@ -20,6 +19,45 @@ class SearchShortenerFunctionalSpec extends GebReportingSpec {
     def cleanup() {
         to ShortenerIndexPage
         page.navbar.logout()
+    }
+
+    def 'paging at shortenerlist'() {
+        when: 'i search for the domain name'
+        page.search("test")
+
+        then: "the shortener for test0.com is found"
+        page.containsShortener("test0.com")
+
+        when: 'sort by destination'
+        page.pageOnPageTwo()
+
+        then: "the shortener for test4.com is found"
+        page.containsShortener("test4.com")
+
+    }
+
+    def 'sorting at shortenerlist'() {
+        when: 'i search for the domain name'
+        page.search("test")
+
+        then: "the shortener for test0.com is found"
+        page.containsShortener("test0.com")
+
+        when: 'sort by destination'
+        page.sortDestinationURL()
+
+        then: "the shortener for test22.com is found"
+        page.containsShortener("test22.com")
+
+    }
+
+    def 'search for twitter find 1 shortener and redirect to show view '() {
+        when: 'i search for the domain name'
+        page.search("twitter")
+
+        then: 'the shortener twitter.com is found and displayed on show view'
+        at ShortenerShowPage
+
     }
 
 
@@ -54,8 +92,10 @@ class SearchShortenerFunctionalSpec extends GebReportingSpec {
         page.search("httpSpecViaHttps")
 
         then: "the shortener for https://www.ietf.org/rfc/rfc2616.txt is not found"
-        page.containsShortener("ietf.org/rfc/rfc2616.txt")
+        at ShortenerShowPage
 
+        and: 'the link is displayed'
+        page.hasLinkWithText('https://www.ietf.org/rfc/rfc2616.txt')
     }
 
 
@@ -113,10 +153,10 @@ class SearchShortenerFunctionalSpec extends GebReportingSpec {
         page.search("admin")
 
         then: "cnn.com is found"
-        page.containsShortener("cnn.com")
+        at ShortenerShowPage
 
-        and: "there is just one shortener with this username"
-        page.numberOfShorteners() == 1
+        and: 'page has a link named http://www.cnn.com'
+        page.hasLinkWithText('http://www.cnn.com')
 
     }
 

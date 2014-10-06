@@ -17,6 +17,9 @@ class ShortenerIndexPage extends Page {
         _searchBox { $("#search") }
 
         _shortenerTable { module ShortenerTable, $("#shortenerList") }
+        _destinationColHead { $("a", text: "Destination") }
+        _pagingLinkTwo { $("a", text: "2") }
+
 
     }
 
@@ -39,6 +42,14 @@ class ShortenerIndexPage extends Page {
 
     boolean containsShortener(String destinationUrl) {
         _shortenerTable.hasShortener(destinationUrl)
+    }
+
+    void sortDestinationURL() {
+        _destinationColHead.click()
+    }
+
+    void pageOnPageTwo(){
+        _pagingLinkTwo.click()
     }
 
 }

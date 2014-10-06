@@ -34,4 +34,8 @@ class ShortenerShowPage extends Page {
         !_notActiveMessage.displayed
     }
 
+    boolean hasLinkWithText(text){
+        $("a", text: text).displayed
+    }
+
 }

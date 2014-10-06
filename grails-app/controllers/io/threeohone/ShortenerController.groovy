@@ -30,6 +30,12 @@ class ShortenerController {
 
         def shortenerList = shortenerService.search(params.search, validity, params.max, params.offset, params.sort, params.order)
 
+
+        if (shortenerList.size() == 1) {
+            redirect shortenerList.first()
+            return
+        }
+
         respond shortenerList, model: [shortenerInstanceCount: shortenerList.getTotalCount()]
     }
 
