@@ -2,8 +2,10 @@ package shortener.add
 
 import geb.spock.GebReportingSpec
 import pages.*
+import shortener.ShortenerSpecHelper
 
 class AddShortenerFunctionalSpec extends GebReportingSpec {
+
 
     def setup() {
         via ShortenerIndexPage
@@ -58,49 +60,28 @@ class AddShortenerFunctionalSpec extends GebReportingSpec {
 
     }
 
-    // shows the bugfix for #23 (https://github.com/ManningPublications/3oh1/issues/23)
     def "a shortener with no validUntil value set will be listed in the active list"() {
 
-        when: "i click on the create button"
-        page.addShortener()
+        given: "two shorteners with just the url and no valid until value"
+        createShortenerWithoutExpirationDate("www.endoftheinternet.com")
+        createShortenerWithoutExpirationDate("www.endoftheinternet2.com")
 
-        then: "i am at the creation page"
-        at ShortenerCreatePage
 
-        when: "i fill in valid information for the shortner"
-        page.createShortener("http://www.endoftheinternet.com/")
-
-        then: "the shortener was created successfully"
-        at ShortenerShowPage
-        page.isSuccessMessageHere()
-
-        and: "i go to the shortener list"
-        to ShortenerIndexPage
-
-        when: "i click on the create button"
-        page.addShortener()
-
-        //find 1 shortener redirect to show page, therefore create a second shortener
-        then: "i am at the creation page"
-        at ShortenerCreatePage
-
-        when: "i fill in valid information for the shortner"
-        page.createShortener("http://www.endoftheinternet2.com/")
-
-        then: "the shortener was created successfully"
-        at ShortenerShowPage
-        page.isSuccessMessageHere()
-
-        when: "i go to the shortener list"
-        to ShortenerIndexPage
-
-        and: "i search for the new shortener"
+        when: "i search for the new shortener"
         page.showValidity("active")
         page.search("endoftheinternet")
 
-        then: "the shortener for google.com is not found"
+        then: "the shortener with no valid until set is displayed"
         page.containsShortener("endoftheinternet.com")
 
+    }
+
+    private createShortenerWithoutExpirationDate(String destinationUrl) {
+        at ShortenerIndexPage
+        page.addShortener()
+        at ShortenerCreatePage
+        page.createShortener(destinationUrl)
+        to ShortenerIndexPage
     }
 
 
