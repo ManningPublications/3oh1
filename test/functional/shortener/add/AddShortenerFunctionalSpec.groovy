@@ -2,7 +2,6 @@ package shortener.add
 
 import geb.spock.GebReportingSpec
 import pages.*
-import shortener.ShortenerSpecHelper
 
 class AddShortenerFunctionalSpec extends GebReportingSpec {
 
@@ -63,8 +62,8 @@ class AddShortenerFunctionalSpec extends GebReportingSpec {
     def "a shortener with no validUntil value set will be listed in the active list"() {
 
         given: "two shorteners with just the url and no valid until value"
-        createShortenerWithoutExpirationDate("www.endoftheinternet.com")
-        createShortenerWithoutExpirationDate("www.endoftheinternet2.com")
+        createShortenerWithoutExpirationDate("http://www.endoftheinternet.com")
+        createShortenerWithoutExpirationDate("http://www.endoftheinternet2.com")
 
 
         when: "i search for the new shortener"
