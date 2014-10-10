@@ -137,26 +137,12 @@ grails.assets.plugin."twitter-bootstrap".includes = ["bootstrap.less"]
 
 
 
-grails.plugin.hashids.salt = "threeohone"
-
-// The Alphabet to use for generating hash ids.
-grails.plugin.hashids.alphabet = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890"
-
-// The minimum hash length.
-grails.plugin.hashids.min_hash_length = 3
-
-// If true, the plugin will not add hashid and findByHashId methods to your domain objects.
-grails.plugin.hashidsanemic_domain = true
-
-
-
 
 // Added by the Spring Security Core plugin:
 grails.plugin.springsecurity.userLookup.userDomainClassName = 'io.threeohone.security.User'
 grails.plugin.springsecurity.userLookup.authorityJoinClassName = 'io.threeohone.security.UserRole'
 grails.plugin.springsecurity.authority.className = 'io.threeohone.security.Role'
 grails.plugin.springsecurity.controllerAnnotations.staticRules = [
-        '/shorteners'    : ['isAuthenticated()'],
         '/docs/**'       : ['permitAll'],
         '/dbconsole'     : ['permitAll'],
         '/'              : ['permitAll'],

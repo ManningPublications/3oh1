@@ -11,7 +11,10 @@ class UrlMappings {
         "/dbconsole"(controller: "db")
 
         "/shorteners"(resources:"shortener")
-        "/api/shorteners"(resources:"shortener")
+
+        "/api/shorteners"(resources:"shortener") {
+            "/statistics"(resource: "shortenerStatistics", includes: ['show'])
+        }
 
 
 
@@ -24,7 +27,8 @@ class UrlMappings {
         }
 
         '/' (controller: 'shortener')
-        //'/' redirect: 'http://www.threeohone.com', permanent: true
+        //'/' redirect: 'http://www.3oh1.io', permanent: true
+
         '404'(view:'/notFound')
         '500'(view:'/error')
 
