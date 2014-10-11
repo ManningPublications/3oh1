@@ -31,12 +31,17 @@ class ShortenerController {
         def shortenerList = shortenerService.search(params.search, validity, params.max, params.offset, params.sort, params.order)
 
 
-        if (shortenerList.size() == 1) {
+
+        if (isOnlyOneSearchResult(shortenerList)) {
             redirect shortenerList.first()
             return
         }
 
         respond shortenerList, model: [shortenerInstanceCount: shortenerList.getTotalCount()]
+    }
+
+    private boolean isOnlyOneSearchResult(List<Shortener> shortenerList) {
+        shortenerList.size() == 1 && params.search
     }
 
 

@@ -21,7 +21,7 @@ class BootStrap {
             }
 
             production {
-                createLastRedirects()
+
             }
         }
 
