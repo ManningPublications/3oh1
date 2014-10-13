@@ -34,14 +34,9 @@ your Application via <a href="http://en.wikipedia.org/wiki/Transport_Layer_Secur
 <div class="well">
     <samp>
         {<br/>
-        &nbsp;&nbsp;&nbsp;&nbsp;class: "io.threeohone.Shortener",<br/>
-        &nbsp;&nbsp;&nbsp;&nbsp;id: 1,<br/>
         &nbsp;&nbsp;&nbsp;&nbsp;destinationUrl: "http://www.example.com",<br/>
         &nbsp;&nbsp;&nbsp;&nbsp;shortenerKey: "5N",<br/>
-        &nbsp;&nbsp;&nbsp;&nbsp;userCreated: {<br/>
-        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;class: "io.threeohone.security.User",<br/>
-        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;id: 2<br/>
-        &nbsp;&nbsp;&nbsp;&nbsp;},<br/>
+        &nbsp;&nbsp;&nbsp;&nbsp;userCreated: "username",<br />
         &nbsp;&nbsp;&nbsp;&nbsp;validFrom: "2014-10-04T19:35:34Z",<br/>
         &nbsp;&nbsp;&nbsp;&nbsp;validUntil: "2014-10-05T19:35:34Z"<br/>
         }
@@ -59,8 +54,22 @@ your Application via <a href="http://en.wikipedia.org/wiki/Transport_Layer_Secur
 <div class="well">
     <samp>
         {<br/>
-        &nbsp;&nbsp;&nbsp;&nbsp;...<br/>
-        }
+        &nbsp;&nbsp;&nbsp;&nbsp;shortenerKey: '5N',<br/>
+        &nbsp;&nbsp;&nbsp;&nbsp;redirectCounter: 0,<br/>
+        &nbsp;&nbsp;&nbsp;&nbsp;totalNumberOfRedirectsPerMonth: [<br/>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{<br/>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;month: "10",<br/>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;year: "2013",<br/>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;redirectCounter: 5,<br/>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;},<br/>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{<br/>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;month: "11",<br/>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;year: "2013",<br/>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;redirectCounter: 10,<br/>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;},<br/>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;// ...<br/>
+        &nbsp;&nbsp;&nbsp;&nbsp;]<br/>
+        }<br/>
     </samp>
 </div>
 
@@ -87,11 +96,34 @@ your Application via <a href="http://en.wikipedia.org/wiki/Transport_Layer_Secur
     <h4>Import existing shorteners</h4>
     <p>
         If you want to import existing shorteners, that already have shortenerKeys assigned,
-        you can just add the shortenerKey to the request: <code>shortenerKey: "5N"</code>. If a shortener with this
-        shortenerKey already exists in the system, the HTTP Status Code <code>422 - Unprocessable Entity</code> is returned
-        with additional information about the validation errors.
+        you can just add the shortenerKey to the request: <code>shortenerKey: "5N"</code>.
     </p>
 </div>
+
+<p>If validation errors occur while creating the new shortener, the HTTP Status Code <code>422 - Unprocessable Entity</code> is returned
+with additional information about the validation errors. An example of a response with errors could look like this:</p>
+
+<div class="well">
+    <samp>
+        {<br/>
+        &nbsp;&nbsp;&nbsp;&nbsp;"errors": [<br/>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{<br/>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"object": "io.threeohone.Shortener",<br/>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"field": "shortenerKey",<br/>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"rejected-value": "5N",<br/>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"message": "Shortener with value [5N] must be unique"<br/>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;},<br/>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{<br/>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"object": "io.threeohone.Shortener",<br/>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"field": "destinationUrl",<br/>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"rejected-value": "invalidUrl",<br/>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"message": "Destination with value [invalidUrl] is not a valid URL"<br/>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br/>
+        &nbsp;&nbsp;&nbsp;&nbsp;]<br/>
+        }
+    </samp>
+</div>
+
 
 </body>
 </html>
