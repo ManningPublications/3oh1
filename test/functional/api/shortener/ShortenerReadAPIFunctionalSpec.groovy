@@ -1,21 +1,11 @@
 package api.shortener
 
-import geb.spock.GebReportingSpec
 import grails.converters.JSON
-import grails.plugins.rest.client.RestBuilder
 import grails.plugins.rest.client.RestResponse
 
 import static org.springframework.http.HttpStatus.*
 
-class ShortenerReadAPIFunctionalSpec extends GebReportingSpec {
-
-    private static final String SHORTENERS_API_URL = 'http://localhost:8080/3oh1/api/shorteners'
-
-    RestBuilder client
-
-    def setup() {
-        client = new RestBuilder()
-    }
+class ShortenerReadAPIFunctionalSpec extends APIFunctionalSpec {
 
 
     def "GET /api/shorteners/[:id] returns metadata of this shortener"() {
@@ -24,11 +14,7 @@ class ShortenerReadAPIFunctionalSpec extends GebReportingSpec {
         def shortenerId = createShortenerFor("http://www.urlViaJsonApi.com")
 
         when: "the new shortener is requested"
-        RestResponse response = client.get(SHORTENERS_API_URL + "/$shortenerId") {
-            auth "apiUser", "apiUser"
-            accept JSON
-        }
-
+        RestResponse response = httpGet(SHORTENERS_API_URL + "/$shortenerId")
         def jsonResponse = response.json
 
         then: "the request was successful"
@@ -47,35 +33,14 @@ class ShortenerReadAPIFunctionalSpec extends GebReportingSpec {
     }
 
 
-
-
     def "GET /api/shorteners/[:notValidId] returns 404"() {
 
-
         when: "a not existing shortener is requested"
-        RestResponse response = client.get(SHORTENERS_API_URL + "/aWrongShortenerId") {
-            auth "apiUser", "apiUser"
-            accept JSON
-        }
+        RestResponse response = httpGet(SHORTENERS_API_URL + "/aWrongShortenerId")
 
         then: "the shortener was not found"
         response.statusCode == NOT_FOUND
     }
 
 
-
-    def createShortenerFor(String destinationUrl) {
-
-        RestResponse createResponse = client.post(SHORTENERS_API_URL) {
-            auth "apiUser", "apiUser"
-            accept JSON
-            contentType "application/json"
-
-            json destinationUrl: destinationUrl
-        }
-
-        def shortenerId = createResponse.headers.getFirst("Location").tokenize("/").last()
-
-        return shortenerId
-    }
 }
