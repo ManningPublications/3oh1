@@ -9,7 +9,18 @@ class ShortenerSearchService {
 
     def tokens
 
-    List<Shortener> search(String query, Shortener.Validity validity, Integer max, offset, sort, order) {
+
+    /**
+     *
+     * @param query query string for searching
+     * @param validity the shorteners validity
+     * @param max max result per page
+     * @param offset
+     * @param sort
+     * @param order
+     * @return the found resultlist as orm.PagedResultList
+     */
+    def search(String query, Shortener.Validity validity, Integer max, offset, sort, order) {
 
         if (query == null) query = ''
         tokens = query.split(' ')

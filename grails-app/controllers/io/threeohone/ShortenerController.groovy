@@ -18,18 +18,24 @@ class ShortenerController {
 
     ShortenerService shortenerService
 
+    ShortenerSearchService shortenerSearchService
+
+    def grailsApplication
+
     def index(Integer max) {
         params.validity = params.validity ?: 'active'
         params.max = Math.min(max ?: 10, 100)
         params.offset = params.offset ?: 0
-        params.search = params.search ?: ''
         params.sort = params.sort ?: 'destinationUrl'
         params.order = params.order ?: 'asc'
+        def searchString = params.search ?: ''
 
         def validity = Shortener.getValidityByString(params.validity)
 
-        def shortenerList = shortenerService.search(params.search, validity, params.max, params.offset, params.sort, params.order)
+        searchString = cutServerUrlIfNecessary(searchString)
 
+
+        def shortenerList = shortenerSearchService.search(searchString, validity, params.max, params.offset, params.sort, params.order)
 
 
         if (isOnlyOneSearchResult(shortenerList)) {
@@ -38,6 +44,31 @@ class ShortenerController {
         }
 
         respond shortenerList, model: [shortenerInstanceCount: shortenerList.getTotalCount()]
+    }
+
+    private String cutServerUrlIfNecessary(searchString) {
+
+        def serverUrl = getPotentialServerUrl()
+
+        if (serverUrl && searchString.contains(serverUrl)) {
+            return searchString.split("/").last()
+        } else {
+            return searchString
+        }
+
+    }
+
+    private String getPotentialServerUrl() {
+
+        // there is an entry in the config.groovy (most production systems)
+        if (grailsApplication.config.grails?.serverURL instanceof String) {
+            return grailsApplication.config.grails?.serverURL
+        }
+
+        // else the http header could be read
+        else {
+            return request.getHeader("Host")
+        }
     }
 
     private boolean isOnlyOneSearchResult(List<Shortener> shortenerList) {
@@ -59,7 +90,7 @@ class ShortenerController {
 
         respond shortenerInstance, model: [
                 totalNumberOfRedirectsPerMonth: totalNumberOfRedirectsPerMonth,
-                redirectCounter               : redirectCounter
+                redirectCounter: redirectCounter
         ]
     }
 

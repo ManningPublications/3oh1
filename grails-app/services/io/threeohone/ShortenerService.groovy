@@ -32,19 +32,6 @@ class ShortenerService {
     }
 
 
-    /**
-     *
-     * @param query query string for searching
-     * @param validity the shorteners validity
-     * @param max max result per page
-     * @param offset
-     * @param sort
-     * @param order
-     * @return the found resultlist as orm.PagedResultList
-     */
-    public def search(String query, Shortener.Validity validity, max, offset, sort, order) {
-        shortenerSearchService.search(query, validity, max, offset, sort, order)
-    }
 
     /**
      * creates and persists a new shortener for the given parameters. A new shortnerKey will be generated
