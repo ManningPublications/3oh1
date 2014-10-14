@@ -90,8 +90,12 @@
 
     <div class="footer">
 
-        <g:link mapping="apiDocs">API</g:link>
-
+        <div class="pull-right">
+        <sec:ifLoggedIn>
+         <g:link mapping="apiDocs">API</g:link> |
+        </sec:ifLoggedIn>
+        powered by <a href="http://3oh1.io">3oh1.io</a>
+        </div>
     </div>
 
 </div>
