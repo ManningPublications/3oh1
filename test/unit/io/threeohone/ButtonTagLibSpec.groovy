@@ -12,6 +12,19 @@ class ButtonTagLibSpec extends Specification {
         slurper = new XmlSlurper()
     }
 
+    void "s:buttonWithActiveState is active when the property is 'all' and the params.validity is set to all"() {
+
+        given:
+        params.validity = 'all'
+
+        when:
+        def actualHtml = applyTemplate('<s:shortenerValidityButton property="all" />')
+
+        then:
+        actualHtml.contains('active')
+    }
+
+
     void "s:buttonWithActiveState is active when the property is 'future' and the params.validity is set to future"() {
 
         given:
@@ -90,6 +103,12 @@ class ButtonTagLibSpec extends Specification {
 
         when:
         applyTemplate('<s:shortenerValidityButton property="expired" label="invalid.key" />')
+
+        then:
+        notThrown GrailsTagException
+
+        when:
+        applyTemplate('<s:shortenerValidityButton property="all" label="invalid.key" />')
 
         then:
         notThrown GrailsTagException

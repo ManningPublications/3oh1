@@ -66,8 +66,11 @@ class SearchShortenerFunctionalSpec extends GebReportingSpec {
         when: "i search for the domain name"
         page.search("google.com")
 
-        then: "the shortener for google.com is found"
-        page.containsShortener("google.com")
+        then: 'the shortener google.com is found and displayed on show view'
+        at ShortenerShowPage
+
+        and: 'the link is displayed'
+        page.hasLinkWithText('http://www.google.com')
 
     }
 
@@ -84,6 +87,22 @@ class SearchShortenerFunctionalSpec extends GebReportingSpec {
         !page.containsShortener("google.com")
 
     }
+
+    def "search for google.com all validities"() {
+
+        given: "i only see the expired shorteners"
+        page.showValidity("all")
+
+        when: "i search for the domain name"
+        page.search("google.com")
+
+        then: 'the shortener google.com is found and displayed on show view'
+        at ShortenerShowPage
+
+        and: 'the link is displayed'
+        page.hasLinkWithText('http://www.google.com')
+    }
+
 
 
     def "a shortener can be found by shortenerKey"() {

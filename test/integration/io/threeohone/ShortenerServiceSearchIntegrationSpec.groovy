@@ -162,6 +162,35 @@ class ShortenerServiceSearchIntegrationSpec extends Specification {
         results.first().userCreated.username == 'tom'
     }
 
+    def 'find a shortener which is active in future by selecting all'() {
+        setup: 'create new shortener'
+        def now = new Date()
+        def expectedUserName = 'tom'
+        def tom = createTestUser(expectedUserName)
+        def expectedShortener = new Shortener(shortenerKey: 'abc',
+                destinationUrl: 'http://www.tom.com',
+                userCreated: tom,
+                validFrom: now + 1,
+                validUntil: now + 2).save(failOnError: true, flush: true)
+
+        and: 'set params and query'
+        def max = 10
+        def offset = 0
+        def query = 'tom'
+        def validity = null
+        def sort = 'id'
+        def order = 'asc'
+
+
+        when:
+        def results = service.search(query, validity, max, offset, sort, order)
+
+        then:
+        results.size() == 1
+        results.first().destinationUrl == 'http://www.tom.com'
+        results.first().userCreated.username == 'tom'
+    }
+
     def createShortener(Map params) {
         def now = new Date()
         def user = User.findByUsername('user')

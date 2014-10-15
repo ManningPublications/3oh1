@@ -21,6 +21,7 @@
             <s:shortenerValidityButton property="expired"/>
             <s:shortenerValidityButton property="active"/>
             <s:shortenerValidityButton property="future"/>
+            <s:shortenerValidityButton property="all"/>
         </div>
     </div>
 
