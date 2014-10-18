@@ -45,29 +45,6 @@ class ShortenerServiceCreateIntegrationSpec extends Specification {
 
 
 
-    void "createShortener assigns the current user to shortener instance"() {
-
-        given:
-        def currentUser = new User(username: "currentUser", password: "currentUser", enabled: true).save(failOnError: true)
-
-        def params = [
-                destinationUrl: "http://www.example.com",
-                validFrom: new Date(),
-                validUntil: new Date() + 1,
-        ]
-
-        when:
-        def persistedShortener
-        SpringSecurityUtils.doWithAuth("currentUser") {
-            persistedShortener = service.createShortener(params)
-        }
-
-        then:
-        persistedShortener.userCreated == currentUser
-
-    }
-
-
     void "createShortener returns the unsaved shortener if it has invalid properties"() {
 
         expect:

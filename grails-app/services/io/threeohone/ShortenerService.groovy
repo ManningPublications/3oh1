@@ -1,6 +1,7 @@
 package io.threeohone
 
 import fm.jiecao.lib.Hashids
+import io.threeohone.security.User
 
 
 class ShortenerService {
@@ -59,11 +60,19 @@ class ShortenerService {
 
     private Shortener tryToSaveShortener(params) {
 
-        params.userCreated = springSecurityService.currentUser
+        params.userCreated = determineUserForShortener(params)
+
         def shortener = new Shortener(params)
         shortener.save(flush: true)
 
         return shortener
+    }
+
+    private User determineUserForShortener(params) {
+        def assignedUser = User.findByUsername(params.userCreated)
+
+        return assignedUser ?: springSecurityService.currentUser
+
     }
 
 

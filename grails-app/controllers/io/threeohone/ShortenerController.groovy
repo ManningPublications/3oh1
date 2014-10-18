@@ -2,6 +2,7 @@ package io.threeohone
 
 import grails.plugin.springsecurity.annotation.Secured
 import grails.transaction.Transactional
+import io.threeohone.security.User
 import org.codehaus.groovy.grails.web.servlet.HttpHeaders
 
 import static org.springframework.http.HttpStatus.*
@@ -100,6 +101,7 @@ class ShortenerController {
 
     def save(Shortener shortenerInstance) {
         def shortenerParams = [
+                userCreated: params.userCreated,
                 shortenerKey: shortenerInstance.shortenerKey,
                 destinationUrl: shortenerInstance.destinationUrl,
                 validFrom: shortenerInstance.validFrom ?: new Date(),
