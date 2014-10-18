@@ -43,6 +43,11 @@ your Application via <a href="http://en.wikipedia.org/wiki/Transport_Layer_Secur
     </samp>
 </div>
 
+
+<div class="alert alert-warning">
+    <p>Setting the <code>validUntil</code> attribute is optional. If it is not set, the shortener is infinite valid.</p>
+</div>
+
 <h4>Read statistical Shortener Information</h4>
 
 <p>Additionally statistical information for a specific shortener can be received via the following HTTP Request:</p>
