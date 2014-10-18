@@ -2,13 +2,9 @@ package io.threeohone
 
 import org.hibernate.sql.JoinType
 
-/**
- * Created by bresche on 23.09.14.
- */
 class ShortenerSearchService {
 
     def tokens
-
 
     /**
      *

@@ -1,4 +1,4 @@
-grails.servlet.version = "3.0" // Change depending on target container compliance (2.5 or 3.0)
+grails.servlet.version = "3.0"
 grails.project.class.dir = "target/classes"
 grails.project.test.class.dir = "target/test-classes"
 grails.project.test.reports.dir = "target/test-reports"
@@ -21,24 +21,18 @@ grails.project.fork = [
         console: [maxMemory: 768, minMemory: 64, debug: false, maxPerm: 256]
 ]
 
-grails.project.dependency.resolver = "maven" // or ivy
+grails.project.dependency.resolver = "maven"
 grails.project.dependency.resolution = {
-    // inherit Grails' default dependencies
-    inherits("global") {
-        // specify dependency exclusions here; for example, uncomment this to disable ehcache:
-        // excludes 'ehcache'
-    }
-    log "error" // log level of Ivy resolver, either 'error', 'warn', 'info', 'debug' or 'verbose'
-    checksums true // Whether to verify checksums on resolve
+    inherits("global") { }
+    log "error"
+    checksums true
     legacyResolve false
-    // whether to do a secondary resolve on plugin installation, not advised and here for backwards compatibility
 
     def gebVersion = "0.9.3"
     def seleniumVersion = "2.43.1"
 
     repositories {
-        inherits true // Whether to inherit repository definitions from plugins
-
+        inherits true
         grailsPlugins()
         grailsHome()
         mavenLocal()
@@ -81,10 +75,9 @@ grails.project.dependency.resolution = {
         compile ":rest-client-builder:2.0.3"
 
         // fields plugin makes creating forms a breeze
-        compile ":fields:1.3"
+        compile ":fields:1.4"
 
         compile ':spring-security-core:2.0-RC4'
-        compile ":quick-search:0.2.6"
 
 
     }

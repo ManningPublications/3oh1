@@ -1,9 +1,6 @@
 package io.threeohone
 
 import fm.jiecao.lib.Hashids
-import grails.orm.PagedResultList
-import io.threeohone.security.User
-import org.grails.plugins.quickSearch.QuickSearchService
 
 
 class ShortenerService {
@@ -13,8 +10,6 @@ class ShortenerService {
     public static final String DEFAULT_SALT = "3oh1.io"
 
     def springSecurityService
-    def shortenerSearchService
-    def grailsApplication
 
     /**
      * finds a Shortener by a given shortenerKey if the key exists and the shortener is active
@@ -61,6 +56,7 @@ class ShortenerService {
         return tryToSaveShortener(params)
     }
 
+
     private Shortener tryToSaveShortener(params) {
 
         params.userCreated = springSecurityService.currentUser
@@ -87,9 +83,11 @@ class ShortenerService {
         shortener.save()
     }
 
+
     private boolean hasUniqueError(Shortener shortener) {
         return shortener.errors?.getFieldError("shortenerKey")?.codes?.contains("unique")
     }
+
 
     private String randomSalt() {
         (1..10).inject("") { a, b -> a += ('a'..'z')[new Random().nextFloat() * 26 as int] }.capitalize()
