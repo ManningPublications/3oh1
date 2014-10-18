@@ -1,6 +1,4 @@
 import geb.spock.GebReportingSpec
-import pages.LoginPage
-import pages.ShortenerIndexPage
 
 class RedirectFunctionalSpec extends GebReportingSpec {
     private static final String BASE_URL = 'http://localhost:8080/3oh1/'
@@ -14,14 +12,6 @@ class RedirectFunctionalSpec extends GebReportingSpec {
 
     }
 
-    def "a http redirect works correctly (w3c http spec)"() {
-        when:
-        go BASE_URL + "httpSpec"
-
-        then:
-        driver.currentUrl == "http://www.w3.org/Protocols/rfc2616/rfc2616.html"
-
-    }
 
 
     def "a https redirect works correctly (w3c http spec)"() {
@@ -40,6 +30,15 @@ class RedirectFunctionalSpec extends GebReportingSpec {
         then:
         driver.currentUrl.contains "https://"
         driver.currentUrl.contains "twitter.com"
+
+    }
+
+    def "a http redirect works correctly (w3c http spec)"() {
+        when:
+        go BASE_URL + "httpSpec"
+
+        then:
+        driver.currentUrl == "http://www.w3.org/Protocols/rfc2616/rfc2616.html"
 
     }
 

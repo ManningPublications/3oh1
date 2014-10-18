@@ -10,10 +10,6 @@ import spock.lang.Specification
 class ShortenerServiceSearchIntegrationSpec extends Specification {
 
 
-    def setup() {
-    }
-
-
     def 'find shortener by destinationUrl with max= 5 and offset 5'() {
         setup:
         def max = 5
@@ -66,8 +62,10 @@ class ShortenerServiceSearchIntegrationSpec extends Specification {
 
         then:
         results.size() == 1
-        results*.destinationUrl.contains('http://www.twitter.com')
-        results*.userCreated.username.contains('user')
+
+        and:
+        results[0].destinationUrl.contains('twitter.com')
+        results[0].userCreated.username.contains('user')
     }
 
     def 'find nothing'() {

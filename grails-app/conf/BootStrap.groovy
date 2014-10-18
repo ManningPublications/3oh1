@@ -61,7 +61,7 @@ class BootStrap {
 
         Shortener.findOrSaveWhere(
                 shortenerKey: 'httpsTwitterCom',
-                destinationUrl: 'http://www.twitter.com',
+                destinationUrl: 'https://www.twitter.com',
                 validFrom: new Date(),
                 validUntil: new Date() + 1,
                 userCreated: user
