@@ -7,10 +7,10 @@ import io.threeohone.security.UserRole
 import spock.lang.Specification
 
 @TestFor(ShortenerSearchService)
-class ShortenerServiceSearchIntegrationSpec extends Specification {
+class ShortenerSearchServiceIntegrationSpec extends Specification {
 
 
-    def 'find shortener by destinationUrl with max= 5 and offset 5'() {
+    def 'find shortener by destinationUrl with max 5 and offset 5'() {
         setup:
         def max = 5
         def offset = 5
@@ -31,7 +31,7 @@ class ShortenerServiceSearchIntegrationSpec extends Specification {
         results*.destinationUrl*.contains('test9').count(true) == 1
     }
 
-    def 'find shortener by destinationUrl with max= 5'() {
+    def 'find shortener by destinationUrl with max 5'() {
         setup:
         def max = 5
         def offset = 0
@@ -187,6 +187,22 @@ class ShortenerServiceSearchIntegrationSpec extends Specification {
         results.size() == 1
         results.first().destinationUrl == 'http://www.tom.com'
         results.first().userCreated.username == 'tom'
+    }
+
+
+    def "when no validity is given all shorteners are found"() {
+
+        given:
+        def now = new Date()
+        def expiredShortener = createShortener(shortenerKey: 'expired', validFrom: now - 2, validUntil: now + 1)
+        def activeShortener = createShortener(shortenerKey: 'active', validFrom: now - 1, validUntil: now + 1)
+        def futureShortener = createShortener(shortenerKey: 'future', validFrom: now + 1, validUntil: now + 2)
+
+        when: "i search for example.com without validity"
+        def results = service.search('example.com', null, 10, 0, 'id', 'asc')
+
+        then: "there are three results"
+        results.size() == 3
     }
 
     def createShortener(Map params) {

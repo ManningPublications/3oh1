@@ -23,7 +23,7 @@ class ShortenerController {
     def grailsApplication
 
     def index(Integer max) {
-        params.validity = params.validity ?: 'active'
+
         params.max = Math.min(max ?: 10, 100)
         params.offset = params.offset ?: 0
         params.sort = params.sort ?: 'destinationUrl'

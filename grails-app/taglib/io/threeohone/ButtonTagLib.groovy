@@ -8,7 +8,7 @@ class ButtonTagLib {
 
         if (!attrs.property) throwTagError("a property has to be set")
 
-        def allowedProperty = ['expired', 'active', 'future', 'all']
+        def allowedProperty = ['expired', 'active', 'future']
 
         if (!allowedProperty.contains(attrs.property)) {
             throwTagError('property has to one of ' + allowedProperty + ', but was ' + attrs.property)
@@ -17,15 +17,28 @@ class ButtonTagLib {
 
         def classes = ['btn', 'btn-default']
 
+
+        def linkParams = [:]
+
+        if (params.validity != attrs.property) {
+            linkParams.validity = attrs.property
+        }
+
+        if (params.search) {
+            linkParams.search = params.search
+        }
+
         if (params.validity == attrs.property) {
             classes << 'active'
         }
 
         out << g.link(
                 class: classes.join(" "),
-                params: [validity: attrs.property, search: params.search],
+                params: linkParams,
                 elementId: attrs.property) {
             g.message(code: "shortener.${attrs.property}.label")
         }
+
+
     }
 }

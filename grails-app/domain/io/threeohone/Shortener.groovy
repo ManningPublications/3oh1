@@ -9,10 +9,21 @@ class Shortener {
     }
 
     static Shortener.Validity getValidityByString(String validity) {
-        if ((validity.toLowerCase()).equals('active')) return Shortener.Validity.ACTIVE
-        if ((validity.toLowerCase()).equals('expired')) return Shortener.Validity.EXPIRED
-        if ((validity.toLowerCase()).equals('future')) return Shortener.Validity.FUTURE
-        return null
+
+        def result = null
+
+        if (validity) {
+            def lowerCaseValidity = validity.toLowerCase()
+
+            switch (lowerCaseValidity) {
+                case 'active': result = Shortener.Validity.ACTIVE; break;
+                case 'expired': result = Shortener.Validity.EXPIRED; break;
+                case 'future': result = Shortener.Validity.FUTURE; break;
+
+            }
+        }
+
+        return result
     }
 
     String destinationUrl

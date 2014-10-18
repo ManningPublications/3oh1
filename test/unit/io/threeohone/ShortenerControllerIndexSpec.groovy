@@ -45,31 +45,11 @@ class ShortenerControllerIndexSpec extends Specification {
         model.shortenerInstanceCount == 3
     }
 
-    def "when no validity params is set, active is used"() {
-
-        setup:
-        params.validity = null
-
-        def shortenerList = generateActiveShorteners(3)
-
-
-        def pagedListMock = createPagedResultListMock(shortenerList)
-
-        controller.shortenerSearchService = Mock(ShortenerSearchService) {
-            1 * search(_, _, _, _, _, _) >> pagedListMock
-        }
-
-        when:
-        controller.index(10)
-
-        then:
-        params.validity == 'active'
-
-    }
 
 
     def "when active validity params is set, only active results are shown"() {
-        setup: 'create and save 12 shorteners '
+
+        setup: 'create and save 12 shorteners'
 
         def expectedCountOfActiveShorteners = 10
 

@@ -12,20 +12,8 @@ class ButtonTagLibSpec extends Specification {
         slurper = new XmlSlurper()
     }
 
-    void "s:buttonWithActiveState is active when the property is 'all' and the params.validity is set to all"() {
 
-        given:
-        params.validity = 'all'
-
-        when:
-        def actualHtml = applyTemplate('<s:shortenerValidityButton property="all" />')
-
-        then:
-        actualHtml.contains('active')
-    }
-
-
-    void "s:buttonWithActiveState is active when the property is 'future' and the params.validity is set to future"() {
+    void "s:buttonWithActiveState is active when the property is the same as params.validity"() {
 
         given:
         params.validity = 'future'
@@ -35,6 +23,39 @@ class ButtonTagLibSpec extends Specification {
 
         then:
         actualHtml.contains('active')
+    }
+
+    void "s:buttonWithActiveState creates a link for a active that removes the filter"() {
+
+        given:
+        params.validity = 'future'
+
+        when:
+        def actualHtml = applyTemplate('<s:shortenerValidityButton property="future" />')
+
+        then: "the validity attribute is not set in the link anymore"
+        !actualHtml.contains("validity=future")
+    }
+
+    void "s:buttonWithActiveState adds the search attribute only if there is already search string given"() {
+
+        given:
+        params.validity = 'future'
+        params.search = null
+
+        when:
+        def actualHtml = applyTemplate('<s:shortenerValidityButton property="future" />')
+
+        then: "the search attribute is not send"
+        !actualHtml.contains("search=")
+
+
+        when:
+        params.search = "searchString"
+        actualHtml = applyTemplate('<s:shortenerValidityButton property="future" />')
+
+        then: "the search attribute is send"
+        actualHtml.contains("search=searchString")
     }
 
     void "s:buttonWithActiveState is not active when the property is not the validity param"() {
@@ -106,13 +127,6 @@ class ButtonTagLibSpec extends Specification {
 
         then:
         notThrown GrailsTagException
-
-        when:
-        applyTemplate('<s:shortenerValidityButton property="all" label="invalid.key" />')
-
-        then:
-        notThrown GrailsTagException
-
 
 
         when:
