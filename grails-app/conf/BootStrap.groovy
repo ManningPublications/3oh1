@@ -1,3 +1,4 @@
+import grails.converters.JSON
 import io.threeohone.RedirectLog
 import io.threeohone.Shortener
 import io.threeohone.security.Role
@@ -7,6 +8,8 @@ import io.threeohone.security.UserRole
 class BootStrap {
 
     def init = {
+
+        registerCustomJSONMarshallers()
 
         createAdmin()
 
@@ -23,6 +26,24 @@ class BootStrap {
             production {
 
             }
+        }
+
+
+    }
+
+    def registerCustomJSONMarshallers() {
+
+        JSON.registerObjectMarshaller(Shortener) { Shortener shortener ->
+
+            return [
+                shortenerKey: shortener.shortenerKey,
+                destinationUrl: shortener.destinationUrl,
+                userCreated: shortener.userCreated.username,
+                dateCreated: shortener.dateCreated,
+                validFrom: shortener.validFrom,
+                validUntil: shortener.validUntil
+            ]
+
         }
 
 

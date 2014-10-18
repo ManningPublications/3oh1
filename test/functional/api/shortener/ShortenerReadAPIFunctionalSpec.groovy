@@ -1,6 +1,5 @@
 package api.shortener
 
-import grails.converters.JSON
 import grails.plugins.rest.client.RestResponse
 
 import static org.springframework.http.HttpStatus.*
@@ -28,7 +27,14 @@ class ShortenerReadAPIFunctionalSpec extends APIFunctionalSpec {
         jsonResponse.containsKey "shortenerKey"
         jsonResponse.containsKey "validFrom"
         jsonResponse.containsKey "validUntil"
+
+        and: "the correct user is returned"
         jsonResponse.containsKey "userCreated"
+        jsonResponse.userCreated == "apiUser"
+
+        and: "class and id attribute are hidden"
+        !jsonResponse.containsKey("class")
+        !jsonResponse.containsKey("id")
 
     }
 
