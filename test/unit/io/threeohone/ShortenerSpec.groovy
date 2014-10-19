@@ -3,6 +3,7 @@ package io.threeohone
 import io.threeohone.security.User
 import grails.test.mixin.TestFor
 import spock.lang.Specification
+import spock.lang.Unroll
 
 @TestFor(Shortener)
 class ShortenerSpec extends Specification {
@@ -75,6 +76,27 @@ class ShortenerSpec extends Specification {
 
     }
 
+    @Unroll
+    void "#shortenerKey is not allowed as the shortenerKey due to the blacklist"() {
+
+        when: "validation is executed with the current shortenerKey"
+        shortener.shortenerKey = shortenerKey
+        def actualValidationResult = shortener.validate()
+
+        then: "the validation result is correct"
+        expectedValidationResult == actualValidationResult
+
+        where:
+
+        shortenerKey || expectedValidationResult
+        "shorteners" || false
+        "api"        || false
+        "statistics" || false
+        "users"      || false
+        "docs"       || false
+
+    }
+
     void "a valid until date is not required"() {
         given:
         shortener.validUntil = null
@@ -106,7 +128,6 @@ class ShortenerSpec extends Specification {
         then:
         shortenerIsValid
     }
-
 
 
     def "a shortener has autoTimestamping feature activated due to the existence of dateCreated and lastUpdated"() {

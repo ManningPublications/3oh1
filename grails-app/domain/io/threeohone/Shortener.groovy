@@ -4,6 +4,9 @@ import io.threeohone.security.User
 
 class Shortener {
 
+
+    static shortenerKeyBlacklist = ["shorteners", "api", "users", "statistics", "docs"]
+
     enum Validity {
         ACTIVE, EXPIRED, FUTURE
     }
@@ -38,12 +41,21 @@ class Shortener {
 
     User userCreated
 
+
     static constraints = {
         /*
           nullable has to be true in order to create a temp shortener (with an id). This shortener is used directly
-          after creation for generating the shortenerKey from the id, which is then persisted
+          after creation for generating the shortenerKey from the id, which is then persisted.
+
+          The custom validator is for blacklist validation.
          */
-        shortenerKey unique: true, nullable: true
+        shortenerKey unique: true, nullable: true, validator: { val, obj, errors ->
+
+            shortenerKeyBlacklist.each {
+                if (it == val) errors.rejectValue('shortenerKey', 'unique')
+            }
+
+        }
         destinationUrl url: true, nullable: false
         userCreated nullable: false
         validUntil nullable: true
