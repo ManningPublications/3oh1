@@ -31,13 +31,13 @@ class ShortenerService {
 
     /**
      * creates and persists a new shortener for the given parameters. A new shortnerKey will be generated
-     * @param params the parameters for the shortener entry.
+     * @param createCommand the parameters for the shortener entry.
      *               The shortenerKey can not be set here (@see ShortenerService.importExistingShortener)
      * @return the (un)saved shortener
      */
-    def createShortener(def params) {
+    def createShortener(ShortenerCreateCommand createCommand) {
 
-        Shortener shortener = tryToSaveShortener(params)
+        Shortener shortener = tryToSaveShortener(createCommand)
 
         if (!shortener.hasErrors()) {
             createShortenerKey(shortener)
@@ -49,20 +49,27 @@ class ShortenerService {
 
     /**
      * creates and persists a new shortener for the given parameters. A given shortenerKey is required
-     * @param params the parameters for the shortener entry.
+     * @param createCommand the parameters for the shortener entry.
      *               The shortenerKey has to be set here
      * @return the (un)saved shortener
      */
-    def importExistingShortener(def params) {
-        return tryToSaveShortener(params)
+    def importExistingShortener(ShortenerCreateCommand createCommand) {
+        return tryToSaveShortener(createCommand)
     }
 
 
-    private Shortener tryToSaveShortener(params) {
+    private Shortener tryToSaveShortener(ShortenerCreateCommand createCommand) {
 
-        params.userCreated = determineUserForShortener(params)
 
-        def shortener = new Shortener(params)
+        def shortenerParams = [
+                userCreated: determineUserForShortener(createCommand),
+                destinationUrl: createCommand.destinationUrl,
+                shortenerKey: createCommand.shortenerKey,
+                validFrom: createCommand.validFrom ?: new Date(),
+                validUntil: createCommand.validUntil
+        ]
+
+        def shortener = new Shortener(shortenerParams)
         shortener.save(flush: true)
 
         return shortener

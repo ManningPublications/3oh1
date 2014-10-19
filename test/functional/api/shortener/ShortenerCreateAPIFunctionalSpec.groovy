@@ -54,7 +54,7 @@ class ShortenerCreateAPIFunctionalSpec extends APIFunctionalSpec {
 
 
 
-    def "POST /api/shorteners with a given shortenerKey creates a shortener uses the given shortenerKey"() {
+    def "POST /api/shorteners with a given shortenerKey creates a shortener that uses the given shortenerKey"() {
 
 
         /////////////////////////////////////////////////////////
@@ -89,9 +89,51 @@ class ShortenerCreateAPIFunctionalSpec extends APIFunctionalSpec {
         then: "the request was successful"
         verifyResponse.statusCode == OK
 
-        and: "the initially posted destinationUrl was saved"
+        and: "the initially posted shortenerKey was saved"
         verifyResponse.body.shortenerKey == "abc"
 
+
+    }
+
+
+    def "POST /api/shorteners with a given username creates a shortener uses the given username"() {
+
+
+        /////////////////////////////////////////////////////////
+        // Actual Shortener Creation (HTTP POST)
+        /////////////////////////////////////////////////////////
+
+        when:  "a HTTP POST with a given username is executed to /api/shorteners"
+        RestResponse createResponse = httpPostJson(
+                SHORTENERS_API_URL,
+                [destinationUrl: "http://www.urlViaJsonApi.com", userCreated: "user"]
+        )
+
+
+        and: "the response information are extracted"
+        def resourceLocation = createResponse.headers.getFirst("Location")
+        def shortenerId = resourceLocation.tokenize("/").last()
+
+
+        then: "shortener was created sucessfully"
+        createResponse.statusCode == CREATED
+
+
+
+
+        /////////////////////////////////////////////////////////
+        // Verify save was successful
+        /////////////////////////////////////////////////////////
+
+        when: "the new shortener is requested"
+        RestResponse verifyResponse = httpGet(SHORTENERS_API_URL + "/$shortenerId")
+
+        then: "the request was successful"
+        verifyResponse.statusCode == OK
+
+        and: "the initially posted username was saved"
+        println verifyResponse.json
+        verifyResponse.body.userCreated == "user"
 
     }
 

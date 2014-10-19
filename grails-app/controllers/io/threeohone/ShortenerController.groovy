@@ -99,19 +99,15 @@ class ShortenerController {
         respond new Shortener(params)
     }
 
-    def save(Shortener shortenerInstance) {
-        def shortenerParams = [
-                userCreated: params.userCreated,
-                shortenerKey: shortenerInstance.shortenerKey,
-                destinationUrl: shortenerInstance.destinationUrl,
-                validFrom: shortenerInstance.validFrom ?: new Date(),
-                validUntil: shortenerInstance.validUntil
-        ]
+    def save(ShortenerCreateCommand createCommand) {
 
-        if (shortenerInstance.shortenerKey) {
-            shortenerInstance = shortenerService.importExistingShortener(shortenerParams)
+
+        Shortener shortenerInstance
+
+        if (createCommand.shortenerKey) {
+            shortenerInstance = shortenerService.importExistingShortener(createCommand)
         } else {
-            shortenerInstance = shortenerService.createShortener(shortenerParams)
+            shortenerInstance = shortenerService.createShortener(createCommand)
         }
 
         if (shortenerInstance.hasErrors()) {
@@ -196,4 +192,20 @@ class ShortenerController {
             '*' { render status: NOT_FOUND }
         }
     }
+}
+
+/**
+ * this command objects differs a little from the shortener domain object.
+ * The userCreated attribute is a String that holds the username.
+ * To get a valid binding in the save method of the controller we use this class
+ */
+class ShortenerCreateCommand {
+
+    String userCreated
+    String shortenerKey
+    String destinationUrl
+    Date validFrom
+    Date validUntil
+
+
 }

@@ -20,16 +20,16 @@ class ShortenerServiceCreateIntegrationSpec extends Specification {
     void "createShortener creates a shortener with a persisted shortenerKey"() {
 
         given:
-        def params = [
+        def createCommand = new ShortenerCreateCommand(
                 destinationUrl: "http://www.example.com",
                 validFrom: new Date(),
                 validUntil: new Date() + 1,
-        ]
+        )
 
         when:
         def persistedShortener
         SpringSecurityUtils.doWithAuth("user") {
-            persistedShortener = service.createShortener(params)
+            persistedShortener = service.createShortener(createCommand)
         }
 
         then:
@@ -47,10 +47,23 @@ class ShortenerServiceCreateIntegrationSpec extends Specification {
 
     void "createShortener returns the unsaved shortener if it has invalid properties"() {
 
+        given:
+        def createCommand = new ShortenerCreateCommand(destinationUrl: "notAValidDomain")
+
         expect:
-        service.createShortener(destinationUrl: "notAValidDomain").hasErrors()
+        service.createShortener(createCommand).hasErrors()
     }
 
+
+
+    void "importExistingShortener returns the unsaved shortener if it has invalid properties"() {
+
+        given:
+        def createCommand = new ShortenerCreateCommand(destinationUrl: "notAValidDomain", shortenerKey: new Date())
+
+        expect:
+        service.importExistingShortener(createCommand).hasErrors()
+    }
 
 
 
@@ -58,62 +71,57 @@ class ShortenerServiceCreateIntegrationSpec extends Specification {
     void "importExistingShortener can create a shortener with a given shortenerKey"() {
 
         given:
-        def params = [
+        def createCommand = new ShortenerCreateCommand(
                 destinationUrl: "http://www.example.com",
                 shortenerKey: "myTestShortenerKey",
                 validFrom: new Date(),
-                validUntil: new Date() + 1,
-        ]
+                validUntil: new Date() + 1
+        )
 
         when:
         def persistedShortener
         SpringSecurityUtils.doWithAuth("user") {
-            persistedShortener = service.importExistingShortener(params)
+            persistedShortener = service.importExistingShortener(createCommand)
         }
 
         then:
         !persistedShortener.hasErrors()
 
         and:
-        persistedShortener.shortenerKey == params.shortenerKey
-    }
-
-
-
-    void "importExistingShortener returns the unsaved shortener if it has invalid properties"() {
-
-        expect:
-        service.createShortener(destinationUrl: "notAValidDomain", shortenerKey: new Date()).hasErrors()
+        persistedShortener.shortenerKey == createCommand.shortenerKey
     }
 
     void "importExistingShortener does not save the shortener if there is already a shorener with this shortenerKey"() {
 
-        given:
-        def params = [
+        given: "a shortener with key myTestShortenerKey is imported"
+        def createCommand = new ShortenerCreateCommand(
                 destinationUrl: "http://www.example.com",
                 shortenerKey: "myTestShortenerKey",
-                validFrom: new Date(),
-        ]
+                validFrom: new Date()
+        )
+
         def persistedShortener
         SpringSecurityUtils.doWithAuth("user") {
-            persistedShortener = service.importExistingShortener(params)
+            persistedShortener = service.importExistingShortener(createCommand)
         }
 
 
-        when:
-        params = [
+        when: "another shortener should be created with the same key"
+        createCommand = new ShortenerCreateCommand(
                 destinationUrl: "http://www.example.com",
                 shortenerKey: "myTestShortenerKey",
-                validFrom: new Date(),
-        ]
+                validFrom: new Date()
+        )
+
         Shortener notUniqueShortener
         SpringSecurityUtils.doWithAuth("user") {
-            notUniqueShortener = service.importExistingShortener(params)
+            notUniqueShortener = service.importExistingShortener(createCommand)
         }
-        then:
+
+        then: "the second shortener could not be saved"
         notUniqueShortener.hasErrors()
 
-        and:
+        and: "there is a unique error message"
         notUniqueShortener.errors.getFieldError("shortenerKey").codes.contains("unique")
     }
 }
