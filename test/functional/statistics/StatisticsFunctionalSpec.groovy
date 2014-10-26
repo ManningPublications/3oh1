@@ -1,8 +1,6 @@
 package statistics
 
-import geb.download.DownloadException
 import geb.spock.GebReportingSpec
-import io.threeohone.Shortener
 import pages.LoginPage
 import pages.ShortenerCreatePage
 import pages.ShortenerIndexPage
@@ -10,6 +8,9 @@ import pages.ShortenerShowPage
 import pages.StatisticsPage
 
 class StatisticsFunctionalSpec extends GebReportingSpec {
+
+
+    private static final String BASE_URL = 'http://localhost:8080/3oh1/'
 
     def setup() {
         via ShortenerIndexPage
@@ -40,6 +41,16 @@ class StatisticsFunctionalSpec extends GebReportingSpec {
         then: "the redirect grails.org is found"
         at StatisticsPage
         page.isLastRedirect("grails.org")
+
+    }
+
+    def "download the redirect logs returns a HTTP 200 - OK"() {
+
+        when:
+        HttpURLConnection connection = browser.download(BASE_URL + "redirectLog/index")
+
+        then:
+        connection.responseCode == 200
 
     }
 

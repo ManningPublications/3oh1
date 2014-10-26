@@ -10,8 +10,6 @@ class RedirectLogController {
 
     def index() {
 
-        throw new Exception();
-
         List<RedirectLog> logs = RedirectLog.list()
 
         def headers = [
