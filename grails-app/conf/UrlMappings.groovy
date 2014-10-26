@@ -10,10 +10,13 @@ class UrlMappings {
 
         "/dbconsole"(controller: "db")
 
-        "/shorteners"(resources:"shortener")
+        "/shorteners"(resources:"shortener") {
+            "/redirectLog"(resource: "redirectLog", includes: ['show'])
+        }
 
         "/api/shorteners"(resources:"shortener") {
             "/statistics"(resource: "shortenerStatistics", includes: ['show'])
+            "/redirectLog"(resource: "redirectLog", includes: ['show'])
         }
 
 

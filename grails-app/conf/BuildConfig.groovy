@@ -79,6 +79,8 @@ grails.project.dependency.resolution = {
 
         compile ':spring-security-core:2.0-RC4'
 
+        compile ":excel-export:0.2.1"
+
 
     }
 }

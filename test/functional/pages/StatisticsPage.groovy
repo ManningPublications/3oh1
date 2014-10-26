@@ -21,6 +21,7 @@ class StatisticsPage extends Page {
     boolean isLastRedirect(String destinationUrl) {
         _lastRedirectsTable.isLastRedirect(destinationUrl)
     }
+
 }
 
 

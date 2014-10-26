@@ -12,7 +12,7 @@
 
 
 
-<h1><g:message code="default.show.label" args="[entityName]"/></h1>
+<h1><g:message code="default.show.label" args="[entityName]"/> <small>${shortenerInstance.shortenerKey}</small></h1>
 
 
 <div class="row">
@@ -30,10 +30,25 @@
 
 
 <h1><g:message code="button.statistics.label" /></h1>
-<p>
-    Redirect-Counter: <span class="badge">${redirectCounter}</span>
-</p>
 
+
+<div class="row">
+    <div class="col-sm-6">
+        <div class="pull-right">
+            Redirect-Counter: <span class="badge">${redirectCounter}</span>
+            <g:link class="btn btn-default"
+                    elementId="statistics-download-redirect-logs"
+                    resource="shortener/redirectLog"
+                    action="show"
+                    shortenerId="${shortenerInstance.id}">
+                <span class="glyphicon glyphicon-file"></span>
+                <g:message code="shortener.redirectLogs.label"/>
+            </g:link>
+        </div>
+
+
+    </div>
+</div>
 
 <div class="row">
     <div class="col-sm-6">

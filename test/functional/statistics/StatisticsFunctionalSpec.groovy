@@ -1,5 +1,6 @@
 package statistics
 
+import geb.download.DownloadException
 import geb.spock.GebReportingSpec
 import io.threeohone.Shortener
 import pages.LoginPage

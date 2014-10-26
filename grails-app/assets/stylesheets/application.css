@@ -58,3 +58,7 @@ body {
     margin-top: 30px;
     margin-bottom: 30px;
 }
+
+#statistics-download-redirect-logs {
+    margin-left:10px; margin-bottom:10px
+}

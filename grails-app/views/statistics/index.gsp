@@ -13,10 +13,25 @@
 </h2>
 
 
-<p>
-    Redirect-Counter (Total): <span class="badge">${redirectCounterTotal}</span>
 
-</p>
+<div class="row">
+    <div class="col-sm-12">
+
+        <div class="pull-right">
+            Total Redirects: <span class="badge">${redirectCounterTotal}</span>
+
+            <g:link class="btn btn-default"
+                    elementId="statistics-download-redirect-logs"
+                    controller="redirectLog"
+                    action="index">
+                <span class="glyphicon glyphicon-file"></span>
+                <g:message code="shortener.redirectLogs.label"/>
+            </g:link>
+        </div>
+
+    </div>
+</div>
+
 
 <div class="row">
     <div class="col-sm-6">

@@ -1,3 +1,5 @@
+
+
 <g:link class="btn btn-default btn-block" elementId="editShortener" action="edit"
         resource="${shortenerInstance}">
     <span class="glyphicon glyphicon-pencil"></span>
