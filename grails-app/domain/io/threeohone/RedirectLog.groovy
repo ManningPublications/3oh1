@@ -5,7 +5,7 @@ class RedirectLog {
     Shortener shortener
     String clientIp
     String referer
-    String userAgent
+    ClientInformation clientInformation
 
 
     Date dateCreated

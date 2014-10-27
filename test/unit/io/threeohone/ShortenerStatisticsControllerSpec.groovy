@@ -64,7 +64,12 @@ class ShortenerStatisticsControllerSpec extends Specification {
                     shortener: shortener,
                     referer: "abc",
                     clientIp: "def",
-                    userAgent: "ghi"
+                    clientInformation: new ClientInformation(
+                            browserName: "Chrome 38",
+                            browserVersion: "38.0.34.0.1",
+                            operatingSystem: "Mac OS X",
+                            mobileBrowser: false
+                    )
             ).save(failOnError: true)
         }
 

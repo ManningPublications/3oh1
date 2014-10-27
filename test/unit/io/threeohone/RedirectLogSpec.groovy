@@ -63,26 +63,6 @@ class RedirectLogSpec extends Specification {
     }
 
 
-    void "a userAgent is required"() {
-
-        given:
-        log.userAgent = null
-
-        when:
-        def logIsValid = log.validate()
-
-        then:
-        !logIsValid
-
-        when:
-        log.userAgent = "Mozilla/5.0 (compatible; MSIE 9.0; Windows NT 6.1; WOW64; Trident/5.0)"
-        logIsValid = log.validate()
-
-        then:
-        logIsValid
-    }
-
-
 
     def "a log has a creation autoTimestamp feature activated"() {
 
@@ -99,7 +79,12 @@ class RedirectLogSpec extends Specification {
                 shortener: new Shortener(),
                 clientIp: "127.0.0.1",
                 referer: "http://www.google.com",
-                userAgent: "Mozilla/5.0 (compatible; MSIE 9.0; Windows NT 6.1; WOW64; Trident/5.0)"
+                clientInformation: new ClientInformation(
+                        browserName: "Chrome 38",
+                        browserVersion: "38.0.1.34",
+                        operatingSystem: "Mac OS X",
+                        mobileBrowser: false
+                )
         )
     }
 }

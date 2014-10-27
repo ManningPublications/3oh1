@@ -3,6 +3,7 @@ package io.threeohone
 import io.threeohone.security.User
 import grails.test.mixin.Mock
 import grails.test.mixin.TestFor
+import org.geeks.browserdetection.UserAgentIdentService
 import spock.lang.Specification
 
 
@@ -15,12 +16,18 @@ class RedirectLoggingServiceSpec extends Specification {
         given: "i have a shortener instance that is redirected"
         def redirectedShortener = createShortener(destinationUrl: "http://www.example.com")
 
+        service.userAgentIdentService = Mock(UserAgentIdentService)
+
+        and:
+        service.userAgentIdentService.getBrowser() >> "Chrome 38"
+        service.userAgentIdentService.getBrowserVersion() >> "38.0.1.34"
+        service.userAgentIdentService.getOperatingSystem() >> "Mac OS X"
+
         when:
         service.log(
                 shortener: redirectedShortener,
                 clientIp: "127.0.0.1",
-                referer: "http://www.google.com",
-                userAgent: "Mozilla/5.0 (compatible; MSIE 9.0; Windows NT 6.1; WOW64; Trident/5.0)"
+                referer: "http://www.google.com"
         )
         def createdLog = RedirectLog.first()
 
@@ -28,7 +35,12 @@ class RedirectLoggingServiceSpec extends Specification {
         createdLog.shortener == redirectedShortener
         createdLog.clientIp == "127.0.0.1"
         createdLog.referer == "http://www.google.com"
-        createdLog.userAgent == "Mozilla/5.0 (compatible; MSIE 9.0; Windows NT 6.1; WOW64; Trident/5.0)"
+
+        and:
+        createdLog.clientInformation.browserName == "Chrome 38"
+        createdLog.clientInformation.browserVersion == "38.0.1.34"
+        createdLog.clientInformation.operatingSystem == "Mac OS X"
+
 
     }
 

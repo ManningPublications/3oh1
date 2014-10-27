@@ -26,7 +26,12 @@ class StatisticsControllerSpec extends Specification {
             new RedirectLog(
                     shortener: shortener,
                     clientIp: "127.0.0.1",
-                    userAgent: "MAC OS X"
+                    clientInformation: new ClientInformation(
+                            browserName: "Chrome 38",
+                            browserVersion: "38.0.1.34",
+                            operatingSystem: "Mac OS X",
+                            mobileBrowser: false
+                    )
             ).save(failOnError: true)
         }
 

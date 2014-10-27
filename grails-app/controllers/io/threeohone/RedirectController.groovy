@@ -25,7 +25,6 @@ class RedirectController {
             else {
                 redirectLoggingService.log(
                         shortener: shortener,
-                        userAgent: request.getHeader("user-agent"),
                         referer: request.getHeader("referer"),
                         clientIp: request.remoteAddr
                 )

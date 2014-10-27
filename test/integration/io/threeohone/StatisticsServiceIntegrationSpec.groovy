@@ -117,9 +117,15 @@ class StatisticsServiceIntegrationSpec extends Specification {
     private RedirectLog createRedirectFor(Shortener shortener, String dateCreated = null) {
         def log = new RedirectLog(
                 shortener: shortener,
-                userAgent: "Mozilla/5.0 (compatible; MSIE 9.0; Windows NT 6.1; WOW64; Trident/5.0)",
                 clientIp: "192.168.0.24",
-                referer: "http://www.google.com"
+                referer: "http://www.google.com",
+                clientInformation: new ClientInformation(
+                        browserName: "Chrome 38",
+                        browserVersion: "38.0.1.34",
+                        operatingSystem: "Mac OS X",
+                        mobileBrowser: false
+                )
+
         ).save()
 
         if (dateCreated) {

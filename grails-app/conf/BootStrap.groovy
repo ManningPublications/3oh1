@@ -1,4 +1,5 @@
 import grails.converters.JSON
+import io.threeohone.ClientInformation
 import io.threeohone.RedirectLog
 import io.threeohone.Shortener
 import io.threeohone.security.Role
@@ -136,10 +137,15 @@ class BootStrap {
             it.times { it2 ->
                 def log = new RedirectLog(
                         shortener: shortener,
-                        userAgent: "Mozilla/5.0 (compatible; MSIE 9.0; Windows NT 6.1; WOW64; Trident/5.0)",
                         clientIp: "192.168.0." + (it + 1),
-                        referer: "http://www.google.com"
-                ).save()
+                        referer: "http://www.google.com",
+
+                        clientInformation: new ClientInformation(
+                                browserVersion: "9.0",
+                                browserName: "Internet Explorer",
+                                operatingSystem: "Windows 7"
+                        )
+                ).save(failOnError: true)
 
                 log.dateCreated = new Date() - (it * it2)
             }

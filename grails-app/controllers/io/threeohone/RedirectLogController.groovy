@@ -18,10 +18,20 @@ class RedirectLogController {
                 message(code: 'shortener.destinationUrl.label'),
                 message(code: 'redirectLog.clientIp.label'),
                 message(code: 'redirectLog.referer.label'),
-                message(code: 'redirectLog.userAgent.label')
+                message(code: 'clientInformation.operatingSystem.label'),
+                message(code: 'clientInformation.browserName.label'),
+                message(code: 'clientInformation.browserVersion.label')
+        ]
+        def withProperties = [
+                'dateCreated',
+                'shortener.shortenerKey', 'shortener.destinationUrl',
+                'clientIp',
+                'referer',
+                'clientInformation.operatingSystem',
+                'clientInformation.browserName',
+                'clientInformation.browserVersion'
         ]
 
-        def withProperties = ['dateCreated', 'shortener.shortenerKey', 'shortener.destinationUrl', 'clientIp', 'referer', 'userAgent']
 
 
         def filename = "Redirect Logs - ${new Date().format('yyyy-MM-dd_hh-mm-ss')}"
@@ -48,10 +58,19 @@ class RedirectLogController {
                 message(code: 'redirectLog.dateCreated.label'),
                 message(code: 'redirectLog.clientIp.label'),
                 message(code: 'redirectLog.referer.label'),
-                message(code: 'redirectLog.userAgent.label')
+                message(code: 'clientInformation.operatingSystem.label'),
+                message(code: 'clientInformation.browserName.label'),
+                message(code: 'clientInformation.browserVersion.label')
         ]
 
-        def withProperties = ['dateCreated', 'clientIp', 'referer', 'userAgent']
+        def withProperties = [
+                'dateCreated',
+                'clientIp',
+                'referer',
+                'clientInformation.operatingSystem',
+                'clientInformation.browserName',
+                'clientInformation.browserVersion'
+        ]
 
         def filename = "Redirect Logs ${shortener.shortenerKey} - ${new Date().format('yyyy-MM-dd_hh-mm-ss')}"
         def worksheetName = "Redirects for ${shortener.shortenerKey}"
