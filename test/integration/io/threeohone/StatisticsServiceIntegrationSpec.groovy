@@ -11,6 +11,52 @@ class StatisticsServiceIntegrationSpec extends Specification {
     }
 
 
+
+
+    void "getRedirectCounterGroupedByOperatingSystem returns a list of OS - redirectCounter tuples"() {
+
+        given: "one windows and three mac redirects"
+        1.times { createRedirectWithOs("Windows") }
+        3.times { createRedirectWithOs("Mac OS X") }
+
+        when: "get redirect counters of all shorteners"
+        def osRedirectCounters = service.getRedirectCounterGroupedByOperatingSystem()
+
+        then: "there are two entries due to two operating systems"
+        osRedirectCounters.size() == 2
+
+        and: "the first result is mac with three counts"
+        osRedirectCounters[0].operatingSystem == "Mac OS X"
+        osRedirectCounters[0].redirectCounter == 3
+
+        and: "the second result is windows with one count"
+        osRedirectCounters[1].operatingSystem == "Windows"
+        osRedirectCounters[1].redirectCounter == 1
+    }
+
+
+    void "getRedirectCounterGroupedByOperatingSystem with a given shortener only counts for this shortener"() {
+
+        given: "one windows redirect for twitter"
+        def twitterComShortener = Shortener.findByShortenerKey("httpsTwitterCom")
+        1.times { createRedirectWithOs("Windows", twitterComShortener) }
+
+        and: "one windows redirect for google"
+        def googleComShortener = Shortener.findByShortenerKey("httpGoogleCom")
+        1.times { createRedirectWithOs("Windows", googleComShortener) }
+
+
+        when: "get redirect counters of all shorteners"
+        def osRedirectCounters = service.getRedirectCounterGroupedByOperatingSystem(twitterComShortener)
+
+        then:"windows with has only one count"
+        osRedirectCounters[0].operatingSystem == "Windows"
+        osRedirectCounters[0].redirectCounter == 1
+    }
+
+
+
+
     void "topShorteners returns a list of shorteners with corresponding total number of redirects"() {
 
 
@@ -133,6 +179,24 @@ class StatisticsServiceIntegrationSpec extends Specification {
             log.save()
         }
     }
+
+
+    def createRedirectWithOs(String os, Shortener shortener = null) {
+
+        def log = new RedirectLog(
+                shortener: shortener ?: Shortener.findByShortenerKey("httpsTwitterCom"),
+                clientIp: "192.168.0.24",
+                referer: "http://www.google.com",
+                clientInformation: new ClientInformation(
+                        browserName: "Chrome 38",
+                        browserVersion: "38.0.1.34",
+                        operatingSystem: os,
+                        mobileBrowser: false
+                )
+
+        ).save()
+    }
+
 
     private Date date(String date) {
         Date.parse("yyyy-MM-dd", date)

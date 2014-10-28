@@ -22,6 +22,36 @@ class StatisticsService {
     }
 
 
+    def getRedirectCounterGroupedByOperatingSystem(Shortener shortener = null) {
+
+        def c = RedirectLog.createCriteria()
+
+        def queryResult = c.list {
+
+            if (shortener) {
+                eq "shortener", shortener
+            }
+
+
+            projections {
+                countDistinct 'id', 'myCount'
+
+                clientInformation {
+                    groupProperty 'operatingSystem'
+                }
+
+            }
+            order('myCount', 'desc')
+        }
+
+
+        def result = queryResult.collect {
+            [redirectCounter: it[0], operatingSystem: it[1]]
+        }
+
+        return result
+    }
+
     def getTotalRedirectsPerMonthBetween(Date start, Date end, Shortener shortener = null) {
 
         if(end.before(start)) {
