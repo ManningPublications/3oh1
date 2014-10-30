@@ -35,15 +35,19 @@
 
 <div class="row">
     <div class="col-sm-6">
+
+        <g:render template="top5Panel" />
+
         <g:render template="lastRedirectsPanel" />
     </div>
 
 
 
     <div class="col-sm-6">
-        <g:render template="top5Panel" />
 
         <g:render template="totalRedirectsPerMonth"/>
+
+        <g:render template="redirectCountsPerOperatingSystem"/>
 
     </div>
 

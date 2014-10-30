@@ -130,7 +130,35 @@ class BootStrap {
 
     private void createLastRedirects() {
 
-        50.times {
+        def clientInformationAttributes = [
+            [
+                browserVersion: "26",
+                browserName: "Firefox",
+                operatingSystem: "Windows 7"
+            ],[
+                browserVersion: "9.0",
+                browserName: "Internet Explorer",
+                operatingSystem: "Windows 8"
+            ],[
+                browserVersion: "24",
+                browserName: "Firefox",
+                operatingSystem: "Ubuntu 14.04"
+            ],[
+                browserVersion: "38",
+                browserName: "Chrome",
+                operatingSystem: "Windows 7"
+            ],[
+                browserVersion: "35",
+                browserName: "Chrome",
+                operatingSystem: "Mac OS X"
+            ],[
+                browserVersion: "38",
+                browserName: "Chrome",
+                operatingSystem: "Ubuntu 12.04"
+            ],
+        ]
+
+        100.times {
 
             def shortener = Shortener.get((it % 4) + 1)
 
@@ -140,11 +168,7 @@ class BootStrap {
                         clientIp: "192.168.0." + (it + 1),
                         referer: "http://www.google.com",
 
-                        clientInformation: new ClientInformation(
-                                browserVersion: "9.0",
-                                browserName: "Internet Explorer",
-                                operatingSystem: "Windows 7"
-                        )
+                        clientInformation: new ClientInformation(clientInformationAttributes[(it * it2) % 6])
                 ).save(failOnError: true)
 
                 log.dateCreated = new Date() - (it * it2)

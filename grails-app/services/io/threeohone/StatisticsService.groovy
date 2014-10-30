@@ -32,7 +32,6 @@ class StatisticsService {
                 eq "shortener", shortener
             }
 
-
             projections {
                 countDistinct 'id', 'myCount'
 
@@ -46,10 +45,28 @@ class StatisticsService {
 
 
         def result = queryResult.collect {
-            [redirectCounter: it[0], operatingSystem: it[1]]
+            [
+                redirectCounter: it[0],
+                operatingSystem: it[1],
+                color: getColorForOperatingSystem(it[1]),
+                hilightColor: getHighlightColorForOperatingSystem(it[1])
+            ]
         }
 
         return result
+    }
+
+    String getHighlightColorForOperatingSystem(String operatingSystem) {
+        randomRgbCode()
+    }
+
+    String getColorForOperatingSystem(String operatingSystemName) {
+        randomRgbCode()
+    }
+
+    def randomRgbCode() {
+        def rgb = new Random().nextInt(1 << 24) // A random 24-bit integer
+        '#' + Integer.toString(rgb, 16).padLeft(6, '0')
     }
 
     def getTotalRedirectsPerMonthBetween(Date start, Date end, Shortener shortener = null) {
