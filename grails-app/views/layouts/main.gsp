@@ -34,6 +34,19 @@
                 </g:form>
 
                 <g:link
+                        elementId="users"
+                        controller="user"
+                        action="index"
+                        class="btn btn-primary pull-right"
+                        style="margin-left:10px;"
+                        data-toggle="tooltip"
+                        data-placement="bottom"
+                        title="${message(code: 'button.users.label')}"
+                >
+                    <span class="glyphicon glyphicon-user"></span>
+                </g:link>
+
+                <g:link
                         elementId="statistics"
                         controller="statistics"
                         action="index"
