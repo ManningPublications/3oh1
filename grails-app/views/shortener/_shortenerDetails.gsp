@@ -25,7 +25,5 @@
             <th><g:message code="shortener.validUntil.label"/></th>
             <td><g:formatDate date="${shortenerInstance.validUntil}"/></td>
         </tr>
-
     </g:if>
-
 </table>
