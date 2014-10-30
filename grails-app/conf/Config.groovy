@@ -160,6 +160,6 @@ grails.plugin.springsecurity.controllerAnnotations.staticRules = [
 grails.plugin.springsecurity.useBasicAuth = true
 grails.plugin.springsecurity.basic.realmName = "3oh1.io"
 grails.plugin.springsecurity.filterChain.chainMap = [
-        '/api/shorteners/**': 'JOINED_FILTERS,-exceptionTranslationFilter',
+        '/api/**': 'JOINED_FILTERS,-exceptionTranslationFilter',
         '/**': 'JOINED_FILTERS,-basicAuthenticationFilter,-basicExceptionTranslationFilter'
 ]

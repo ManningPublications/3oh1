@@ -35,8 +35,7 @@ class BootStrap {
     def registerCustomJSONMarshallers() {
 
         JSON.registerObjectMarshaller(Shortener) { Shortener shortener ->
-
-            return [
+            [
                 shortenerKey: shortener.shortenerKey,
                 destinationUrl: shortener.destinationUrl,
                 userCreated: shortener.userCreated.username,
@@ -45,6 +44,10 @@ class BootStrap {
                 validUntil: shortener.validUntil
             ]
 
+        }
+
+        JSON.registerObjectMarshaller(User) { User user ->
+             [ username: user.username ]
         }
 
 
