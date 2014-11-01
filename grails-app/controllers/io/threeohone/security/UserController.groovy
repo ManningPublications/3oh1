@@ -16,8 +16,8 @@ class UserController {
         respond User.list(params), model: [userInstanceCount: User.count()]
     }
 
-    def show(User userInstance) {
-        respond userInstance
+    def show() {
+        respond User.findByUsername(params.id)
     }
 
     def create() {
@@ -46,8 +46,8 @@ class UserController {
 
         request.withFormat {
             form multipartForm {
-                flash.message = message(code: 'default.created.message', args: [message(code: 'user.label', default: 'User'), userInstance.id])
-                redirect userInstance
+                flash.message = message(code: 'default.created.message', args: [message(code: 'user.label'), userInstance.username])
+                redirect url: [resource: "user", action: "show", id: userInstance.username]
             }
             '*' { respond userInstance, [status: CREATED] }
         }
@@ -83,15 +83,17 @@ class UserController {
 
         request.withFormat {
             form multipartForm {
-                flash.message = message(code: 'password.updated.message', args: [message(code: 'user.label', default: 'User'), userEditCommand.username])
-                redirect userInstance
+                flash.message = message(code: 'password.updated.message', args: [message(code: 'user.label'), userEditCommand.username])
+                redirect  url: [resource: "user", action: "show", id: userInstance.username]
             }
             '*' { respond userInstance, [status: OK] }
         }
     }
 
     @Transactional
-    def delete(User userInstance) {
+    def delete() {
+
+        User userInstance = User.findByUsername(params.id)
 
         if (userInstance == null) {
             notFound()

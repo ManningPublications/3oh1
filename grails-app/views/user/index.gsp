@@ -48,7 +48,7 @@
         <tr class="${(i % 2) == 0 ? 'even' : 'odd'}">
 
             <td><g:link action="show"
-                        id="${userInstance.id}">${fieldValue(bean: userInstance, field: "username")}</g:link></td>
+                        id="${userInstance.username}">${fieldValue(bean: userInstance, field: "username")}</g:link></td>
 
             <td><g:formatBoolean boolean="${userInstance.accountExpired}"/></td>
 

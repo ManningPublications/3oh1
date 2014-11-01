@@ -14,6 +14,38 @@ class UserControllerSpec extends Specification {
         params['password'] = 'password'
     }
 
+    def "show does not find the user if params.id is an id"() {
+        given:
+        def user = createUser(username: "notFoundUser")
+
+        when:
+        params.id = user.id
+        controller.show()
+
+        then:
+        response.status == 404
+
+    }
+
+    def "show finds the user if params.id is a valid username"() {
+        given:
+        createUser(username: "foundUser")
+
+        when:
+        params.id = "foundUser"
+        controller.show()
+
+        then:
+        response.status == 200
+
+    }
+
+    private User createUser(params) {
+        params.username = params.username ?: "defaultUser"
+        params.password = params.password ?: "defaultPassword"
+        new User(params).save(failOnError: true, flush: true)
+    }
+
     void "Test the index action returns the correct model"() {
 
         when: "The index action is executed"
@@ -57,27 +89,11 @@ class UserControllerSpec extends Specification {
         controller.save(user)
 
         then: "A redirect is issued to the show action"
-        response.redirectedUrl == '/users/1'
-//        response.redirectedUrl == '/user/show/1'
+        response.redirectedUrl == "/users/$user.username"
         controller.flash.message != null
         User.count() == 1
     }
 
-    void "Test that the show action returns the correct model"() {
-        when: "The show action is executed with a null domain"
-        controller.show(null)
-
-        then: "A 404 error is returned"
-        response.status == 404
-
-        when: "A domain instance is passed to the show action"
-        populateValidParams(params)
-        def user = new User(params)
-        controller.show(user)
-
-        then: "A model is populated containing the domain instance"
-        model.userInstance == user
-    }
 
     void "Test that the edit action returns the correct model"() {
         when: "The edit action is executed with a null domain"
@@ -111,7 +127,6 @@ class UserControllerSpec extends Specification {
 
         then: "A 404 error is returned"
         response.redirectedUrl == '/users'
-//        response.redirectedUrl == '/user/index'
         flash.message != null
 
 
@@ -136,7 +151,7 @@ class UserControllerSpec extends Specification {
         controller.update(userEditCommand)
 
         then: "A redirect is issues to the show action"
-        response.redirectedUrl == "/users/$user.id"
+        response.redirectedUrl == "/users/$user.username"
         flash.message != null
     }
 
@@ -150,11 +165,11 @@ class UserControllerSpec extends Specification {
         when: "The delete action is called for a null instance"
         request.contentType = FORM_CONTENT_TYPE
         request.method = 'DELETE'
-        controller.delete(null)
+        params.id = null
+        controller.delete()
 
         then: "A 404 is returned"
         response.redirectedUrl == '/users'
-//        response.redirectedUrl == '/user/index'
         flash.message != null
 
         when: "A domain instance is created"
@@ -166,7 +181,8 @@ class UserControllerSpec extends Specification {
         User.count() == 1
 
         when: "The domain instance is passed to the delete action"
-        controller.delete(user)
+        params.id = user.username
+        controller.delete()
 
         then: "The instance is deleted"
         User.count() == 0
