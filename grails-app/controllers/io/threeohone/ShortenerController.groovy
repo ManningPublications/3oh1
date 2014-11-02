@@ -29,14 +29,17 @@ class ShortenerController {
         params.offset = params.offset ?: 0
         params.sort = params.sort ?: 'destinationUrl'
         params.order = params.order ?: 'asc'
-        def searchString = params.search ?: ''
+
 
         def validity = Shortener.getValidityByString(params.validity)
 
-        searchString = cutServerUrlIfNecessary(searchString)
+
+        def searchQuery = params.search ?: ''
+        searchQuery = cutServerUrlIfNecessary(searchQuery)
 
 
-        def shortenerList = shortenerSearchService.search(searchString, validity, params.max, params.offset, params.sort, params.order)
+
+        def shortenerList = shortenerSearchService.search(searchQuery, validity, params)
 
 
         if (isOnlyOneSearchResult(shortenerList)) {

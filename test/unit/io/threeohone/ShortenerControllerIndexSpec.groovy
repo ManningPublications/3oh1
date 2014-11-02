@@ -34,7 +34,7 @@ class ShortenerControllerIndexSpec extends Specification {
         def pagedListMock = createPagedResultListMock(shortenerList)
 
         controller.shortenerSearchService = Mock(ShortenerSearchService) {
-            1 * search(_, _, _, _, _, _) >> pagedListMock
+            1 * search(_, _, _) >> pagedListMock
         }
 
         when: "The index action is executed"
@@ -63,7 +63,7 @@ class ShortenerControllerIndexSpec extends Specification {
         def pagedListMock = createPagedResultListMock(shortenerList)
 
         controller.shortenerSearchService = Mock(ShortenerSearchService) {
-            1 * search(_, _, _, _, _, _) >> pagedListMock
+            1 * search(_, _, _) >> pagedListMock
         }
 
         when:
@@ -99,7 +99,7 @@ class ShortenerControllerIndexSpec extends Specification {
         def pagedListMock = createPagedResultListMock(shortenerList)
 
         controller.shortenerSearchService = Mock(ShortenerSearchService) {
-            1 * search(_, _, _, _, _, _) >> pagedListMock
+            1 * search(_, _, _) >> pagedListMock
         }
 
         when:
@@ -133,7 +133,7 @@ class ShortenerControllerIndexSpec extends Specification {
         def pagedListMock = createPagedResultListMock(shortenerList)
 
         controller.shortenerSearchService = Mock(ShortenerSearchService) {
-            1 * search(_, _, _, _, _, _) >> pagedListMock
+            1 * search(_, _, _) >> pagedListMock
         }
 
         when:
@@ -158,7 +158,7 @@ class ShortenerControllerIndexSpec extends Specification {
         def expectedShortener = shortenerList[0]
 
         controller.shortenerSearchService = Mock(ShortenerSearchService) {
-            1 * search(_, _, _, _, _, _) >> [expectedShortener]
+            1 * search(_, _, _) >> [expectedShortener]
         }
         when:
         params.search = "searchQuery"
@@ -178,7 +178,7 @@ class ShortenerControllerIndexSpec extends Specification {
         def pagedListMock = createPagedResultListMock(shortenerList)
 
         controller.shortenerSearchService = Mock(ShortenerSearchService) {
-            1 * search(_, _, _, _, _, _) >> pagedListMock
+            1 * search(_, _, _) >> pagedListMock
         }
 
         when:
@@ -202,7 +202,7 @@ class ShortenerControllerIndexSpec extends Specification {
         controller.index()
 
         then:
-        1 * controller.shortenerSearchService.search("abc",_,_,_,_,_) >> createPagedResultListMock(generateActiveShorteners(1))
+        1 * controller.shortenerSearchService.search("abc",_,_) >> createPagedResultListMock(generateActiveShorteners(1))
     }
 
     def "when a search for the full shortenerUrl is executed, only the last part as the shortenerKey is used for search by extracting the serverUrl from request header"() {
@@ -218,7 +218,7 @@ class ShortenerControllerIndexSpec extends Specification {
         controller.index()
 
         then:
-        1 * controller.shortenerSearchService.search("abc",_,_,_,_,_) >> createPagedResultListMock(generateActiveShorteners(1))
+        1 * controller.shortenerSearchService.search("abc",_,_) >> createPagedResultListMock(generateActiveShorteners(1))
     }
 
 
