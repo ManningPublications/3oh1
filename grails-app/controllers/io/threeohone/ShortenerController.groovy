@@ -37,9 +37,16 @@ class ShortenerController {
         def searchQuery = params.search ?: ''
         searchQuery = cutServerUrlIfNecessary(searchQuery)
 
+        def shortenerList
 
+        def user = User.findByUsername(params.userId)
 
-        def shortenerList = shortenerSearchService.search(searchQuery, validity, params)
+        if (user) {
+            shortenerList = shortenerSearchService.searchByUser(searchQuery, validity, user, params)
+        }
+        else {
+            shortenerList = shortenerSearchService.search(searchQuery, validity, params)
+        }
 
 
         if (isOnlyOneSearchResult(shortenerList)) {
@@ -47,7 +54,7 @@ class ShortenerController {
             return
         }
 
-        respond shortenerList, model: [shortenerInstanceCount: shortenerList.getTotalCount()]
+        respond shortenerList, model: [shortenerInstanceCount: shortenerList.getTotalCount(), user: user]
     }
 
     private String cutServerUrlIfNecessary(searchString) {

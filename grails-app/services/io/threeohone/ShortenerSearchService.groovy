@@ -25,6 +25,21 @@ class ShortenerSearchService {
         searchByUser(query, validity, null, paginationParams)
     }
 
+
+    /**
+     * searches for shorteners by their attributes. It can be used by setting the query string.
+     * Search tokes are seperated by a space. The result list contains shorteners that fulfill
+     * all search tokens.
+     *
+     * E.g. there are two shorteners 'test.com from 'username' and 'test2.com' from 'username'
+     * When a search for 'test.com username' is executed only the first shortener is returned.
+     *
+     * @param query query string for searching
+     * @param validity the shorteners validity
+     * @param paginationParams the params to be used for pagination (max, offset, sort, order)
+     *
+     * @return the found resultlist as orm.PagedResultList
+     */
     def searchByUser(String query, Validity validity, User userCreated, Map paginationParams) {
 
         if (query == null) query = ''

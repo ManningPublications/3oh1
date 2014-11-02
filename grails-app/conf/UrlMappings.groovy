@@ -20,6 +20,15 @@ class UrlMappings {
         }
 
 
+        "/users"(resources:"user") {
+            "/shorteners"(resources:"shortener", includes: ['index'])
+        }
+
+        "/api/users"(resources:"user") {
+            "/shorteners"(resources:"shortener", includes: ['index'])
+        }
+
+
 
         "/$shortenerKey" {
             controller = 'redirect'
@@ -32,8 +41,6 @@ class UrlMappings {
         '/' (controller: 'shortener')
         //'/' redirect: 'http://www.3oh1.io', permanent: true
 
-        "/users"(resources:"user")
-        "/api/users"(resources:"user")
 
         '404'(view:'/notFound')
         '500'(view:'/error')

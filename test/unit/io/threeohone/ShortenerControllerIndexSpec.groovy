@@ -8,7 +8,7 @@ import org.hibernate.Criteria
 import spock.lang.Specification
 
 @TestFor(ShortenerController)
-@Mock([Shortener, RedirectLog])
+@Mock([Shortener, RedirectLog, User])
 class ShortenerControllerIndexSpec extends Specification {
 
     def populateValidParams(params) {
@@ -25,6 +25,7 @@ class ShortenerControllerIndexSpec extends Specification {
         controller.metaClass.shortener = [shortUrl: { "shortUrl" }]
 
         controller.statisticsService = Mock(StatisticsService)
+        controller.shortenerSearchService = Mock(ShortenerSearchService)
     }
 
     void "Test the index action returns the correct model"() {
@@ -157,9 +158,7 @@ class ShortenerControllerIndexSpec extends Specification {
         def shortenerList = generateExpiredShorteners(1)
         def expectedShortener = shortenerList[0]
 
-        controller.shortenerSearchService = Mock(ShortenerSearchService) {
-            1 * search(_, _, _) >> [expectedShortener]
-        }
+
         when:
         params.search = "searchQuery"
         controller.index()
@@ -168,33 +167,49 @@ class ShortenerControllerIndexSpec extends Specification {
         response.status == 302
         response.redirectedUrl == "/shorteners/${expectedShortener.id}"
 
+        and:
+        1 * controller.shortenerSearchService.search(_, _, _) >> [expectedShortener]
+        
+
     }
+
 
     def "when there is only one result at all (without a search) no redirect to show is executed"() {
 
         given:
         def shortenerList = generateExpiredShorteners(1)
 
-        def pagedListMock = createPagedResultListMock(shortenerList)
-
-        controller.shortenerSearchService = Mock(ShortenerSearchService) {
-            1 * search(_, _, _) >> pagedListMock
-        }
-
         when:
         params.search = null
         controller.index()
 
-        then:
+        then: "no redirect is executed"
         response.redirectedUrl == null
 
+        and: "the search service is asked to search for shorteners by user"
+        1 * controller.shortenerSearchService.search(_, _, _) >> createPagedResultListMock(shortenerList)
+
+    }
+
+    def "when a userId is given, the search service is requested for this user"() {
+
+        given: "the userId param set"
+        def user = new User(username: "userToQuery", password: "password").save(failOnError: true, flush: true)
+
+        params.userId = user.username
+        params.search = "searchString"
+
+        when: "the index action is requested"
+        controller.index()
+
+        then: "the search service is asked to search for shorteners by user"
+        1 * controller.shortenerSearchService.searchByUser("searchString",_,user,_) >> createPagedResultListMock(generateActiveShorteners(1))
     }
 
 
     def "when a search for the full shortenerUrl is executed, only the last part as the shortenerKey is used for search by extracting the serverUrl from grailsConfig"() {
 
         given:
-        controller.shortenerSearchService = Mock(ShortenerSearchService)
         controller.grailsApplication = [config: [grails: [serverURL: "http://3oh1.io/"]]]
 
         when:
@@ -208,8 +223,6 @@ class ShortenerControllerIndexSpec extends Specification {
     def "when a search for the full shortenerUrl is executed, only the last part as the shortenerKey is used for search by extracting the serverUrl from request header"() {
 
         given:
-        controller.shortenerSearchService = Mock(ShortenerSearchService)
-
         controller.grailsApplication = [config: [grails: [serverURL: null]]]
         request.addHeader("Host", "http://3oh1.io/")
 

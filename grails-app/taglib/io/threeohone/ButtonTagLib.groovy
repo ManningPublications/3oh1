@@ -20,13 +20,9 @@ class ButtonTagLib {
 
         def linkParams = [:]
 
-        if (params.validity != attrs.property) {
-            linkParams.validity = attrs.property
-        }
-
-        if (params.search) {
-            linkParams.search = params.search
-        }
+        if (params.validity != attrs.property) linkParams.validity = attrs.property
+        if (params.search) linkParams.search = params.search
+        if (params.userId) linkParams.userId = params.userId
 
         if (params.validity == attrs.property) {
             classes << 'active'
