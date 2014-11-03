@@ -6,6 +6,7 @@ import grails.test.mixin.TestFor
 import io.threeohone.security.User
 import org.hibernate.Criteria
 import spock.lang.Specification
+import spock.lang.Unroll
 
 @TestFor(ShortenerController)
 @Mock([Shortener, RedirectLog, User])
@@ -21,22 +22,14 @@ class ShortenerControllerIndexSpec extends Specification {
 
     def setup() {
 
-        // the shortener taglib is mocked
-        controller.metaClass.shortener = [shortUrl: { "shortUrl" }]
-
         controller.statisticsService = Mock(StatisticsService)
         controller.shortenerSearchService = Mock(ShortenerSearchService)
     }
 
     void "Test the index action returns the correct model"() {
-        setup:
+
+        given:
         def shortenerList = generateActiveShorteners(3)
-
-        def pagedListMock = createPagedResultListMock(shortenerList)
-
-        controller.shortenerSearchService = Mock(ShortenerSearchService) {
-            1 * search(_, _, _) >> pagedListMock
-        }
 
         when: "The index action is executed"
         controller.index()
@@ -44,111 +37,32 @@ class ShortenerControllerIndexSpec extends Specification {
         then: "The model is correct"
         model.shortenerInstanceList == shortenerList
         model.shortenerInstanceCount == 3
-    }
 
-
-
-    def "when active validity params is set, only active results are shown"() {
-
-        setup: 'create and save 12 shorteners'
-
-        def expectedCountOfActiveShorteners = 10
-
-        generateExpiredShorteners(1)
-        def shortenerList = generateActiveShorteners(expectedCountOfActiveShorteners)
-        generateFutureShorteners(1)
-
-        params.validity = 'active'
-
-
-        def pagedListMock = createPagedResultListMock(shortenerList)
-
-        controller.shortenerSearchService = Mock(ShortenerSearchService) {
-            1 * search(_, _, _) >> pagedListMock
-        }
-
-        when:
-        controller.index(100)
-
-        def actualShorteners = model.shortenerInstanceList
-        then:
-        actualShorteners.size() == expectedCountOfActiveShorteners
-        model.shortenerInstanceCount == expectedCountOfActiveShorteners
-
-        and:
-        def now = new Date()
-        actualShorteners.each {
-            assert it.validFrom < now
-            assert it.validUntil > now
-        }
+        and: "the shortenerSearchService should return the correct result when requested correctly"
+        1 * controller.shortenerSearchService.search("", null, _) >> createPagedResultListMock(shortenerList)
 
     }
 
-    def "when future validity params is set, only future results are shown"() {
 
-        given:
+    @Unroll
+    def "when #givenValidityParam validity params is set, only shorteners with validity: #expectedValidityEnum are requested from the search service"() {
 
-        def expectedCountOfFutureShorteners = 10
+        given: "a shortener list for mock response"
+        def shortenerList = generateExpiredShorteners(10)
 
-        generateExpiredShorteners(1)
-        def shortenerList = generateFutureShorteners(expectedCountOfFutureShorteners)
-        generateActiveShorteners(1)
+        when: "expired shorteners are requested"
+        params.validity = givenValidityParam
+        controller.index()
 
-        params.validity = 'future'
+        then: "the search service is requested with the expired enum"
+        1 * controller.shortenerSearchService.search(_, expectedValidityEnum, _) >> createPagedResultListMock(shortenerList)
 
+        where:
 
-        def pagedListMock = createPagedResultListMock(shortenerList)
-
-        controller.shortenerSearchService = Mock(ShortenerSearchService) {
-            1 * search(_, _, _) >> pagedListMock
-        }
-
-        when:
-        controller.index(100)
-
-        def actualShorteners = model.shortenerInstanceList
-        then:
-        actualShorteners.size() == expectedCountOfFutureShorteners
-
-        and:
-        def now = new Date()
-        actualShorteners.each {
-            assert it.validFrom > now
-        }
-
-    }
-
-    def "when expired validity params is set, only expired results are shown"() {
-
-        given:
-
-        def expectedCountOfExpiredShorteners = 10
-
-        def shortenerList = generateExpiredShorteners(expectedCountOfExpiredShorteners)
-        generateFutureShorteners(1)
-        generateActiveShorteners(1)
-
-        params.validity = 'expired'
-
-
-        def pagedListMock = createPagedResultListMock(shortenerList)
-
-        controller.shortenerSearchService = Mock(ShortenerSearchService) {
-            1 * search(_, _, _) >> pagedListMock
-        }
-
-        when:
-        controller.index(100)
-
-        def actualShorteners = model.shortenerInstanceList
-        then:
-        actualShorteners.size() == expectedCountOfExpiredShorteners
-
-        and:
-        def now = new Date()
-        actualShorteners.each {
-            assert it.validUntil < now
-        }
+        givenValidityParam  || expectedValidityEnum
+        'expired'           || Shortener.Validity.EXPIRED
+        'active'            || Shortener.Validity.ACTIVE
+        'future'            || Shortener.Validity.FUTURE
 
     }
 
@@ -158,18 +72,16 @@ class ShortenerControllerIndexSpec extends Specification {
         def shortenerList = generateExpiredShorteners(1)
         def expectedShortener = shortenerList[0]
 
-
         when:
         params.search = "searchQuery"
         controller.index()
 
-        then:
+        then: "the request is redirected"
         response.status == 302
         response.redirectedUrl == "/shorteners/${expectedShortener.id}"
 
-        and:
+        and: "the shortener search service returns only one result"
         1 * controller.shortenerSearchService.search(_, _, _) >> [expectedShortener]
-        
 
     }
 
@@ -209,28 +121,30 @@ class ShortenerControllerIndexSpec extends Specification {
 
     def "when a search for the full shortenerUrl is executed, only the last part as the shortenerKey is used for search by extracting the serverUrl from grailsConfig"() {
 
-        given:
+        given: "the serverUrl is set via grails application config"
         controller.grailsApplication = [config: [grails: [serverURL: "http://3oh1.io/"]]]
 
-        when:
+        when: "a search with the serverUrl is executed"
         params.search = "http://3oh1.io/abc"
         controller.index()
 
-        then:
+        then: "the search service is requested with only the shortenerKey"
         1 * controller.shortenerSearchService.search("abc",_,_) >> createPagedResultListMock(generateActiveShorteners(1))
     }
 
     def "when a search for the full shortenerUrl is executed, only the last part as the shortenerKey is used for search by extracting the serverUrl from request header"() {
 
-        given:
+        given: "the serverUrl is not set via grails application config"
         controller.grailsApplication = [config: [grails: [serverURL: null]]]
+
+        and: "the request Host header is set"
         request.addHeader("Host", "http://3oh1.io/")
 
-        when:
+        when: "a search with the serverUrl is executed"
         params.search = "http://3oh1.io/abc"
         controller.index()
 
-        then:
+        then: "the search service is requested with only the shortenerKey"
         1 * controller.shortenerSearchService.search("abc",_,_) >> createPagedResultListMock(generateActiveShorteners(1))
     }
 
