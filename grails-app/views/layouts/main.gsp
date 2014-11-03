@@ -16,6 +16,7 @@
 
 <div class="container">
     <div class="header">
+
             <sec:ifLoggedIn>
 
                 <g:form controller="logout" method="POST">
@@ -26,8 +27,7 @@
                             style="margin-left:10px;"
                             data-toggle="tooltip"
                             data-placement="bottom"
-                            title="${message(code: 'default.button.logout.label')}"
-                    >
+                            title="${message(code: 'default.button.logout.label')}">
                         <span class="glyphicon glyphicon-off"></span>
                     </button>
 
@@ -41,8 +41,7 @@
                         style="margin-left:10px;"
                         data-toggle="tooltip"
                         data-placement="bottom"
-                        title="${message(code: 'button.users.label')}"
-                >
+                        title="${message(code: 'button.users.label')}">
                     <span class="glyphicon glyphicon-user"></span>
                 </g:link>
 
@@ -54,23 +53,49 @@
                         style="margin-left:10px;"
                         data-toggle="tooltip"
                         data-placement="bottom"
-                        title="${message(code: 'button.statistics.label')}"
-                >
+                        title="${message(code: 'button.statistics.label')}">
                     <span class="glyphicon glyphicon-stats"></span>
                 </g:link>
 
-                <g:link
-                        elementId="shorteners"
-                        controller="shortener"
-                        action="index"
-                        class="btn btn-primary pull-right"
-                        data-toggle="tooltip"
-                        data-placement="bottom"
-                        title="${message(code: 'default.list.label', args: [message(code: 'shortener.label')])}"
-                >
-                    <span class="glyphicon glyphicon-th-list"></span>
-                </g:link>
+                %{--<g:link--}%
+                        %{--elementId="shorteners"--}%
+                        %{--controller="shortener"--}%
+                        %{--action="index"--}%
+                        %{--class="btn btn-primary pull-right"--}%
+                        %{--style="margin-left:10px;"--}%
+                        %{--data-toggle="tooltip"--}%
+                        %{--data-placement="bottom"--}%
+                        %{--title="${message(code: 'default.list.label', args: [message(code: 'shortener.label')])}">--}%
+                    %{--<span class="glyphicon glyphicon-th-list"></span>--}%
+                %{--</g:link>--}%
 
+                <div class="btn-group pull-right">
+                    <button
+                            type="button"
+                            class="btn btn-primary dropdown-toggle"
+                            data-toggle="dropdown">
+                        <span class="glyphicon glyphicon-th-list"></span> <span class="caret"></span>
+                    </button>
+                    <ul class="dropdown-menu" role="menu">
+                        <li>
+                            <g:link
+                                    elementId="shorteners"
+                                    controller="shortener"
+                                    action="index"
+                                    params="[userId: sec.loggedInUserInfo(field:'username')]">
+                                <g:message code="shortener.menu.my.label" />
+                            </g:link>
+                        </li>
+                        <li>
+                            <g:link
+                                    elementId="shorteners"
+                                    controller="shortener"
+                                    action="index">
+                                <g:message code="shortener.menu.all.label" />
+                            </g:link>
+                        </li>
+                    </ul>
+                </div>
 
 
 
