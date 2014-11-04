@@ -6,15 +6,23 @@ class Navbar extends Module {
 
     static content = {
 
-        _shorteners { $("#shorteners") }
+        _shortenersMenu { $("#shortenersMenu") }
+        _myShorteners(required: false) { $("#myShorteners") }
+        _allShorteners(required: false) { $("#allShorteners") }
         _statistics { $("#statistics") }
 
         _logoutButton { $("#logout") }
 
     }
 
-    void shorteners() {
-        _shorteners.click()
+    void allShorteners() {
+        _shortenersMenu.click()
+        _allShorteners.click()
+    }
+
+    void myShorteners() {
+        _shortenersMenu.click()
+        _myShorteners.click()
     }
 
     void statistics() {

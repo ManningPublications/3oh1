@@ -2,6 +2,8 @@ package user
 
 import geb.spock.GebReportingSpec
 import pages.LoginPage
+import pages.ShortenerCreatePage
+import pages.ShortenerIndexPage
 import pages.UserCreatePage
 import pages.UserEditPage
 import pages.UserIndexPage
@@ -46,6 +48,30 @@ class UserFunctionalSpec extends GebReportingSpec {
 
     }
 
+    def "i can display all shorteners of a user"() {
+
+        given:
+        createUser('displayAllShortenersUser', 'password')
+
+        and:
+        loginAs('displayAllShortenersUser', 'password')
+
+        when:
+        createShortener("http://www.displayAllShortenersUser1.com")
+        createShortener("http://www.displayAllShortenersUser2.com")
+
+        and:
+        at ShortenerIndexPage
+        page.navbar.myShorteners()
+
+        then:
+        at ShortenerIndexPage
+
+        and:
+        page.numberOfShorteners() == 2
+
+    }
+
     def 'change password'() {
 
         when: 'i click an the username'
@@ -69,5 +95,33 @@ class UserFunctionalSpec extends GebReportingSpec {
     }
 
 
+    private createShortener(String destinationUrl) {
+        to ShortenerIndexPage
+        page.addShortener()
+        at ShortenerCreatePage
+        page.createShortener(destinationUrl)
+        to ShortenerIndexPage
+    }
+
+    private createUser(String username, String password) {
+        at UserIndexPage
+        page.addUser()
+        at UserCreatePage
+        page.createUser(username, password)
+        at UserShowPage
+        page.isSuccessMessageHere()
+    }
+
+    private loginAs(String username, String password) {
+
+        to UserIndexPage
+        page.navbar.logout()
+
+        via UserIndexPage
+        at LoginPage
+        page.login(username, password)
+        at UserIndexPage
+
+    }
 
 }

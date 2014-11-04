@@ -57,20 +57,9 @@
                     <span class="glyphicon glyphicon-stats"></span>
                 </g:link>
 
-                %{--<g:link--}%
-                        %{--elementId="shorteners"--}%
-                        %{--controller="shortener"--}%
-                        %{--action="index"--}%
-                        %{--class="btn btn-primary pull-right"--}%
-                        %{--style="margin-left:10px;"--}%
-                        %{--data-toggle="tooltip"--}%
-                        %{--data-placement="bottom"--}%
-                        %{--title="${message(code: 'default.list.label', args: [message(code: 'shortener.label')])}">--}%
-                    %{--<span class="glyphicon glyphicon-th-list"></span>--}%
-                %{--</g:link>--}%
-
                 <div class="btn-group pull-right">
                     <button
+                            id="shortenersMenu"
                             type="button"
                             class="btn btn-primary dropdown-toggle"
                             data-toggle="dropdown">
@@ -79,7 +68,7 @@
                     <ul class="dropdown-menu" role="menu">
                         <li>
                             <g:link
-                                    elementId="shorteners"
+                                    elementId="myShorteners"
                                     controller="shortener"
                                     action="index"
                                     params="[userId: sec.loggedInUserInfo(field:'username')]">
@@ -88,7 +77,7 @@
                         </li>
                         <li>
                             <g:link
-                                    elementId="shorteners"
+                                    elementId="allShorteners"
                                     controller="shortener"
                                     action="index">
                                 <g:message code="shortener.menu.all.label" />

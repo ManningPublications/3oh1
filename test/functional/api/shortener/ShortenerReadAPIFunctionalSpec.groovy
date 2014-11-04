@@ -53,12 +53,10 @@ class ShortenerReadAPIFunctionalSpec extends APIFunctionalSpec {
         then: "the request was successful"
         response.statusCode == OK
 
-        println jsonResponse
-
         and: "there are three shorteners for this user"
         jsonResponse.size() == 3
 
-        and:
+        and: "all shorteners have the correct user assigned"
         jsonResponse*.userCreated.every { it == "showAllShortenersOfUserUser"}
 
     }
