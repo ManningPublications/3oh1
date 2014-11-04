@@ -38,6 +38,31 @@ class ShortenerReadAPIFunctionalSpec extends APIFunctionalSpec {
 
     }
 
+    def "GET /api/users/[:username]/shorteners returns all shorteners of a given user"() {
+
+        given: "the shorteners for user: showAllShortenersOfUserUser"
+        createShortenerForWithUser("http://www.url1.com", "showAllShortenersOfUserUser", "password")
+        createShortenerForWithUser("http://www.url2.com", "showAllShortenersOfUserUser", "password")
+        createShortenerForWithUser("http://www.url3.com", "showAllShortenersOfUserUser", "password")
+
+
+        when: "all shorteners of the user are requested"
+        RestResponse response = httpGet(BASE_URL + "/api/users/showAllShortenersOfUserUser/shorteners")
+        def jsonResponse = response.json
+
+        then: "the request was successful"
+        response.statusCode == OK
+
+        println jsonResponse
+
+        and: "there are three shorteners for this user"
+        jsonResponse.size() == 3
+
+        and:
+        jsonResponse*.userCreated.every { it == "showAllShortenersOfUserUser"}
+
+    }
+
 
     def "GET /api/shorteners/[:notValidId] returns 404"() {
 

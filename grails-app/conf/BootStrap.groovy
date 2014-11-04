@@ -12,7 +12,7 @@ class BootStrap {
 
         registerCustomJSONMarshallers()
 
-        createAdmin()
+        createTestusers()
 
         environments {
             test {
@@ -31,6 +31,7 @@ class BootStrap {
 
 
     }
+
 
     def registerCustomJSONMarshallers() {
 
@@ -53,7 +54,7 @@ class BootStrap {
 
     }
 
-    private void createAdmin() {
+    private void createTestusers() {
 
         def adminRole = Role.findByAuthority('ROLE_ADMIN') ?: new Role(authority: 'ROLE_ADMIN').save(failOnError: true)
 
@@ -71,7 +72,13 @@ class BootStrap {
 
         def apiUser = User.findByUsername('apiUser') ?: new User(username: 'apiUser', password: 'apiUser', enabled: true).save(failOnError: true)
         if (!apiUser.authorities.contains(userRole)) {
-            UserRole.create user, userRole
+            UserRole.create apiUser, userRole
+        }
+
+
+        def showAllShortenersOfUserUser = User.findByUsername('showAllShortenersOfUserUser') ?: new User(username: 'showAllShortenersOfUserUser', password: 'password', enabled: true).save(failOnError: true)
+        if (!showAllShortenersOfUserUser.authorities.contains(userRole)) {
+            UserRole.create showAllShortenersOfUserUser, userRole
         }
 
     }

@@ -37,6 +37,21 @@ abstract class APIFunctionalSpec extends GebReportingSpec {
         return shortenerId
     }
 
+    protected def createShortenerForWithUser(String destinationUrl, String username, String password) {
+
+        RestResponse createResponse = client.post(SHORTENERS_API_URL) {
+            auth username, password
+            accept JSON
+            contentType "application/json"
+
+            json destinationUrl: destinationUrl
+        }
+
+        def shortenerId = createResponse.headers.getFirst("Location").tokenize("/").last()
+
+        return shortenerId
+    }
+
 
     protected def createShortenerFor(String destinationUrl, String shortenerKey) {
 
