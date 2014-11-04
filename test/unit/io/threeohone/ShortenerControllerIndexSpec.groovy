@@ -1,10 +1,8 @@
 package io.threeohone
 
-import grails.orm.PagedResultList
 import grails.test.mixin.Mock
 import grails.test.mixin.TestFor
 import io.threeohone.security.User
-import org.hibernate.Criteria
 import spock.lang.Specification
 import spock.lang.Unroll
 
@@ -35,11 +33,12 @@ class ShortenerControllerIndexSpec extends Specification {
         controller.index()
 
         then: "The model is correct"
+
         model.shortenerInstanceList == shortenerList
         model.shortenerInstanceCount == 3
 
         and: "the shortenerSearchService should return the correct result when requested correctly"
-        1 * controller.shortenerSearchService.search("", null, _) >> createPagedResultListMock(shortenerList)
+        1 * controller.shortenerSearchService.search("", null, _) >> shortenerList
 
     }
 
@@ -47,15 +46,12 @@ class ShortenerControllerIndexSpec extends Specification {
     @Unroll
     def "when #givenValidityParam validity params is set, only shorteners with validity: #expectedValidityEnum are requested from the search service"() {
 
-        given: "a shortener list for mock response"
-        def shortenerList = generateExpiredShorteners(10)
-
         when: "expired shorteners are requested"
         params.validity = givenValidityParam
         controller.index()
 
         then: "the search service is requested with the expired enum"
-        1 * controller.shortenerSearchService.search(_, expectedValidityEnum, _) >> createPagedResultListMock(shortenerList)
+        1 * controller.shortenerSearchService.search(_, expectedValidityEnum, _) >> generateExpiredShorteners(10)
 
         where:
 
@@ -69,8 +65,8 @@ class ShortenerControllerIndexSpec extends Specification {
     def "when there is only one search result in the index action, the show page is shown"() {
 
         given:
+
         def shortenerList = generateExpiredShorteners(1)
-        def expectedShortener = shortenerList[0]
 
         when:
         params.search = "searchQuery"
@@ -78,18 +74,15 @@ class ShortenerControllerIndexSpec extends Specification {
 
         then: "the request is redirected"
         response.status == 302
-        response.redirectedUrl == "/shorteners/${expectedShortener.id}"
+        response.redirectedUrl == "/shorteners/${shortenerList[0].id}"
 
         and: "the shortener search service returns only one result"
-        1 * controller.shortenerSearchService.search(_, _, _) >> [expectedShortener]
+        1 * controller.shortenerSearchService.search(_, _, _) >> shortenerList
 
     }
 
 
     def "when there is only one result at all (without a search) no redirect to show is executed"() {
-
-        given:
-        def shortenerList = generateExpiredShorteners(1)
 
         when:
         params.search = null
@@ -99,7 +92,7 @@ class ShortenerControllerIndexSpec extends Specification {
         response.redirectedUrl == null
 
         and: "the search service is asked to search for shorteners by user"
-        1 * controller.shortenerSearchService.search(_, _, _) >> createPagedResultListMock(shortenerList)
+        1 * controller.shortenerSearchService.search(_, _, _) >> generateExpiredShorteners(1)
 
     }
 
@@ -115,7 +108,7 @@ class ShortenerControllerIndexSpec extends Specification {
         controller.index()
 
         then: "the search service is asked to search for shorteners by user"
-        1 * controller.shortenerSearchService.searchByUser("searchString",_,user,_) >> createPagedResultListMock(generateActiveShorteners(1))
+        1 * controller.shortenerSearchService.searchByUser("searchString",_,user,_) >> generateActiveShorteners(1)
     }
 
 
@@ -129,7 +122,7 @@ class ShortenerControllerIndexSpec extends Specification {
         controller.index()
 
         then: "the search service is requested with only the shortenerKey"
-        1 * controller.shortenerSearchService.search("abc",_,_) >> createPagedResultListMock(generateActiveShorteners(1))
+        1 * controller.shortenerSearchService.search("abc",_,_) >> generateActiveShorteners(1)
     }
 
     def "when a search for the full shortenerUrl is executed, only the last part as the shortenerKey is used for search by extracting the serverUrl from request header"() {
@@ -145,21 +138,10 @@ class ShortenerControllerIndexSpec extends Specification {
         controller.index()
 
         then: "the search service is requested with only the shortenerKey"
-        1 * controller.shortenerSearchService.search("abc",_,_) >> createPagedResultListMock(generateActiveShorteners(1))
+        1 * controller.shortenerSearchService.search("abc",_,_) >> generateActiveShorteners(1)
     }
 
 
-    private def createPagedResultListMock(shortenerList) {
-        def mockC = mockFor(Criteria)
-        mockC.demand.list { return [] } //PagedResultList constructor calls this
-        def pagedList = new PagedResultList(null, mockC.createMock()) {
-            {
-                list = shortenerList
-                totalCount = shortenerList.size()
-            }
-        }
-        pagedList
-    }
 
     def generateActiveShorteners(int count) {
         generateShorteners(new Date() - 1, new Date() + 1, count)
@@ -188,7 +170,11 @@ class ShortenerControllerIndexSpec extends Specification {
             list.add(shortnener)
         }
 
-        list
+
+        list.metaClass.getTotalCount = { list.size() }
+
+        return list
+
     }
 
 }

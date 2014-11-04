@@ -82,7 +82,7 @@ class ShortenerController {
         }
     }
 
-    private boolean isOnlyOneSearchResult(List<Shortener> shortenerList) {
+    private boolean isOnlyOneSearchResult(shortenerList) {
         shortenerList.size() == 1 && params.search
     }
 

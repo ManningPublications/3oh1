@@ -41,7 +41,7 @@ grails.project.dependency.resolution = {
     }
 
     dependencies {
-        test "org.grails:grails-datastore-test-support:1.0-grails-2.4"
+        test "org.grails:grails-datastore-test-support:1.0.2-grails-2.4"
 
         test "org.seleniumhq.selenium:selenium-firefox-driver:$seleniumVersion"
         test "org.seleniumhq.selenium:selenium-support:$seleniumVersion"
@@ -57,17 +57,17 @@ grails.project.dependency.resolution = {
     plugins {
         // grails default plugins
         build ":tomcat:7.0.55"
-        runtime ":hibernate4:4.3.5.5"
+        runtime ":hibernate4:4.3.6.1"
         runtime ":database-migration:1.4.0"
         compile ":scaffolding:2.1.2"
-        compile ':cache:1.1.6'
+        compile ':cache:1.1.8'
 
         // how to deliver static assets to the client
         compile ":asset-pipeline:1.9.9"
         compile ":less-asset-pipeline:1.10.0"
 
         // for a good looking frontend
-        compile ":twitter-bootstrap:3.2.0.2"
+        compile ":twitter-bootstrap:3.3.0"
         runtime ":jquery:1.11.1"
 
         // stuff for functional testing
