@@ -10,8 +10,6 @@
 <h1><g:message code="default.create.label" args="[entityName]"/></h1>
 
 <g:form url="[resource: userInstance, action: 'save']">
-    <g:hiddenField name="roleId" value="${userCreateCommandInstance.roleId}"/>
-
     <g:render template="form"/>
     <button type="submit" class="btn btn-success save" onclick="submit();">
         <span class="glyphicon glyphicon-disk"></span>

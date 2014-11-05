@@ -57,9 +57,9 @@ class UserControllerSpec extends Specification {
     }
 
     void "Test the create action returns the correct model"() {
-        setup:
-        def roleMock = new GrailsMock(Role)
-        roleMock.demand.static.findByAuthority(1..1) { return new Role(id: 999) }
+
+        given: "there is a user role in the database that the new user can be assigned to"
+        new Role(authority: "ROLE_USER").save(failOnError: true, flush: true)
 
         when: "The create action is executed"
         controller.create()
@@ -70,21 +70,24 @@ class UserControllerSpec extends Specification {
 
     void "Test the save action correctly persists an instance"() {
 
+        given: "there is a user role in the database that the new user can be assigned to"
+        new Role(authority: "ROLE_USER").save(failOnError: true, flush: true)
+
         when: "The save action is executed with an invalid instance"
         request.contentType = FORM_CONTENT_TYPE
         request.method = 'POST'
-        def user = new User()
+        def user = new UserCreateCommand()
         user.validate()
         controller.save(user)
 
         then: "The create view is rendered again with the correct model"
-        model.userInstance != null
+        model.userCreateCommandInstance != null
         view == 'create'
 
         when: "The save action is executed with a valid instance"
         response.reset()
         populateValidParams(params)
-        user = new User(params)
+        user = new UserCreateCommand(params)
 
         controller.save(user)
 
@@ -104,11 +107,11 @@ class UserControllerSpec extends Specification {
 
         when: "A domain instance is passed to the edit action"
         populateValidParams(params)
-        def user = new User(params)
-        controller.edit(user)
+        def userInstance = new User(params)
+        controller.edit(userInstance)
 
         then: 'the editCommand Object is correct'
-        model.userEditCommandInstance.username == user.username
+        model.passwordChangeCommandInstance.username == userInstance.username
     }
 
     void "Test the update action performs an update on a valid domain instance"() {
@@ -133,22 +136,22 @@ class UserControllerSpec extends Specification {
         when: "An invalid domain instance is passed to the update action"
         response.reset()
 
-        def userEditCommand = new UserEditCommand()
-        userEditCommand.validate()
-        controller.update(userEditCommand)
+        def passwordChangeCommand = new PasswordChangeCommand()
+        passwordChangeCommand.validate()
+        controller.update(passwordChangeCommand)
 
         then: "The edit view is rendered again with the invalid instance"
         view == 'edit'
-        model.userEditCommandInstance == userEditCommand
+        model.passwordChangeCommandInstance == passwordChangeCommand
 
         when: "A valid domain instance is passed to the update action"
         response.reset()
         populateValidParams(params)
-        userEditCommand = new UserEditCommand(
+        passwordChangeCommand = new PasswordChangeCommand(
                 username: params.username,
                 password: params.password,
                 confirmPassword: params.password)
-        controller.update(userEditCommand)
+        controller.update(passwordChangeCommand)
 
         then: "A redirect is issues to the show action"
         response.redirectedUrl == "/users/$user.username"
@@ -156,11 +159,6 @@ class UserControllerSpec extends Specification {
     }
 
     void "Test that the delete action deletes an instance if it exists"() {
-        setup:
-        def userRoleMock = new GrailsMock(UserRole)
-        userRoleMock.demand.static.findByUser(1..1) {
-            return null
-        }
 
         when: "The delete action is called for a null instance"
         request.contentType = FORM_CONTENT_TYPE
@@ -172,10 +170,12 @@ class UserControllerSpec extends Specification {
         response.redirectedUrl == '/users'
         flash.message != null
 
-        when: "A domain instance is created"
+        when: "a user with a role is created"
         response.reset()
         populateValidParams(params)
         def user = new User(params).save(flush: true)
+        def role = new Role(authority: "ROLE_USER").save(failOnError: true, flush: true)
+        UserRole.create(user, role).save flush: true
 
         then: "It exists"
         User.count() == 1

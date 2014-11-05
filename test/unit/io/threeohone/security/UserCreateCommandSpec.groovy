@@ -6,7 +6,7 @@ import spock.lang.Specification
 
 @TestMixin(GrailsUnitTestMixin)
 class UserCreateCommandSpec extends Specification {
-    def userCreateCommand = new UserCreateCommand(version: 0, username: 'username', roleId: 1)
+    def userCreateCommand = new UserCreateCommand(username: 'username')
 
     def 'password and confirmPassword is the same'() {
         when:

@@ -5,9 +5,6 @@ class UserCreateCommand {
     String username
     String password
     String confirmPassword
-    Long version
-
-    String roleId
 
     static constraints = {
         password blank: false, nullable: false, password: true, validator: { password, obj ->

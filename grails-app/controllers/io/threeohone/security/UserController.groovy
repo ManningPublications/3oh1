@@ -1,13 +1,16 @@
 package io.threeohone.security
 
 import grails.plugin.springsecurity.annotation.Secured
+import org.codehaus.groovy.grails.web.servlet.HttpHeaders
 
 import static org.springframework.http.HttpStatus.*
 import grails.transaction.Transactional
 
-@Transactional(readOnly = true)
 @Secured(['isAuthenticated()'])
 class UserController {
+
+
+    static responseFormats = ['html', 'json']
 
     static allowedMethods = [save: "POST", update: "PUT", delete: "DELETE"]
 
@@ -21,27 +24,34 @@ class UserController {
     }
 
     def create() {
-        def role = Role.findByAuthority('ROLE_USER')
-        def userCreateCommand = new UserCreateCommand(roleId: role.id)
+        def userCreateCommand = new UserCreateCommand()
 
         respond userCreateCommand
     }
 
-    @Transactional
-    def save(User userInstance) {
+    def save(UserCreateCommand userCreateCommand) {
+
+        if (userCreateCommand.hasErrors()) {
+            respond userCreateCommand.errors, view: 'create'
+            return
+        }
+
+        User userInstance = new User()
+        bindData(userInstance, userCreateCommand)
+
         if (userInstance == null) {
             notFound()
             return
         }
+
+        userInstance.save flush: true
 
         if (userInstance.hasErrors()) {
             respond userInstance.errors, view: 'create'
             return
         }
 
-        userInstance.save flush: true
-
-        def role = Role.findById(params.roleId)
+        def role = Role.findByAuthority('ROLE_USER')
         UserRole.create(userInstance, role).save flush: true
 
         request.withFormat {
@@ -49,7 +59,13 @@ class UserController {
                 flash.message = message(code: 'default.created.message', args: [message(code: 'user.label'), userInstance.username])
                 redirect url: [resource: "user", action: "show", id: userInstance.username]
             }
-            '*' { respond userInstance, [status: CREATED] }
+            '*' {
+
+                response.addHeader(HttpHeaders.LOCATION,
+                        g.createLink(
+                                resource: "user", action: 'show', id: userInstance.username))
+                respond userInstance, [status: CREATED]
+            }
         }
     }
 
@@ -59,31 +75,31 @@ class UserController {
             return
         }
 
-        def userEditCommand = new UserEditCommand(
+        def passwordChangeCommand = new PasswordChangeCommand(
                 username: userInstance.username,
                 version: userInstance.version)
-        respond userEditCommand
+        respond passwordChangeCommand
     }
 
     @Transactional
-    def update(UserEditCommand userEditCommand) {
-        if (userEditCommand == null) {
+    def update(PasswordChangeCommand passwordChangeCommand) {
+        if (passwordChangeCommand == null) {
             notFound()
             return
         }
 
-        if (userEditCommand.hasErrors()) {
-            respond userEditCommand.errors, view: 'edit'
+        if (passwordChangeCommand.hasErrors()) {
+            respond passwordChangeCommand.errors, view: 'edit'
             return
         }
 
-        def userInstance = User.findByUsername(userEditCommand.username)
-        userInstance.password = userEditCommand.password
+        def userInstance = User.findByUsername(passwordChangeCommand.username)
+        userInstance.password = passwordChangeCommand.password
         userInstance.save flush: true
 
         request.withFormat {
             form multipartForm {
-                flash.message = message(code: 'password.updated.message', args: [message(code: 'user.label'), userEditCommand.username])
+                flash.message = message(code: 'password.updated.message', args: [message(code: 'user.label'), passwordChangeCommand.username])
                 redirect  url: [resource: "user", action: "show", id: userInstance.username]
             }
             '*' { respond userInstance, [status: OK] }
@@ -122,3 +138,4 @@ class UserController {
         }
     }
 }
+

@@ -1,7 +1,7 @@
 package io.threeohone.security
 
 @grails.validation.Validateable
-class UserEditCommand {
+class PasswordChangeCommand {
     String username
     String password
     String confirmPassword
