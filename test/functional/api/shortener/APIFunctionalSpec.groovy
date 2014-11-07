@@ -14,6 +14,7 @@ abstract class APIFunctionalSpec extends GebReportingSpec {
     protected static final String BASE_URL = 'http://localhost:8080/3oh1/'
 
     protected static final String SHORTENERS_API_URL = "${BASE_URL}api/shorteners"
+    protected static final String USERS_API_URL = "${BASE_URL}api/users"
 
     RestBuilder client
 
@@ -84,6 +85,19 @@ abstract class APIFunctionalSpec extends GebReportingSpec {
     protected RestResponse httpPostJson(String url, Map jsonContent) {
 
         RestResponse response = client.post(url) {
+            auth "apiUser", "apiUser"
+            accept JSON
+            contentType "application/json"
+
+            json jsonContent
+        }
+
+        return response
+    }
+
+    protected RestResponse httpPutJson(String url, Map jsonContent) {
+
+        RestResponse response = client.put(url) {
             auth "apiUser", "apiUser"
             accept JSON
             contentType "application/json"

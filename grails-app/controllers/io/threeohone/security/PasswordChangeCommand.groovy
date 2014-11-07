@@ -5,7 +5,6 @@ class PasswordChangeCommand {
     String username
     String password
     String confirmPassword
-    Long version
 
     static constraints = {
         username editable: false

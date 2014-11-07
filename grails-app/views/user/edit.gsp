@@ -18,7 +18,6 @@
     </ul>
 </g:hasErrors>
 <g:form url="[resource: userInstance, action: 'update']" method="PUT">
-    <g:hiddenField name="version" value="${passwordChangeCommandInstance?.version}"/>
     <g:render template="form"/>
     <button type="submit" class="btn btn-success save" onclick="submit();">
         <span class="glyphicon glyphicon-disk"></span>

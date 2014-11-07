@@ -7,9 +7,7 @@ import spock.lang.Specification
 @TestMixin(GrailsUnitTestMixin)
 class UserEditCommandSpec extends Specification {
 
-    def userEditCommand = new PasswordChangeCommand(version: 0, username: 'username')
-
-
+    def userEditCommand = new PasswordChangeCommand(username: 'username')
 
     def 'password and confirmPassword is the same'() {
         when:

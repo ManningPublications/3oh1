@@ -75,9 +75,7 @@ class UserController {
             return
         }
 
-        def passwordChangeCommand = new PasswordChangeCommand(
-                username: userInstance.username,
-                version: userInstance.version)
+        def passwordChangeCommand = new PasswordChangeCommand(username: userInstance.username)
         respond passwordChangeCommand
     }
 
@@ -94,13 +92,19 @@ class UserController {
         }
 
         def userInstance = User.findByUsername(passwordChangeCommand.username)
+
+        if (userInstance == null) {
+            notFound()
+            return
+        }
+
         userInstance.password = passwordChangeCommand.password
         userInstance.save flush: true
 
         request.withFormat {
             form multipartForm {
                 flash.message = message(code: 'password.updated.message', args: [message(code: 'user.label'), passwordChangeCommand.username])
-                redirect  url: [resource: "user", action: "show", id: userInstance.username]
+                redirect url: [resource: "user", action: "show", id: userInstance.username]
             }
             '*' { respond userInstance, [status: OK] }
         }
