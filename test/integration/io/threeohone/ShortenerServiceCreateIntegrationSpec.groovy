@@ -17,7 +17,7 @@ class ShortenerServiceCreateIntegrationSpec extends Specification {
 
     }
 
-    void "createShortener creates a shortener with a persisted shortenerKey"() {
+    void "createShortener creates a shortener with a persisted key"() {
 
         given:
         def createCommand = new ShortenerCreateCommand(
@@ -36,10 +36,10 @@ class ShortenerServiceCreateIntegrationSpec extends Specification {
         !persistedShortener.hasErrors()
 
         when:
-        def expectedShortenerKey = new Hashids(ShortenerService.DEFAULT_SALT).encode(persistedShortener.id)
+        def expectedKey = new Hashids(ShortenerService.DEFAULT_SALT).encode(persistedShortener.id)
 
         then:
-        persistedShortener.shortenerKey == expectedShortenerKey
+        persistedShortener.key == expectedKey
 
     }
 
@@ -59,7 +59,7 @@ class ShortenerServiceCreateIntegrationSpec extends Specification {
     void "importExistingShortener returns the unsaved shortener if it has invalid properties"() {
 
         given:
-        def createCommand = new ShortenerCreateCommand(destinationUrl: "notAValidDomain", shortenerKey: new Date())
+        def createCommand = new ShortenerCreateCommand(destinationUrl: "notAValidDomain", key: new Date())
 
         expect:
         service.importExistingShortener(createCommand).hasErrors()
@@ -68,12 +68,12 @@ class ShortenerServiceCreateIntegrationSpec extends Specification {
 
 
 
-    void "importExistingShortener can create a shortener with a given shortenerKey"() {
+    void "importExistingShortener can create a shortener with a given key"() {
 
         given:
         def createCommand = new ShortenerCreateCommand(
                 destinationUrl: "http://www.example.com",
-                shortenerKey: "myTestShortenerKey",
+                key: "myTestKey",
                 validFrom: new Date(),
                 validUntil: new Date() + 1
         )
@@ -88,15 +88,15 @@ class ShortenerServiceCreateIntegrationSpec extends Specification {
         !persistedShortener.hasErrors()
 
         and:
-        persistedShortener.shortenerKey == createCommand.shortenerKey
+        persistedShortener.key == createCommand.key
     }
 
-    void "importExistingShortener does not save the shortener if there is already a shorener with this shortenerKey"() {
+    void "importExistingShortener does not save the shortener if there is already a shorener with this key"() {
 
-        given: "a shortener with key myTestShortenerKey is imported"
+        given: "a shortener with key myTestKey is imported"
         def createCommand = new ShortenerCreateCommand(
                 destinationUrl: "http://www.example.com",
-                shortenerKey: "myTestShortenerKey",
+                key: "myTestKey",
                 validFrom: new Date()
         )
 
@@ -109,7 +109,7 @@ class ShortenerServiceCreateIntegrationSpec extends Specification {
         when: "another shortener should be created with the same key"
         createCommand = new ShortenerCreateCommand(
                 destinationUrl: "http://www.example.com",
-                shortenerKey: "myTestShortenerKey",
+                key: "myTestKey",
                 validFrom: new Date()
         )
 
@@ -122,6 +122,6 @@ class ShortenerServiceCreateIntegrationSpec extends Specification {
         notUniqueShortener.hasErrors()
 
         and: "there is a unique error message"
-        notUniqueShortener.errors.getFieldError("shortenerKey").codes.contains("unique")
+        notUniqueShortener.errors.getFieldError("key").codes.contains("unique")
     }
 }

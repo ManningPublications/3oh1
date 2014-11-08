@@ -74,7 +74,7 @@ class ShortenerControllerIndexSpec extends Specification {
 
         then: "the request is redirected"
         response.status == 302
-        response.redirectedUrl == "/shorteners/${shortenerList[0].shortenerKey}"
+        response.redirectedUrl == "/shorteners/${shortenerList[0].key}"
 
         and: "the shortener search service returns only one result"
         1 * controller.shortenerSearchService.search(_, _, _) >> shortenerList
@@ -112,7 +112,7 @@ class ShortenerControllerIndexSpec extends Specification {
     }
 
 
-    def "when a search for the full shortenerUrl is executed, only the last part as the shortenerKey is used for search by extracting the serverUrl from grailsConfig"() {
+    def "when a search for the full shortenerUrl is executed, only the last part as the key is used for search by extracting the serverUrl from grailsConfig"() {
 
         given: "the serverUrl is set via grails application config"
         controller.grailsApplication = [config: [grails: [serverURL: "http://3oh1.io/"]]]
@@ -121,11 +121,11 @@ class ShortenerControllerIndexSpec extends Specification {
         params.search = "http://3oh1.io/abc"
         controller.index()
 
-        then: "the search service is requested with only the shortenerKey"
+        then: "the search service is requested with only the key"
         1 * controller.shortenerSearchService.search("abc",_,_) >> generateActiveShorteners(1)
     }
 
-    def "when a search for the full shortenerUrl is executed, only the last part as the shortenerKey is used for search by extracting the serverUrl from request header"() {
+    def "when a search for the full shortenerUrl is executed, only the last part as the key is used for search by extracting the serverUrl from request header"() {
 
         given: "the serverUrl is not set via grails application config"
         controller.grailsApplication = [config: [grails: [serverURL: null]]]
@@ -137,7 +137,7 @@ class ShortenerControllerIndexSpec extends Specification {
         params.search = "http://3oh1.io/abc"
         controller.index()
 
-        then: "the search service is requested with only the shortenerKey"
+        then: "the search service is requested with only the key"
         1 * controller.shortenerSearchService.search("abc",_,_) >> generateActiveShorteners(1)
     }
 
@@ -161,7 +161,7 @@ class ShortenerControllerIndexSpec extends Specification {
 
         count.times {
             def shortnener = new Shortener(
-                    shortenerKey: 'abc' + it,
+                    key: 'abc' + it,
                     destinationUrl: 'http://www.twitter.com/' + it,
                     validFrom: validFrom,
                     validUntil: validUntil,

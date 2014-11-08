@@ -12,7 +12,7 @@ class RedirectController {
 
         def index() {
 
-            def key = params.shortenerKey
+            def key = params.key
             def shortener
 
             if (key) {

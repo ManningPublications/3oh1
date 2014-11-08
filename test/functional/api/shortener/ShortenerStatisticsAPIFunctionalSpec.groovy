@@ -5,23 +5,23 @@ class ShortenerStatisticsAPIFunctionalSpec extends APIFunctionalSpec {
 
 
 
-    def "GET /api/shorteners/[:id]/statistics returns statistical information about redirection of the shortener"() {
+    def "GET /api/shorteners/[:key]/statistics returns statistical information about redirection of the shortener"() {
 
         given:
-        def shortenerKey = createShortenerFor("http://www.google.com", "shortenerWithStatistics")
+        def key = createShortenerFor("http://www.google.com", "shortenerWithStatistics")
 
         and: "5 redirections are executed"
         5.times {
-            client.get(BASE_URL + "/$shortenerKey")
+            client.get(BASE_URL + "/$key")
         }
 
 
         when: "the statistics are requested"
-        def jsonResponse = httpGetJson(SHORTENERS_API_URL + "/$shortenerKey/statistics")
+        def jsonResponse = httpGetJson(SHORTENERS_API_URL + "/$key/statistics")
 
 
         then: "the stats for the correct shortener are returned"
-        jsonResponse.shortenerKey == shortenerKey
+        jsonResponse.key == key
 
         and: "the correct redirect counter is generated"
         jsonResponse.redirectCounter == 5

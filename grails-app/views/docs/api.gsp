@@ -26,7 +26,7 @@ your Application via <a href="http://en.wikipedia.org/wiki/Transport_Layer_Secur
 
 <p>Details on a specific shortener can be received via the following HTTP Request:</p>
 
-<p><code>GET /api/shorteners/[:id]</code></p>
+<p><code>GET /api/shorteners/[:key]</code></p>
 
 <p>The response will contain metadata information about the requested shortener. A sample JSON respone looks like the following:</p>
 
@@ -34,7 +34,7 @@ your Application via <a href="http://en.wikipedia.org/wiki/Transport_Layer_Secur
     <samp>
         {<br/>
         &nbsp;&nbsp;&nbsp;&nbsp;destinationUrl: "http://www.example.com",<br/>
-        &nbsp;&nbsp;&nbsp;&nbsp;shortenerKey: "5N",<br/>
+        &nbsp;&nbsp;&nbsp;&nbsp;key: "5N",<br/>
         &nbsp;&nbsp;&nbsp;&nbsp;userCreated: "username",<br />
         &nbsp;&nbsp;&nbsp;&nbsp;validFrom: "2014-10-04T19:35:34Z",<br/>
         &nbsp;&nbsp;&nbsp;&nbsp;validUntil: "2014-10-05T19:35:34Z"<br/>
@@ -51,14 +51,14 @@ your Application via <a href="http://en.wikipedia.org/wiki/Transport_Layer_Secur
 
 <p>Additionally statistical information for a specific shortener can be received via the following HTTP Request:</p>
 
-<p><code>GET /api/shorteners/[:id]/statistics</code></p>
+<p><code>GET /api/shorteners/[:key]/statistics</code></p>
 
 <p>The response will contain statistical information about the requested shortener. A sample JSON respone looks like the following:</p>
 
 <div class="well">
     <samp>
         {<br/>
-        &nbsp;&nbsp;&nbsp;&nbsp;shortenerKey: '5N',<br/>
+        &nbsp;&nbsp;&nbsp;&nbsp;key: '5N',<br/>
         &nbsp;&nbsp;&nbsp;&nbsp;redirectCounter: 0,<br/>
         &nbsp;&nbsp;&nbsp;&nbsp;totalNumberOfRedirectsPerMonth: [<br/>
         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{<br/>
@@ -99,8 +99,8 @@ your Application via <a href="http://en.wikipedia.org/wiki/Transport_Layer_Secur
 <div class="alert alert-warning">
     <h4>Import existing shorteners</h4>
     <p>
-        If you want to import existing shorteners, that already have shortenerKeys assigned,
-        you can just add the shortenerKey to the request: <code>shortenerKey: "5N"</code>.
+        If you want to import existing shorteners, that already have keys assigned,
+        you can just add the key to the request: <code>key: "5N"</code>.
     </p>
 </div>
 
@@ -113,7 +113,7 @@ with additional information about the validation errors. An example of a respons
         &nbsp;&nbsp;&nbsp;&nbsp;"errors": [<br/>
         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{<br/>
         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"object": "io.threeohone.Shortener",<br/>
-        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"field": "shortenerKey",<br/>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"field": "key",<br/>
         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"rejected-value": "5N",<br/>
         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"message": "Shortener with value [5N] must be unique"<br/>
         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;},<br/>

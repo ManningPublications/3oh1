@@ -61,7 +61,7 @@
     <tr>
         <g:set var="linkParams" value="[search : params.search, validity: params.validity, userId: params.userId]"/>
 
-        <g:sortableColumn property="shortenerKey" title="${message(code: 'shortener.shortUrl.label')}" params="${linkParams}"/>
+        <g:sortableColumn property="key" title="${message(code: 'shortener.shortUrl.label')}" params="${linkParams}"/>
         <g:sortableColumn property="destinationUrl" title="${message(code: 'shortener.destinationUrl.label')}" params="${linkParams}"/>
         <g:sortableColumn property="userCreated" title="${message(code: 'shortener.userCreated.label')}" params="${linkParams}"/>
         <g:sortableColumn property="validFrom" title="${message(code: 'shortener.validFrom.label')}" params="${linkParams}"/>

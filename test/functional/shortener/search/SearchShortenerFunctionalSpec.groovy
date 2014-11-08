@@ -113,7 +113,7 @@ class SearchShortenerFunctionalSpec extends GebReportingSpec {
 
 
 
-    def "a shortener can be found by shortenerKey"() {
+    def "a shortener can be found by key"() {
 
         when: "i search for the domain name"
         page.search("httpSpecViaHttps")

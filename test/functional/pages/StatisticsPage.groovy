@@ -40,7 +40,7 @@ class LastRedirectsRow extends Module {
     static content = {
         cell { i -> $("td", i) }
 
-        shortenerKey { cell(0).text() }
+        key { cell(0).text() }
         destinationUrl { cell(1).text() }
         time { new SimpleDateFormat("hh:mm").parse(cell(2).text()) }
     }

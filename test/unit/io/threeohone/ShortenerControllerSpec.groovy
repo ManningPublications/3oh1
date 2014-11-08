@@ -57,7 +57,7 @@ class ShortenerControllerSpec extends Specification {
 
     }
 
-    void "save without a shortenerKey creates an instance with a generated key"() {
+    void "save without a key creates an instance with a generated key"() {
 
         given: "a form is send"
         request.contentType = FORM_CONTENT_TYPE
@@ -71,7 +71,7 @@ class ShortenerControllerSpec extends Specification {
         def validShortener = new Shortener(params)
 
         validShortener.validate()
-        validShortener.shortenerKey = "abc"
+        validShortener.key = "abc"
 
         1 * controller.shortenerService.createShortener(_) >> validShortener
 
@@ -85,7 +85,7 @@ class ShortenerControllerSpec extends Specification {
     }
 
 
-    void "save with a given shortenerKey creates an instance with the given key"() {
+    void "save with a given key creates an instance with the given key"() {
 
         given: "a form is send"
         request.contentType = FORM_CONTENT_TYPE
@@ -96,12 +96,12 @@ class ShortenerControllerSpec extends Specification {
 
         and: "a valid shortener is returned from the service mock"
         populateValidParams(params)
-        params.shortenerKey = "alreadyExistingKey"
+        params.key = "alreadyExistingKey"
 
         def validShortener = new Shortener(params)
 
         validShortener.validate()
-        validShortener.shortenerKey = "abc"
+        validShortener.key = "abc"
 
         1 * controller.shortenerService.importExistingShortener(_) >> validShortener
 
@@ -126,7 +126,7 @@ class ShortenerControllerSpec extends Specification {
         populateValidParams(params)
         def shortener = new Shortener(params).save(failOnError: true, flush: true)
 
-        params.id = shortener.shortenerKey
+        params.id = shortener.key
         controller.show()
 
         then: "A model is populated containing the domain instance"
@@ -143,7 +143,7 @@ class ShortenerControllerSpec extends Specification {
         when: "A domain instance is passed to the edit action"
         populateValidParams(params)
         def shortener = new Shortener(params).save(failOnError: true, flush: true)
-        params.id = shortener.shortenerKey
+        params.id = shortener.key
 
         controller.edit()
 
@@ -166,9 +166,9 @@ class ShortenerControllerSpec extends Specification {
         response.reset()
 
         populateValidParams(params)
-        def shortener = new Shortener(params + [shortenerKey: "invalidShortener"]).save(failOnError: true, flush: true)
+        def shortener = new Shortener(params + [key: "invalidShortener"]).save(failOnError: true, flush: true)
 
-        params.id = shortener.shortenerKey
+        params.id = shortener.key
         params.destinationUrl = "noValidUrl"
 
         controller.update()
@@ -180,13 +180,13 @@ class ShortenerControllerSpec extends Specification {
         when: "A valid domain instance is passed to the update action"
         response.reset()
         populateValidParams(params)
-        shortener = new Shortener(params + [shortenerKey: "validShortener"]).save(failOnError: true, flush: true)
+        shortener = new Shortener(params + [key: "validShortener"]).save(failOnError: true, flush: true)
 
-        params.id = shortener.shortenerKey
+        params.id = shortener.key
         controller.update()
 
         then: "A redirect is issues to the show action"
-        response.redirectedUrl == "/shorteners/$shortener.shortenerKey"
+        response.redirectedUrl == "/shorteners/$shortener.key"
         flash.message != null
     }
 
@@ -209,7 +209,7 @@ class ShortenerControllerSpec extends Specification {
         Shortener.count() == 1
 
         when: "The domain instance is passed to the delete action"
-        params.id = shortener.shortenerKey
+        params.id = shortener.key
 
         controller.delete()
 

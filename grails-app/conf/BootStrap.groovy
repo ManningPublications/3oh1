@@ -37,7 +37,7 @@ class BootStrap {
 
         JSON.registerObjectMarshaller(Shortener) { Shortener shortener ->
             [
-                shortenerKey: shortener.shortenerKey,
+                key: shortener.key,
                 destinationUrl: shortener.destinationUrl,
                 userCreated: shortener.userCreated.username,
                 dateCreated: shortener.dateCreated,
@@ -92,7 +92,7 @@ class BootStrap {
         }
 
         Shortener.findOrSaveWhere(
-                shortenerKey: 'httpsTwitterCom',
+                key: 'httpsTwitterCom',
                 destinationUrl: 'https://www.twitter.com',
                 validFrom: new Date(),
                 validUntil: new Date() + 1,
@@ -100,7 +100,7 @@ class BootStrap {
         )
 
         Shortener.findOrSaveWhere(
-                shortenerKey: 'httpGoogleCom',
+                key: 'httpGoogleCom',
                 destinationUrl: 'http://www.google.com',
                 validFrom: new Date(),
                 validUntil: new Date() + 1,
@@ -108,7 +108,7 @@ class BootStrap {
         )
 
         Shortener.findOrSaveWhere(
-                shortenerKey: 'httpSpec',
+                key: 'httpSpec',
                 destinationUrl: 'http://www.w3.org/Protocols/rfc2616/rfc2616.html',
                 validFrom: new Date(),
                 validUntil: new Date() + 1,
@@ -117,7 +117,7 @@ class BootStrap {
 
 
         Shortener.findOrSaveWhere(
-                shortenerKey: 'httpSpecViaHttps',
+                key: 'httpSpecViaHttps',
                 destinationUrl: 'https://www.ietf.org/rfc/rfc2616.txt',
                 validFrom: new Date(),
                 validUntil: new Date() + 1,
@@ -130,7 +130,7 @@ class BootStrap {
     def createActiveShortenerBySimpleName(String s) {
         def user = User.findByUsername('user')
         Shortener.findOrSaveWhere(
-                shortenerKey: s,
+                key: s,
                 destinationUrl: 'http://www.' + s + '.com',
                 validFrom: new Date(),
                 validUntil: new Date() + 1,

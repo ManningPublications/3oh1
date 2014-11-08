@@ -24,7 +24,7 @@ class RedirectControllerSpec extends Specification {
     void 'for a valid shortener entry a redirect should occur to the destination url'() {
 
         when:
-        params.shortenerKey = 'abc'
+        params.key = 'abc'
         controller.index()
 
         then:
@@ -40,7 +40,7 @@ class RedirectControllerSpec extends Specification {
     void 'a log is created for a valid redirection'() {
 
         when:
-        params.shortenerKey = 'abc'
+        params.key = 'abc'
         controller.request.addHeader("referer", "http://www.google.com")
         controller.index()
 
@@ -57,7 +57,7 @@ class RedirectControllerSpec extends Specification {
     def 'an invalid shortener get a 404 and an error page'() {
 
         when:
-        params.shortenerKey = 'abc'
+        params.key = 'abc'
         controller.index()
 
         then:

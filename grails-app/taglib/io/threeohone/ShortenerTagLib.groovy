@@ -9,7 +9,7 @@ class ShortenerTagLib {
 
         if (!shortener) throwTagError("a shortener has to be set")
 
-        out << g.createLink(absolute: 'true', uri: '/' + shortener.shortenerKey)
+        out << g.createLink(absolute: 'true', uri: '/' + shortener.key)
     }
 
     def shortLink = { attrs, body ->
@@ -18,7 +18,7 @@ class ShortenerTagLib {
         if (!shortener) throwTagError("a shortener has to be set")
 
         if (shortener.isActive()) {
-            out << g.link(absolute: true, uri: '/' + shortener.shortenerKey) {
+            out << g.link(absolute: true, uri: '/' + shortener.key) {
                 shortUrl(shortener: shortener)
             }
         }

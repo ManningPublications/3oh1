@@ -7,7 +7,7 @@ import static org.springframework.http.HttpStatus.*
 class ShortenerReadAPIFunctionalSpec extends APIFunctionalSpec {
 
 
-    def "GET /api/shorteners/[:id] returns metadata of this shortener"() {
+    def "GET /api/shorteners/[:key] returns metadata of this shortener"() {
 
         given:
         def shortenerId = createShortenerFor("http://www.urlViaJsonApi.com")
@@ -24,7 +24,7 @@ class ShortenerReadAPIFunctionalSpec extends APIFunctionalSpec {
 
         and: "different attributes are exposed"
         jsonResponse.containsKey "destinationUrl"
-        jsonResponse.containsKey "shortenerKey"
+        jsonResponse.containsKey "key"
         jsonResponse.containsKey "validFrom"
         jsonResponse.containsKey "validUntil"
 

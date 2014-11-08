@@ -14,7 +14,7 @@ class RedirectLogController {
 
         def headers = [
                 message(code: 'redirectLog.dateCreated.label'),
-                message(code: 'shortener.shortenerKey.label'),
+                message(code: 'shortener.key.label'),
                 message(code: 'shortener.destinationUrl.label'),
                 message(code: 'redirectLog.clientIp.label'),
                 message(code: 'redirectLog.referer.label'),
@@ -24,7 +24,7 @@ class RedirectLogController {
         ]
         def withProperties = [
                 'dateCreated',
-                'shortener.shortenerKey', 'shortener.destinationUrl',
+                'shortener.key', 'shortener.destinationUrl',
                 'clientIp',
                 'referer',
                 'clientInformation.operatingSystem',
@@ -44,7 +44,7 @@ class RedirectLogController {
     def show() {
 
 
-        def shortener = Shortener.findByShortenerKey(params.shortenerId)
+        def shortener = Shortener.findByKey(params.shortenerId)
 
 
         if (!shortener) {
@@ -73,8 +73,8 @@ class RedirectLogController {
                 'clientInformation.browserVersion'
         ]
 
-        def filename = "Redirect Logs ${shortener.shortenerKey} - ${new Date().format('yyyy-MM-dd_hh-mm-ss')}"
-        def worksheetName = "Redirects for ${shortener.shortenerKey}"
+        def filename = "Redirect Logs ${shortener.key} - ${new Date().format('yyyy-MM-dd_hh-mm-ss')}"
+        def worksheetName = "Redirects for ${shortener.key}"
 
         createXlsxResponse(filename, worksheetName, headers, withProperties, logs)
 

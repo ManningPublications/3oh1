@@ -1,8 +1,8 @@
 <tr>
 
     <td>
-        <g:link resource="shortener" action="show" id="${redirectLog.shortener.shortenerKey}">
-            ${fieldValue(bean: redirectLog.shortener, field: "shortenerKey")}
+        <g:link resource="shortener" action="show" id="${redirectLog.shortener.key}">
+            ${fieldValue(bean: redirectLog.shortener, field: "key")}
         </g:link>
     </td>
     <td><shortener:prettyDestinationUrl shortener="${redirectLog.shortener}" link="${true}"/></td>

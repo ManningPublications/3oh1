@@ -3,7 +3,7 @@
     <td>
 
 
-        <g:link action="show" id="${shortener.shortenerKey}">
+        <g:link action="show" id="${shortener.key}">
             <shortener:shortUrl shortener="${shortener}"/>
         </g:link>
 
@@ -11,7 +11,7 @@
                 class="pull-right"
                 target="_blank"
                 absolute="true"
-                url="${shortener.shortenerKey}"
+                url="${shortener.key}"
         >
             <span class="glyphicon glyphicon-share"></span>
         </g:link>

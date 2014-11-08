@@ -30,11 +30,11 @@ class UrlMappings {
 
 
 
-        "/$shortenerKey" {
+        "/$key" {
             controller = 'redirect'
             action = 'index'
             constraints {
-                shortenerKey(matches:/[a-zA-Z0-9]*/)
+                key(matches:/[a-zA-Z0-9]*/)
             }
         }
 

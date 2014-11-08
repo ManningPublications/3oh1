@@ -53,7 +53,7 @@ class ShortenerSearchService {
                 and {
                     or {
                         ilike('destinationUrl', "%${token}%")
-                        ilike('shortenerKey', "%${token}%")
+                        ilike('key', "%${token}%")
                         ilike('u.username', "%${token}%")
                     }
                 }

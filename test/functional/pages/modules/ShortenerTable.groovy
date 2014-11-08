@@ -29,7 +29,7 @@ class ShortenerRow extends Module {
     static content = {
         cell { i -> $("td", i) }
 
-        shortenerKey { cell(0).text() }
+        key { cell(0).text() }
         destinationUrl { cell(1).text() }
         username { cell(2).text() }
         validFrom { new SimpleDateFormat("yyyy-MM-dd hh:mm").parse(cell(4).text()) }

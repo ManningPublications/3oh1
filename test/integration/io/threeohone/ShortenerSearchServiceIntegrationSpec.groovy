@@ -102,7 +102,7 @@ class ShortenerSearchServiceIntegrationSpec extends Specification {
 
         given: 'there is a google shortener for tom'
         def tom = createTestUser('tom')
-        createShortener(shortenerKey: 'first', destinationUrl: 'http://www.google.com', userCreated: tom )
+        createShortener(key: 'first', destinationUrl: 'http://www.google.com', userCreated: tom )
 
         and: 'there is a google shortener for nick'
         createShortener(destinationUrl: 'http://www.google.com', userCreated: createTestUser('nick') )
@@ -142,9 +142,9 @@ class ShortenerSearchServiceIntegrationSpec extends Specification {
 
         given:
         def now = new Date()
-        createShortener(shortenerKey: 'expired', validFrom: now - 2, validUntil: now + 1)
-        createShortener(shortenerKey: 'active', validFrom: now - 1, validUntil: now + 1)
-        createShortener(shortenerKey: 'future', validFrom: now + 1, validUntil: now + 2)
+        createShortener(key: 'expired', validFrom: now - 2, validUntil: now + 1)
+        createShortener(key: 'active', validFrom: now - 1, validUntil: now + 1)
+        createShortener(key: 'future', validFrom: now + 1, validUntil: now + 2)
 
         when: "i search for example.com without validity"
         def results = service.search('example.com', null, createDefaultParams())
@@ -160,7 +160,7 @@ class ShortenerSearchServiceIntegrationSpec extends Specification {
         def user = User.findByUsername('user')
 
         def defaultValues = [
-                shortenerKey  : 'abc',
+                key  : 'abc',
                 destinationUrl: 'http://example.com',
                 userCreated   : user,
                 validFrom     : now,

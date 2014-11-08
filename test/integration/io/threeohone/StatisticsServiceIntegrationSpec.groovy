@@ -38,11 +38,11 @@ class StatisticsServiceIntegrationSpec extends Specification {
     void "getRedirectCounterGroupedByOperatingSystem with a given shortener only counts for this shortener"() {
 
         given: "one windows redirect for twitter"
-        def twitterComShortener = Shortener.findByShortenerKey("httpsTwitterCom")
+        def twitterComShortener = Shortener.findByKey("httpsTwitterCom")
         1.times { createRedirectWithOs("Windows", twitterComShortener) }
 
         and: "one windows redirect for google"
-        def googleComShortener = Shortener.findByShortenerKey("httpGoogleCom")
+        def googleComShortener = Shortener.findByKey("httpGoogleCom")
         1.times { createRedirectWithOs("Windows", googleComShortener) }
 
 
@@ -61,11 +61,11 @@ class StatisticsServiceIntegrationSpec extends Specification {
 
 
         given:
-        def twitterComShortener = Shortener.findByShortenerKey("httpsTwitterCom")
+        def twitterComShortener = Shortener.findByKey("httpsTwitterCom")
         10.times { createRedirectFor(twitterComShortener) }
 
         and:
-        def googleComShortener = Shortener.findByShortenerKey("httpGoogleCom")
+        def googleComShortener = Shortener.findByKey("httpGoogleCom")
         2.times { createRedirectFor(googleComShortener) }
 
 
@@ -95,7 +95,7 @@ class StatisticsServiceIntegrationSpec extends Specification {
     void "totalRedirectsPerMonthBetween returns a list of months with corresponding total number of redirects"() {
 
         given:
-        def s = Shortener.findByShortenerKey("httpsTwitterCom")
+        def s = Shortener.findByKey("httpsTwitterCom")
         1.times { createRedirectFor(s, "2015-05-01") }
         2.times { createRedirectFor(s, "2015-04-01") }
         3.times { createRedirectFor(s, "2015-03-01") }
@@ -118,8 +118,8 @@ class StatisticsServiceIntegrationSpec extends Specification {
     def "totalRedirectPerMonthBetween with a given shortener returns the total numbers only for this shortener"() {
 
         given:
-        def twitter = Shortener.findByShortenerKey("httpsTwitterCom")
-        def google = Shortener.findByShortenerKey("httpGoogleCom")
+        def twitter = Shortener.findByKey("httpsTwitterCom")
+        def google = Shortener.findByKey("httpGoogleCom")
 
         and: "there are two redirects in total in may, but only one for twitter"
         createRedirectFor(twitter, "2015-05-01")
@@ -137,7 +137,7 @@ class StatisticsServiceIntegrationSpec extends Specification {
     void "totalRedirectsPerMonthBetween returns a list with all redirectCounters of 0 when there are no redirects in this time period"() {
 
         given:
-        def s = Shortener.findByShortenerKey("httpsTwitterCom")
+        def s = Shortener.findByKey("httpsTwitterCom")
         1.times { createRedirectFor(s, "2015-05-01") }
 
         when:
@@ -184,7 +184,7 @@ class StatisticsServiceIntegrationSpec extends Specification {
     def createRedirectWithOs(String os, Shortener shortener = null) {
 
         def log = new RedirectLog(
-                shortener: shortener ?: Shortener.findByShortenerKey("httpsTwitterCom"),
+                shortener: shortener ?: Shortener.findByKey("httpsTwitterCom"),
                 clientIp: "192.168.0.24",
                 referer: "http://www.google.com",
                 clientInformation: new ClientInformation(

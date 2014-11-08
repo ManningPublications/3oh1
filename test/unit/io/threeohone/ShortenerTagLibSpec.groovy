@@ -18,10 +18,10 @@ class ShortenerTagLibSpec extends Specification {
         thrown GrailsTagException
     }
 
-    def "shortener:shortUrl returns the base url combines with the shortenerKey as a http url "() {
+    def "shortener:shortUrl returns the base url combines with the key as a http url "() {
 
         given:
-        def shortener = new Shortener(shortenerKey: "abc")
+        def shortener = new Shortener(key: "abc")
         when:
         def actualUrl = applyTemplate('<shortener:shortUrl shortener="${shortener}"/>', [shortener: shortener])
 
@@ -42,7 +42,7 @@ class ShortenerTagLibSpec extends Specification {
 
         given:
         def tomorrow = new Date() + 1
-        def shortener = new Shortener(shortenerKey: "abc", validFrom: tomorrow)
+        def shortener = new Shortener(key: "abc", validFrom: tomorrow)
 
         when:
         def actualUrl = applyTemplate('<shortener:shortLink shortener="${shortener}"/>', [shortener: shortener])
@@ -69,7 +69,7 @@ class ShortenerTagLibSpec extends Specification {
         given:
         messageSource.addMessage('shortener.redirection.validFrom.disabled', request.locale, 'validFromDisabled')
         def tomorrow = new Date() + 1
-        def shortener = new Shortener(shortenerKey: "abc", validFrom: tomorrow)
+        def shortener = new Shortener(key: "abc", validFrom: tomorrow)
 
         when:
         def actualHtml = applyTemplate('<shortener:showWarningIfNotActive shortener="${shortener}"/>', [shortener: shortener])
@@ -85,7 +85,7 @@ class ShortenerTagLibSpec extends Specification {
         given:
         messageSource.addMessage('shortener.redirection.validUntil.disabled', request.locale, 'validUntilDisabled')
         def yesterday = new Date() - 1
-        def shortener = new Shortener(shortenerKey: "abc", validFrom: new Date(), validUntil: yesterday)
+        def shortener = new Shortener(key: "abc", validFrom: new Date(), validUntil: yesterday)
 
         when:
         def actualHtml = applyTemplate('<shortener:showWarningIfNotActive shortener="${shortener}"/>', [shortener: shortener])
@@ -100,7 +100,7 @@ class ShortenerTagLibSpec extends Specification {
 
         given:
         def yesterday = new Date() - 1
-        def shortener = new Shortener(shortenerKey: "abc", validFrom: yesterday)
+        def shortener = new Shortener(key: "abc", validFrom: yesterday)
 
         when:
         def actualHtml = applyTemplate('<shortener:showWarningIfNotActive shortener="${shortener}"/>', [shortener: shortener])

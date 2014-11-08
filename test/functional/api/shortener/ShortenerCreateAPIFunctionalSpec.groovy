@@ -7,7 +7,7 @@ import static org.springframework.http.HttpStatus.*
 class ShortenerCreateAPIFunctionalSpec extends APIFunctionalSpec {
 
 
-    def "POST /api/shorteners creates a shortener and generates a shortenerKey"() {
+    def "POST /api/shorteners creates a shortener and generates a key"() {
 
 
 
@@ -54,17 +54,17 @@ class ShortenerCreateAPIFunctionalSpec extends APIFunctionalSpec {
 
 
 
-    def "POST /api/shorteners with a given shortenerKey creates a shortener that uses the given shortenerKey"() {
+    def "POST /api/shorteners with a given key creates a shortener that uses the given key"() {
 
 
         /////////////////////////////////////////////////////////
         // Actual Shortener Creation (HTTP POST)
         /////////////////////////////////////////////////////////
 
-        when:  "a HTTP POST with a given shortenerKey is executed to /api/shorteners"
+        when:  "a HTTP POST with a given key is executed to /api/shorteners"
         RestResponse createResponse = httpPostJson(
                 SHORTENERS_API_URL,
-                [destinationUrl: "http://www.urlViaJsonApi.com", shortenerKey: "abc"]
+                [destinationUrl: "http://www.urlViaJsonApi.com", key: "abc"]
         )
 
 
@@ -89,8 +89,8 @@ class ShortenerCreateAPIFunctionalSpec extends APIFunctionalSpec {
         then: "the request was successful"
         verifyResponse.statusCode == OK
 
-        and: "the initially posted shortenerKey was saved"
-        verifyResponse.body.shortenerKey == "abc"
+        and: "the initially posted key was saved"
+        verifyResponse.body.key == "abc"
 
 
     }

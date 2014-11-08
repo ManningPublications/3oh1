@@ -12,7 +12,7 @@
 
 
 
-<h1><g:message code="default.show.label" args="[entityName]"/> <small>${shortenerInstance.shortenerKey}</small></h1>
+<h1><g:message code="default.show.label" args="[entityName]"/> <small>${shortenerInstance.key}</small></h1>
 
 
 <div class="row">
@@ -40,7 +40,7 @@
                     elementId="statistics-download-redirect-logs"
                     resource="shortener/redirectLog"
                     action="show"
-                    shortenerId="${shortenerInstance.shortenerKey}">
+                    shortenerId="${shortenerInstance.key}">
                 <span class="glyphicon glyphicon-file"></span>
                 <g:message code="shortener.redirectLogs.label"/>
             </g:link>

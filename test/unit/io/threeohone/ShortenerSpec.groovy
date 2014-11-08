@@ -63,10 +63,10 @@ class ShortenerSpec extends Specification {
      *  this is because the key will be generated after the shortener was saved.
      *  It is derived from the id, that is provided by the db
      */
-    void "shortenerKey is not required"() {
+    void "key is not required"() {
 
         given:
-        shortener.shortenerKey = null
+        shortener.key = null
 
         when:
         def shortenerIsValid = shortener.validate()
@@ -77,10 +77,10 @@ class ShortenerSpec extends Specification {
     }
 
     @Unroll
-    void "#shortenerKey is not allowed as the shortenerKey due to the blacklist"() {
+    void "#key is not allowed as the key due to the blacklist"() {
 
-        when: "validation is executed with the current shortenerKey"
-        shortener.shortenerKey = shortenerKey
+        when: "validation is executed with the current key"
+        shortener.key = key
         def actualValidationResult = shortener.validate()
 
         then: "the validation result is correct"
@@ -88,7 +88,7 @@ class ShortenerSpec extends Specification {
 
         where:
 
-        shortenerKey || expectedValidationResult
+        key || expectedValidationResult
         "shorteners" || false
         "api"        || false
         "statistics" || false
@@ -216,7 +216,7 @@ class ShortenerSpec extends Specification {
 
         new Shortener(
                 destinationUrl: "http://example.com",
-                shortenerKey: "abc",
+                key: "abc",
                 userCreated: new User(username: "Dummy User"),
                 validFrom: now,
                 validUntil: now + 1

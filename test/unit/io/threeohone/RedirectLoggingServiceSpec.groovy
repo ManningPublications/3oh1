@@ -49,7 +49,7 @@ class RedirectLoggingServiceSpec extends Specification {
         def now = new Date()
 
         def defaultValues = [
-                shortenerKey: 'abc',
+                key: 'abc',
                 destinationUrl: 'http://example.com',
                 userCreated: new User(username: "user", password: "user", enabled: true),
                 validFrom: now,

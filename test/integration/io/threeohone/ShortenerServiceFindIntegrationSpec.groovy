@@ -12,12 +12,12 @@ class ShortenerServiceFindIntegrationSpec extends Specification {
         service  = new ShortenerService()
     }
 
-    void 'a valid shortenerKey will find the correct shortener'() {
+    void 'a valid key will find the correct shortener'() {
 
         setup:
 
         def expectedDestinationUrl = 'http://example.com'
-        createShortener(shortenerKey: 'abc', destinationUrl: expectedDestinationUrl)
+        createShortener(key: 'abc', destinationUrl: expectedDestinationUrl)
 
         when:
         def actualShortener = this.service.findActiveShortenerByKey('abc')
@@ -27,10 +27,10 @@ class ShortenerServiceFindIntegrationSpec extends Specification {
     }
 
 
-    void 'a invalid shortenerKey will find no shortener'() {
+    void 'a invalid key will find no shortener'() {
 
         setup:
-        createShortener(shortenerKey: 'abc')
+        createShortener(key: 'abc')
 
         when:
         def actualShortener = service.findActiveShortenerByKey('invalidKey')
@@ -56,7 +56,7 @@ class ShortenerServiceFindIntegrationSpec extends Specification {
 
         setup:
         def tomorrow = new Date() + 1
-        createShortener(shortenerKey: 'abc', validFrom: tomorrow)
+        createShortener(key: 'abc', validFrom: tomorrow)
 
         when:
         def actualShortener = service.findActiveShortenerByKey('abc')
@@ -65,11 +65,11 @@ class ShortenerServiceFindIntegrationSpec extends Specification {
         !actualShortener
     }
 
-    void 'a past shortenerKey will find no shortener'() {
+    void 'a past key will find no shortener'() {
 
         setup:
         def yesterday = new Date() - 1
-        createShortener(shortenerKey: 'abc', validUntil: yesterday)
+        createShortener(key: 'abc', validUntil: yesterday)
 
         when:
         def actualShortener = service.findActiveShortenerByKey('abc')
@@ -84,7 +84,7 @@ class ShortenerServiceFindIntegrationSpec extends Specification {
         def user = User.findByUsername("user")
 
         def defaultValues = [
-                shortenerKey: 'abc',
+                key: 'abc',
                 destinationUrl: 'http://example.com',
                 userCreated: user,
                 validFrom: now,

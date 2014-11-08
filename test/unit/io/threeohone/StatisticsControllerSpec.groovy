@@ -18,7 +18,7 @@ class StatisticsControllerSpec extends Specification {
         def shortener = new Shortener(
                 userCreated: new User(username: "user", password: "user", enabled: true),
                 destinationUrl: "http://www.google.com",
-                shortenerKey: "abc",
+                key: "abc",
                 validFrom: new Date()
         ).save(failOnError: true)
 

@@ -8,7 +8,7 @@
 
 <body>
 
-<h1><g:message code="default.edit.label" args="[entityName]"/> <small>${shortenerInstance.shortenerKey}</small></h1>
+<h1><g:message code="default.edit.label" args="[entityName]"/> <small>${shortenerInstance.key}</small></h1>
 <g:hasErrors bean="${shortenerInstance}">
     <ul class="errors" role="alert">
         <g:eachError bean="${shortenerInstance}" var="error">
@@ -17,7 +17,7 @@
         </g:eachError>
     </ul>
 </g:hasErrors>
-<g:form url="[resource: 'shortener', action: 'update', id: shortenerInstance.shortenerKey]" method="PUT">
+<g:form url="[resource: 'shortener', action: 'update', id: shortenerInstance.key]" method="PUT">
     <g:hiddenField name="version" value="${shortenerInstance?.version}"/>
     <g:render template="form"/>
     <button type="submit" class="btn btn-success save" onclick="submit();">

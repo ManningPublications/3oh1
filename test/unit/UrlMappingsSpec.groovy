@@ -11,8 +11,8 @@ class UrlMappingsSpec extends Specification {
     def "every url will be mapped to the redirect controller"() {
 
         expect:
-        assertForwardUrlMapping('/abc', controller: 'redirect', action: 'index') { shortenerKey == 'abc' }
-        assertForwardUrlMapping('/otherController', controller: 'redirect', action: 'index') { shortenerKey == 'otherController' }
+        assertForwardUrlMapping('/abc', controller: 'redirect', action: 'index') { key == 'abc' }
+        assertForwardUrlMapping('/otherController', controller: 'redirect', action: 'index') { key == 'otherController' }
 
     }
 
@@ -20,10 +20,10 @@ class UrlMappingsSpec extends Specification {
 
         when:
         def longString = 'a' * 125
-        def validShortenerKeys = ['abc', 'Abc', 'ABC', 'ab123', '123', longString]
+        def validKeys = ['abc', 'Abc', 'ABC', 'ab123', '123', longString]
 
         then:
-        validShortenerKeys.each {
+        validKeys.each {
             assertForwardUrlMapping("/$it",  controller: 'redirect', action: 'index')
         }
 
@@ -32,11 +32,11 @@ class UrlMappingsSpec extends Specification {
     def "invalid shortener keys are not mapped to redirect controller"() {
 
         when:
-        def invalidShortenerKeys = ['a&23', 'ö@asd', '<<78hjh', '?asd=de']
+        def invalidKeys = ['a&23', 'ö@asd', '<<78hjh', '?asd=de']
 
         then:
         shouldFail {
-            invalidShortenerKeys.each {
+            invalidKeys.each {
                 assertForwardUrlMapping("/$it", controller: 'redirect', action: 'index')
             }
         }
