@@ -74,7 +74,7 @@ class ShortenerControllerIndexSpec extends Specification {
 
         then: "the request is redirected"
         response.status == 302
-        response.redirectedUrl == "/shorteners/${shortenerList[0].id}"
+        response.redirectedUrl == "/shorteners/${shortenerList[0].shortenerKey}"
 
         and: "the shortener search service returns only one result"
         1 * controller.shortenerSearchService.search(_, _, _) >> shortenerList

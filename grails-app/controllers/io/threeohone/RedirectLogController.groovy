@@ -43,7 +43,8 @@ class RedirectLogController {
 
     def show() {
 
-        def shortener = Shortener.get(params.shortenerId)
+
+        def shortener = Shortener.findByShortenerKey(params.shortenerId)
 
 
         if (!shortener) {

@@ -40,7 +40,7 @@
                     elementId="statistics-download-redirect-logs"
                     resource="shortener/redirectLog"
                     action="show"
-                    shortenerId="${shortenerInstance.id}">
+                    shortenerId="${shortenerInstance.shortenerKey}">
                 <span class="glyphicon glyphicon-file"></span>
                 <g:message code="shortener.redirectLogs.label"/>
             </g:link>

@@ -3,7 +3,7 @@
     <td>
 
 
-        <g:link action="show" id="${shortener.id}">
+        <g:link action="show" id="${shortener.shortenerKey}">
             <shortener:shortUrl shortener="${shortener}"/>
         </g:link>
 

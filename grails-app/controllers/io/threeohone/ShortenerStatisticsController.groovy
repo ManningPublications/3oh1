@@ -13,9 +13,9 @@ class ShortenerStatisticsController {
 
     def show() {
 
-        def shortenerInstance = Shortener.get(params.shortenerId)
+        def shortenerInstance = Shortener.findByShortenerKey(params.shortenerId)
 
-        if (!shortenerInstance) {
+        if (!params.shortenerId || !shortenerInstance) {
             response.status = 404
             return
         }
@@ -26,7 +26,7 @@ class ShortenerStatisticsController {
         def redirectCounter = RedirectLog.where { shortener == shortenerInstance }.count()
 
         def statisticsResponse = [
-                shortenerId: shortenerInstance.id,
+                shortenerKey: shortenerInstance.shortenerKey,
                 redirectCounter: redirectCounter,
                 totalNumberOfRedirectsPerMonth: totalNumberOfRedirectsPerMonth
         ]

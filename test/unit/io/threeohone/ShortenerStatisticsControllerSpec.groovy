@@ -31,12 +31,13 @@ class ShortenerStatisticsControllerSpec extends Specification {
         ]
 
         when: "the statistics of the shortener will be requested"
-        params.shortenerId = shortener.id
+        params.shortenerId = shortener.shortenerKey
         controller.show()
+
         def json = response.json
 
         then: "the correct shortenerId is in the json response"
-        json.shortenerId == 1
+        json.shortenerKey == shortener.shortenerKey
 
         and: "no redirects have been executed on this shortener"
         json.redirectCounter == 0
@@ -75,7 +76,7 @@ class ShortenerStatisticsControllerSpec extends Specification {
 
 
         when: "the statistics of the shortener are requested"
-        params.shortenerId = this.shortener.id
+        params.shortenerId = shortener.shortenerKey
         controller.show()
 
 
@@ -97,6 +98,7 @@ class ShortenerStatisticsControllerSpec extends Specification {
 
     private Shortener createShortener() {
         new Shortener(
+                shortenerKey: "abc",
                 userCreated: new User(username: "user", password: "user", enabled: true),
                 destinationUrl: "http://www.example.com",
                 validFrom: new Date()

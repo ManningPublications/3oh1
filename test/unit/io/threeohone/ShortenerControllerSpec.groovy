@@ -18,11 +18,11 @@ class ShortenerControllerSpec extends Specification {
     }
 
     def setup() {
+        controller.statisticsService = Mock(StatisticsService)
 
         // the shortener taglib is mocked
         controller.metaClass.shortener = [shortUrl: { "shortUrl" }]
 
-        controller.statisticsService = Mock(StatisticsService)
     }
 
 
@@ -71,7 +71,7 @@ class ShortenerControllerSpec extends Specification {
         def validShortener = new Shortener(params)
 
         validShortener.validate()
-        validShortener.id = 1
+        validShortener.shortenerKey = "abc"
 
         1 * controller.shortenerService.createShortener(_) >> validShortener
 
@@ -79,7 +79,7 @@ class ShortenerControllerSpec extends Specification {
         controller.save()
 
         then: "A redirect is issued to the show action"
-        response.redirectedUrl == '/shorteners/1'
+        response.redirectedUrl == '/shorteners/abc'
         controller.flash.message != null
 
     }
@@ -101,7 +101,7 @@ class ShortenerControllerSpec extends Specification {
         def validShortener = new Shortener(params)
 
         validShortener.validate()
-        validShortener.id = 1
+        validShortener.shortenerKey = "abc"
 
         1 * controller.shortenerService.importExistingShortener(_) >> validShortener
 
@@ -109,7 +109,7 @@ class ShortenerControllerSpec extends Specification {
         controller.save()
 
         then: "A redirect is issued to the show action"
-        response.redirectedUrl == '/shorteners/1'
+        response.redirectedUrl == '/shorteners/abc'
         controller.flash.message != null
 
     }
@@ -117,15 +117,17 @@ class ShortenerControllerSpec extends Specification {
     void "Test that the show action returns the correct model"() {
 
         when: "The show action is executed with a null domain"
-        controller.show(null)
+        controller.show()
 
         then: "A 404 error is returned"
         response.status == 404
 
         when: "A domain instance is passed to the show action"
         populateValidParams(params)
-        def shortener = new Shortener(params)
-        controller.show(shortener)
+        def shortener = new Shortener(params).save(failOnError: true, flush: true)
+
+        params.id = shortener.shortenerKey
+        controller.show()
 
         then: "A model is populated containing the domain instance"
         model.shortenerInstance == shortener
@@ -133,15 +135,17 @@ class ShortenerControllerSpec extends Specification {
 
     void "Test that the edit action returns the correct model"() {
         when: "The edit action is executed with a null domain"
-        controller.edit(null)
+        controller.edit()
 
         then: "A 404 error is returned"
         response.status == 404
 
         when: "A domain instance is passed to the edit action"
         populateValidParams(params)
-        def shortener = new Shortener(params)
-        controller.edit(shortener)
+        def shortener = new Shortener(params).save(failOnError: true, flush: true)
+        params.id = shortener.shortenerKey
+
+        controller.edit()
 
         then: "A model is populated containing the domain instance"
         model.shortenerInstance == shortener
@@ -151,7 +155,7 @@ class ShortenerControllerSpec extends Specification {
         when: "Update is called for a domain instance that doesn't exist"
         request.contentType = FORM_CONTENT_TYPE
         request.method = 'PUT'
-        controller.update(null)
+        controller.update()
 
         then: "A 404 error is returned"
         response.redirectedUrl == '/shorteners'
@@ -160,9 +164,14 @@ class ShortenerControllerSpec extends Specification {
 
         when: "An invalid domain instance is passed to the update action"
         response.reset()
-        def shortener = new Shortener()
-        shortener.validate()
-        controller.update(shortener)
+
+        populateValidParams(params)
+        def shortener = new Shortener(params + [shortenerKey: "invalidShortener"]).save(failOnError: true, flush: true)
+
+        params.id = shortener.shortenerKey
+        params.destinationUrl = "noValidUrl"
+
+        controller.update()
 
         then: "The edit view is rendered again with the invalid instance"
         view == 'edit'
@@ -171,11 +180,13 @@ class ShortenerControllerSpec extends Specification {
         when: "A valid domain instance is passed to the update action"
         response.reset()
         populateValidParams(params)
-        shortener = new Shortener(params).save(flush: true)
-        controller.update(shortener)
+        shortener = new Shortener(params + [shortenerKey: "validShortener"]).save(failOnError: true, flush: true)
+
+        params.id = shortener.shortenerKey
+        controller.update()
 
         then: "A redirect is issues to the show action"
-        response.redirectedUrl == "/shorteners/$shortener.id"
+        response.redirectedUrl == "/shorteners/$shortener.shortenerKey"
         flash.message != null
     }
 
@@ -183,7 +194,7 @@ class ShortenerControllerSpec extends Specification {
         when: "The delete action is called for a null instance"
         request.contentType = FORM_CONTENT_TYPE
         request.method = 'DELETE'
-        controller.delete(null)
+        controller.delete()
 
         then: "A 404 is returned"
         response.redirectedUrl == '/shorteners'
@@ -198,7 +209,9 @@ class ShortenerControllerSpec extends Specification {
         Shortener.count() == 1
 
         when: "The domain instance is passed to the delete action"
-        controller.delete(shortener)
+        params.id = shortener.shortenerKey
+
+        controller.delete()
 
         then: "The instance is deleted"
         Shortener.count() == 0

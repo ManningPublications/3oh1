@@ -50,7 +50,7 @@ class ShortenerController {
 
 
         if (isOnlyOneSearchResult(shortenerList)) {
-            redirect shortenerList.first()
+            redirect(resource: "shortener", action: 'show', id: shortenerList.first().shortenerKey)
             return
         }
 
@@ -87,8 +87,8 @@ class ShortenerController {
     }
 
 
-    def show(Shortener shortenerInstance) {
-
+    def show() {
+        Shortener shortenerInstance = Shortener.findByShortenerKey(params.id)
 
         def result = statisticsService.getTotalRedirectsPerMonthBetween(new Date() - 365, new Date(), shortenerInstance)
 
@@ -129,29 +129,36 @@ class ShortenerController {
             form multipartForm {
 
                 flash.message = message(code: 'default.created.message', args: [shortener.shortUrl(shortener: shortenerInstance)])
-                redirect shortenerInstance
+                redirect(resource: "shortener", action: 'show', id: shortenerInstance.shortenerKey)
             }
             '*' {
 
                 response.addHeader(HttpHeaders.LOCATION,
                         g.createLink(
-                                resource: "shortener", action: 'show', id: shortenerInstance.id))
+                                resource: "shortener", action: 'show', id: shortenerInstance.shortenerKey))
 
                 respond shortenerInstance, [status: CREATED]
             }
         }
     }
 
-    def edit(Shortener shortenerInstance) {
+    def edit() {
+        Shortener shortenerInstance = Shortener.findByShortenerKey(params.id)
         respond shortenerInstance
     }
 
     @Transactional
-    def update(Shortener shortenerInstance) {
+    def update() {
+        Shortener shortenerInstance = Shortener.findByShortenerKey(params.id)
+
         if (shortenerInstance == null) {
             notFound()
             return
         }
+
+        bindData(shortenerInstance, params)
+
+        shortenerInstance.validate()
 
         if (shortenerInstance.hasErrors()) {
             respond shortenerInstance.errors, view: 'edit'
@@ -163,19 +170,20 @@ class ShortenerController {
         request.withFormat {
             form multipartForm {
                 flash.message = message(code: 'default.updated.message', args: [shortener.shortUrl(shortener: shortenerInstance)])
-                redirect shortenerInstance
+                redirect(resource: "shortener", action: 'show', id: shortenerInstance.shortenerKey)
             }
             '*' {
                 response.addHeader(HttpHeaders.LOCATION,
                         g.createLink(
-                                resource: this.controllerName, action: 'show', id: shortenerInstance.id, absolute: true))
+                                resource: this.controllerName, action: 'show', id: shortenerInstance.shortenerKey, absolute: true))
                 respond shortenerInstance, [status: OK]
             }
         }
     }
 
     @Transactional
-    def delete(Shortener shortenerInstance) {
+    def delete() {
+        Shortener shortenerInstance = Shortener.findByShortenerKey(params.id)
 
         if (shortenerInstance == null) {
             notFound()

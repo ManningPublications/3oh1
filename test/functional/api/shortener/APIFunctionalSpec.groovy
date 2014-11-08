@@ -64,9 +64,9 @@ abstract class APIFunctionalSpec extends GebReportingSpec {
             json destinationUrl: destinationUrl, shortenerKey: shortenerKey
         }
 
-        def shortenerId = createResponse.headers.getFirst("Location").tokenize("/").last()
+        def receivedShortenerKey = createResponse.headers.getFirst("Location").tokenize("/").last()
 
-        return shortenerId
+        return receivedShortenerKey
     }
 
     protected JSONElement httpGetJson(String url) {

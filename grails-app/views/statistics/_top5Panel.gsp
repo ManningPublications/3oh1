@@ -16,7 +16,7 @@
             <g:each in="${top5}" var="topEntry">
                 <tr>
                     <td>
-                        <g:link controller="shortener" action="show" id="${topEntry.shortener.id}">
+                        <g:link resource="shortener" action="show" id="${topEntry.shortener.shortenerKey}">
                             ${fieldValue(bean: topEntry.shortener, field: "shortenerKey")}
                         </g:link>
                     </td>

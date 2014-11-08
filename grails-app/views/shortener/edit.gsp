@@ -17,7 +17,7 @@
         </g:eachError>
     </ul>
 </g:hasErrors>
-<g:form url="[resource: shortenerInstance, action: 'update']" method="PUT">
+<g:form url="[resource: 'shortener', action: 'update', id: shortenerInstance.shortenerKey]" method="PUT">
     <g:hiddenField name="version" value="${shortenerInstance?.version}"/>
     <g:render template="form"/>
     <button type="submit" class="btn btn-success save" onclick="submit();">
