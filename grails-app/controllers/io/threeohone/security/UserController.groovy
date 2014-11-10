@@ -6,7 +6,7 @@ import org.codehaus.groovy.grails.web.servlet.HttpHeaders
 import static org.springframework.http.HttpStatus.*
 import grails.transaction.Transactional
 
-@Secured(['isAuthenticated()'])
+@Secured(['ROLE_ADMIN'])
 class UserController {
 
 
@@ -51,7 +51,7 @@ class UserController {
             return
         }
 
-        def role = Role.findByAuthority('ROLE_USER')
+        def role = userCreateCommand.role ?: Role.findByAuthority('ROLE_USER')
         UserRole.create(userInstance, role).save flush: true
 
         request.withFormat {

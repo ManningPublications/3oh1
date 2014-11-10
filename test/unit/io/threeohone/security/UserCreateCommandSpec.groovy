@@ -6,9 +6,9 @@ import spock.lang.Specification
 
 @TestMixin(GrailsUnitTestMixin)
 class UserCreateCommandSpec extends Specification {
-    def userCreateCommand = new UserCreateCommand(username: 'username')
+    def userCreateCommand = new UserCreateCommand(username: 'username', role: new Role(authority: "admin"))
 
-    def 'password and confirmPassword is the same'() {
+    def 'when password and confirmPassword match, there are no validation errors'() {
         when:
         userCreateCommand.password = 'password'
         userCreateCommand.confirmPassword = 'password'
@@ -18,7 +18,7 @@ class UserCreateCommandSpec extends Specification {
         !userCreateCommand.hasErrors()
     }
 
-    def 'different passwords'() {
+    def 'when password and confirmPassword dont match, there is a validation error'() {
         when:
         userCreateCommand.password = 'password'
         userCreateCommand.confirmPassword = 'noTheSame'
@@ -49,6 +49,16 @@ class UserCreateCommandSpec extends Specification {
         then:
         userCreateCommand.hasErrors()
         userCreateCommand.errors['password'].code == 'blank'
+    }
+
+    def 'role can not be blank'() {
+        when:
+        userCreateCommand.role = null
+        userCreateCommand.validate()
+
+        then:
+        userCreateCommand.hasErrors()
+        userCreateCommand.errors['role'].code == 'nullable'
     }
 
 }

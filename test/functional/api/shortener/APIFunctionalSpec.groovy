@@ -18,6 +18,9 @@ abstract class APIFunctionalSpec extends GebReportingSpec {
 
     RestBuilder client
 
+    String defaultUsername = "apiUser"
+    String defaultPassword = "apiUser"
+
     def setup() {
         client = new RestBuilder()
     }
@@ -26,7 +29,7 @@ abstract class APIFunctionalSpec extends GebReportingSpec {
     protected def createShortenerFor(String destinationUrl) {
 
         RestResponse createResponse = client.post(SHORTENERS_API_URL) {
-            auth "apiUser", "apiUser"
+            auth defaultUsername, defaultPassword
             accept JSON
             contentType "application/json"
 
@@ -57,7 +60,7 @@ abstract class APIFunctionalSpec extends GebReportingSpec {
     protected def createShortenerFor(String destinationUrl, String key) {
 
         RestResponse createResponse = client.post(SHORTENERS_API_URL) {
-            auth "apiUser", "apiUser"
+            auth defaultUsername, defaultPassword
             accept JSON
             contentType "application/json"
 
@@ -75,7 +78,7 @@ abstract class APIFunctionalSpec extends GebReportingSpec {
 
     protected RestResponse httpGet(String url) {
         RestResponse response = client.get(url) {
-            auth "apiUser", "apiUser"
+            auth defaultUsername, defaultPassword
             accept JSON
         }
 
@@ -85,7 +88,7 @@ abstract class APIFunctionalSpec extends GebReportingSpec {
     protected RestResponse httpPostJson(String url, Map jsonContent) {
 
         RestResponse response = client.post(url) {
-            auth "apiUser", "apiUser"
+            auth defaultUsername, defaultPassword
             accept JSON
             contentType "application/json"
 
@@ -98,7 +101,7 @@ abstract class APIFunctionalSpec extends GebReportingSpec {
     protected RestResponse httpPutJson(String url, Map jsonContent) {
 
         RestResponse response = client.put(url) {
-            auth "apiUser", "apiUser"
+            auth defaultUsername, defaultPassword
             accept JSON
             contentType "application/json"
 

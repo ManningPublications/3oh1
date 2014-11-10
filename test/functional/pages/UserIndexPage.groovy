@@ -35,7 +35,7 @@ class UserIndexPage extends Page {
         _userTable.hasUser(username)
     }
 
-    void editUser(String username) {
+    void showUser(String username) {
         $("a", text: username).click()
     }
 

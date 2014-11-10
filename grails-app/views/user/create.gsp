@@ -11,6 +11,9 @@
 
 <g:form url="[resource: userInstance, action: 'save']">
     <g:render template="form"/>
+
+    <f:field bean="${userCreateCommandInstance}" property="role" input-class="form-control"/>
+
     <button type="submit" class="btn btn-success save" onclick="submit();">
         <span class="glyphicon glyphicon-disk"></span>
         <g:message code="default.button.create.label"/>

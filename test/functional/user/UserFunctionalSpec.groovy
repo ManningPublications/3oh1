@@ -15,7 +15,7 @@ class UserFunctionalSpec extends GebReportingSpec {
     def setup() {
         via UserIndexPage
         at LoginPage
-        page.login('user', 'user')
+        page.login('admin', 'admin')
         at UserIndexPage
     }
 
@@ -72,10 +72,10 @@ class UserFunctionalSpec extends GebReportingSpec {
 
     }
 
-    def 'change password'() {
+    def 'the password can be changed for a specific user via the ui'() {
 
-        when: 'i click an the username'
-        page.editUser('user')
+        when: 'i click at the username'
+        page.showUser('admin')
 
         then: 'i am at the show page'
         at UserShowPage
@@ -87,7 +87,7 @@ class UserFunctionalSpec extends GebReportingSpec {
         at UserEditPage
 
         when: 'i fill in the correct password'
-        page.updateUsersPassword('user')
+        page.updateUsersPassword('admin')
 
         then: 'i am at the show page'
         at UserShowPage

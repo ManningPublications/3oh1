@@ -8,6 +8,10 @@ import static org.springframework.http.HttpStatus.*
 
 class UserCreateAPIFunctionalSpec extends APIFunctionalSpec {
 
+    def setup() {
+        defaultUsername = "admin"
+        defaultPassword = "admin"
+    }
 
     def "POST /api/users creates a user"() {
 
@@ -17,7 +21,7 @@ class UserCreateAPIFunctionalSpec extends APIFunctionalSpec {
 
         when: "a HTTP POST with JSON content is executed to /api/users"
         RestResponse createResponse = client.post(USERS_API_URL) {
-            auth "apiUser", "apiUser"
+            auth defaultUsername, defaultPassword
             accept JSON
             contentType "application/json"
 
@@ -25,6 +29,7 @@ class UserCreateAPIFunctionalSpec extends APIFunctionalSpec {
                 username = 'username'
                 password = 'password'
                 confirmPassword = 'password'
+                role = [id: 1]
             }
         }
 
@@ -53,27 +58,28 @@ class UserCreateAPIFunctionalSpec extends APIFunctionalSpec {
 
     // changing user password
 
-    def "PUT /api/users with correct password and confirmation returns created"() {
+    def "PUT /api/users with correct password and confirmation returns OK"() {
 
         setup: 'create a user'
         RestResponse createResponse = client.post(USERS_API_URL) {
-            auth "apiUser", "apiUser"
+            auth defaultUsername, defaultPassword
             accept JSON
             contentType "application/json"
 
             json {
-                username = 'username'
-                password = 'password'
-                confirmPassword = 'password'
+                username = 'username123'
+                password = 'password123'
+                confirmPassword = 'password123'
+                role = [id: 1]
             }
         }
 
         when:
         RestResponse response = httpPutJson(
-                USERS_API_URL + '/username',
-                [username       : 'username',
-                 password       : 'password2',
-                 confirmPassword: 'password2']
+                USERS_API_URL + '/username123',
+                [username       : 'username123',
+                 password       : 'password456',
+                 confirmPassword: 'password456']
         )
 
         then:
@@ -97,7 +103,7 @@ class UserCreateAPIFunctionalSpec extends APIFunctionalSpec {
 
         setup: 'create a user'
         RestResponse createResponse = client.post(USERS_API_URL) {
-            auth "apiUser", "apiUser"
+            auth defaultUsername, defaultPassword
             accept JSON
             contentType "application/json"
 
@@ -150,12 +156,13 @@ class UserCreateAPIFunctionalSpec extends APIFunctionalSpec {
                              "rejected-value": null, "message": "confirmPassword cannot be null"
                          }]
           }
-  */
+
+        */
 
 
     }
 
-    def "POST /api/users without a different in password and confirmPassword returns 422 and error messages"() {
+    def "POST /api/users with a difference in password and confirmPassword returns 422 and error messages"() {
 
         when: "a HTTP POST with different password and confirmPassword is executed to /api/users"
         RestResponse response = httpPostJson(
@@ -170,7 +177,8 @@ class UserCreateAPIFunctionalSpec extends APIFunctionalSpec {
 
         errors.find { it.field == "password" }
 
-/*
+        /*
+
         {
             the json error object will look like this:
 
@@ -180,7 +188,8 @@ class UserCreateAPIFunctionalSpec extends APIFunctionalSpec {
                            "Password does not match the confirm password."
                        }]
         }
-*/
+
+        */
 
     }
 

@@ -7,6 +7,13 @@
     </tr>
 
     <tr>
+        <th class="col-sm-5"><g:message code="role.label"/></th>
+        <td class="col-sm-7">
+            ${userInstance.authorities*.authority.join(", ")}
+        </td>
+    </tr>
+
+    <tr>
         <th><g:message code="user.enabled.label"/></th>
         <td><g:fieldValue bean="${userInstance}" field="enabled"/></td>
     </tr>
