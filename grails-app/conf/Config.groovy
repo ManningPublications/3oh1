@@ -165,3 +165,6 @@ grails.plugin.springsecurity.filterChain.chainMap = [
 ]
 
 grails.plugin.fields.disableLookupCache = true
+
+// Added by the GeoIP plugin:
+grails.plugin.geoip.data.resource = '/data/maxmind/GeoLiteCity.dat'
