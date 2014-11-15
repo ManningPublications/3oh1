@@ -105,13 +105,8 @@ environments {
     }
 }
 
-// log4j configuration
+
 log4j.main = {
-    // Example of changing the log pattern for the default console appender:
-    //
-    //appenders {
-    //    console name:'stdout', layout:pattern(conversionPattern: '%c{2} %m%n')
-    //}
 
     error 'org.codehaus.groovy.grails.web.servlet',        // controllers
             'org.codehaus.groovy.grails.web.pages',          // GSP
@@ -166,5 +161,5 @@ grails.plugin.springsecurity.filterChain.chainMap = [
 
 grails.plugin.fields.disableLookupCache = true
 
-// Added by the GeoIP plugin:
-grails.plugin.geoip.data.resource = '/data/maxmind/GeoLiteCity.dat'
+grails.plugin.geoip.data.cache = 0
+grails.plugin.geoip.data.path = 'web-app/data/maxmind/GeoLiteCity.dat'

@@ -23,16 +23,7 @@ class StatisticsControllerSpec extends Specification {
         ).save(failOnError: true)
 
         20.times {
-            new RedirectLog(
-                    shortener: shortener,
-                    clientIp: "127.0.0.1",
-                    clientInformation: new ClientInformation(
-                            browserName: "Chrome 38",
-                            browserVersion: "38.0.1.34",
-                            operatingSystem: "Mac OS X",
-                            mobileBrowser: false
-                    )
-            ).save(failOnError: true)
+            new RedirectLog(shortener: shortener).save(failOnError: true)
         }
 
         when:

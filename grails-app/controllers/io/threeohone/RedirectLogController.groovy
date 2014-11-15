@@ -16,7 +16,6 @@ class RedirectLogController {
                 message(code: 'redirectLog.dateCreated.label'),
                 message(code: 'shortener.key.label'),
                 message(code: 'shortener.destinationUrl.label'),
-                message(code: 'redirectLog.clientIp.label'),
                 message(code: 'redirectLog.referer.label'),
                 message(code: 'clientInformation.operatingSystem.label'),
                 message(code: 'clientInformation.browserName.label'),
@@ -25,7 +24,6 @@ class RedirectLogController {
         def withProperties = [
                 'dateCreated',
                 'shortener.key', 'shortener.destinationUrl',
-                'clientIp',
                 'referer',
                 'clientInformation.operatingSystem',
                 'clientInformation.browserName',
@@ -57,7 +55,6 @@ class RedirectLogController {
 
         def headers = [
                 message(code: 'redirectLog.dateCreated.label'),
-                message(code: 'redirectLog.clientIp.label'),
                 message(code: 'redirectLog.referer.label'),
                 message(code: 'clientInformation.operatingSystem.label'),
                 message(code: 'clientInformation.browserName.label'),
@@ -66,7 +63,6 @@ class RedirectLogController {
 
         def withProperties = [
                 'dateCreated',
-                'clientIp',
                 'referer',
                 'clientInformation.operatingSystem',
                 'clientInformation.browserName',

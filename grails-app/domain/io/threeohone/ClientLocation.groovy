@@ -13,6 +13,10 @@ class ClientLocation {
     String areaCode
     String metroCode
 
+
+    static belongsTo = [redirectLog: RedirectLog]
+
+
     static constraints = {
 
         countryCode nullable: true

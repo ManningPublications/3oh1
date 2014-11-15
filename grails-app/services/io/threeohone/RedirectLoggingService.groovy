@@ -1,18 +1,33 @@
 package io.threeohone
 
+import com.maxmind.geoip.Location
+
+import javax.servlet.http.HttpServletRequest
+
 class RedirectLoggingService {
 
     def userAgentIdentService
 
+    def geoIpService
 
-    def log(Map params) {
+    def log(Shortener shortener, HttpServletRequest request = null) {
 
-        new RedirectLog(
-                shortener: params.shortener,
-                clientIp: params.clientIp,
-                referer: params.referer,
+        def log = new RedirectLog(
+                shortener: shortener,
+                referer: request?.getHeader("referer"),
                 clientInformation: parseClientInformationFromRequest()
-        ).save(failOnError: true)
+        )
+
+
+        if (request) {
+            def ip = geoIpService.getIpAddress(request)
+            def location = geoIpService.getLocation(ip)
+            if (location) {
+                log.clientLocation = createClientLocationFromLocation(location)
+            }
+        }
+
+        log.save(failOnError: true)
     }
 
     private ClientInformation parseClientInformationFromRequest() {
@@ -23,5 +38,23 @@ class RedirectLoggingService {
                 operatingSystem: userAgentIdentService.getOperatingSystem(),
                 mobileBrowser: userAgentIdentService.isMobile()
         )
+    }
+
+
+    private ClientLocation createClientLocationFromLocation(Location location) {
+
+            new ClientLocation(
+                    countryCode: location.countryCode,
+                    countryName: location.countryName,
+                    region: location.region,
+                    city: location.city,
+                    postalCode: location.postalCode,
+                    latitude: location.latitude,
+                    longitude: location.longitude,
+                    dmaCode: location.dma_code,
+                    areaCode: location.area_code,
+                    metroCode: location.metro_code
+            )
+
     }
 }

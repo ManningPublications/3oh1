@@ -63,14 +63,7 @@ class ShortenerStatisticsControllerSpec extends Specification {
         expectedRedirectCounter.times {
             new RedirectLog(
                     shortener: shortener,
-                    referer: "abc",
-                    clientIp: "def",
-                    clientInformation: new ClientInformation(
-                            browserName: "Chrome 38",
-                            browserVersion: "38.0.34.0.1",
-                            operatingSystem: "Mac OS X",
-                            mobileBrowser: false
-                    )
+                    referer: "abc"
             ).save(failOnError: true)
         }
 

@@ -3,9 +3,9 @@ package io.threeohone
 class RedirectLog {
 
     Shortener shortener
-    String clientIp
     String referer
-    ClientInformation clientInformation
+    ClientInformation clientInformation = new ClientInformation()
+    ClientLocation clientLocation = new ClientLocation()
 
 
     Date dateCreated

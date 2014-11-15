@@ -7,7 +7,6 @@ import org.springframework.http.HttpStatus
 class RedirectController {
 
         def shortenerService
-
         def redirectLoggingService
 
         def index() {
@@ -23,11 +22,7 @@ class RedirectController {
                 render status: HttpStatus.NOT_FOUND, view: '/notFound'
             }
             else {
-                redirectLoggingService.log(
-                        shortener: shortener,
-                        referer: request.getHeader("referer"),
-                        clientIp: request.remoteAddr
-                )
+                redirectLoggingService.log(shortener, request)
                 redirect url: shortener.destinationUrl, permanent: true
             }
 

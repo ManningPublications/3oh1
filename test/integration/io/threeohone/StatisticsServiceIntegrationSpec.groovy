@@ -12,7 +12,6 @@ class StatisticsServiceIntegrationSpec extends Specification {
 
 
 
-
     void "getRedirectCounterGroupedByOperatingSystem returns a list of OS - redirectCounter tuples"() {
 
         given: "one windows and three mac redirects"
@@ -38,16 +37,16 @@ class StatisticsServiceIntegrationSpec extends Specification {
     void "getRedirectCounterGroupedByOperatingSystem with a given shortener only counts for this shortener"() {
 
         given: "one windows redirect for twitter"
-        def twitterComShortener = Shortener.findByKey("httpsTwitterCom")
-        1.times { createRedirectWithOs("Windows", twitterComShortener) }
+        def twitter = Shortener.findByKey("httpsTwitterCom")
+        1.times { createRedirectWithOs("Windows", twitter) }
 
         and: "one windows redirect for google"
-        def googleComShortener = Shortener.findByKey("httpGoogleCom")
-        1.times { createRedirectWithOs("Windows", googleComShortener) }
+        def google = Shortener.findByKey("httpGoogleCom")
+        1.times { createRedirectWithOs("Windows", google) }
 
 
         when: "get redirect counters of all shorteners"
-        def osRedirectCounters = service.getRedirectCounterGroupedByOperatingSystem(twitterComShortener)
+        def osRedirectCounters = service.getRedirectCounterGroupedByOperatingSystem(twitter)
 
         then:"windows with has only one count"
         osRedirectCounters[0].operatingSystem == "Windows"
@@ -137,8 +136,8 @@ class StatisticsServiceIntegrationSpec extends Specification {
     void "totalRedirectsPerMonthBetween returns a list with all redirectCounters of 0 when there are no redirects in this time period"() {
 
         given:
-        def s = Shortener.findByKey("httpsTwitterCom")
-        1.times { createRedirectFor(s, "2015-05-01") }
+        def twitter = Shortener.findByKey("httpsTwitterCom")
+        1.times { createRedirectFor(twitter, "2015-05-01") }
 
         when:
         def result = service.getTotalRedirectsPerMonthBetween(date("2016-01-01"), date("2016-12-31"))
@@ -163,15 +162,7 @@ class StatisticsServiceIntegrationSpec extends Specification {
     private RedirectLog createRedirectFor(Shortener shortener, String dateCreated = null) {
         def log = new RedirectLog(
                 shortener: shortener,
-                clientIp: "192.168.0.24",
-                referer: "http://www.google.com",
-                clientInformation: new ClientInformation(
-                        browserName: "Chrome 38",
-                        browserVersion: "38.0.1.34",
-                        operatingSystem: "Mac OS X",
-                        mobileBrowser: false
-                )
-
+                referer: "http://www.google.com"
         ).save()
 
         if (dateCreated) {
@@ -185,7 +176,6 @@ class StatisticsServiceIntegrationSpec extends Specification {
 
         def log = new RedirectLog(
                 shortener: shortener ?: Shortener.findByKey("httpsTwitterCom"),
-                clientIp: "192.168.0.24",
                 referer: "http://www.google.com",
                 clientInformation: new ClientInformation(
                         browserName: "Chrome 38",

@@ -30,25 +30,6 @@ class RedirectLogSpec extends Specification {
         logIsValid
     }
 
-    void "a client ip is required"() {
-
-        given:
-        log.clientIp = null
-
-        when:
-        def logIsValid = log.validate()
-
-        then:
-        !logIsValid
-
-        when:
-        log.clientIp = "127.0.0.1"
-        logIsValid = log.validate()
-
-        then:
-        logIsValid
-    }
-
     void "a referer is not required"() {
 
         given:
@@ -77,14 +58,7 @@ class RedirectLogSpec extends Specification {
 
         new RedirectLog(
                 shortener: new Shortener(),
-                clientIp: "127.0.0.1",
-                referer: "http://www.google.com",
-                clientInformation: new ClientInformation(
-                        browserName: "Chrome 38",
-                        browserVersion: "38.0.1.34",
-                        operatingSystem: "Mac OS X",
-                        mobileBrowser: false
-                )
+                referer: "http://www.google.com"
         )
     }
 }

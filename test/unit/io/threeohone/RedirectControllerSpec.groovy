@@ -1,6 +1,7 @@
 package io.threeohone
 
 import grails.test.mixin.TestFor
+import org.grails.plugin.geoip.GeoIpService
 import spock.lang.Specification
 
 import static org.springframework.http.HttpStatus.*
@@ -19,6 +20,7 @@ class RedirectControllerSpec extends Specification {
 
         redirectLoggingServiceMock = Mock(RedirectLoggingService)
         controller.redirectLoggingService = redirectLoggingServiceMock
+
     }
 
     void 'for a valid shortener entry a redirect should occur to the destination url'() {
@@ -50,7 +52,7 @@ class RedirectControllerSpec extends Specification {
 
         and: 'the mock was asked once and returned the correct value'
         1 * shortenerServiceMock.findActiveShortenerByKey(_) >> new Shortener(destinationUrl: "http://www.example.com")
-        1 * redirectLoggingServiceMock.log(_)
+        1 * redirectLoggingServiceMock.log(_,request)
 
     }
 

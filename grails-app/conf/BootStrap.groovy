@@ -175,7 +175,6 @@ class BootStrap {
             it.times { it2 ->
                 def log = new RedirectLog(
                         shortener: shortener,
-                        clientIp: "192.168.0." + (it + 1),
                         referer: "http://www.google.com",
 
                         clientInformation: new ClientInformation(clientInformationAttributes[(it * it2) % 6])
