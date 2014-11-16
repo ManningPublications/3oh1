@@ -19,7 +19,10 @@ class RedirectLogController {
                 message(code: 'redirectLog.referer.label'),
                 message(code: 'clientInformation.operatingSystem.label'),
                 message(code: 'clientInformation.browserName.label'),
-                message(code: 'clientInformation.browserVersion.label')
+                message(code: 'clientInformation.browserVersion.label'),
+                message(code: 'clientLocation.countryCode.label'),
+                message(code: 'clientLocation.countryName.label'),
+                message(code: 'clientLocation.city.label')
         ]
         def withProperties = [
                 'dateCreated',
@@ -27,7 +30,10 @@ class RedirectLogController {
                 'referer',
                 'clientInformation.operatingSystem',
                 'clientInformation.browserName',
-                'clientInformation.browserVersion'
+                'clientInformation.browserVersion',
+                'clientLocation.countryCode',
+                'clientLocation.countryName',
+                'clientLocation.city'
         ]
 
 
@@ -58,7 +64,10 @@ class RedirectLogController {
                 message(code: 'redirectLog.referer.label'),
                 message(code: 'clientInformation.operatingSystem.label'),
                 message(code: 'clientInformation.browserName.label'),
-                message(code: 'clientInformation.browserVersion.label')
+                message(code: 'clientInformation.browserVersion.label'),
+                message(code: 'clientLocation.countryCode.label'),
+                message(code: 'clientLocation.countryName.label'),
+                message(code: 'clientLocation.city.label')
         ]
 
         def withProperties = [
@@ -66,7 +75,10 @@ class RedirectLogController {
                 'referer',
                 'clientInformation.operatingSystem',
                 'clientInformation.browserName',
-                'clientInformation.browserVersion'
+                'clientInformation.browserVersion',
+                'clientLocation.countryCode',
+                'clientLocation.countryName',
+                'clientLocation.city'
         ]
 
         def filename = "Redirect Logs ${shortener.key} - ${new Date().format('yyyy-MM-dd_hh-mm-ss')}"

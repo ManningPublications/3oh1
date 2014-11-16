@@ -23,5 +23,8 @@ class RedirectLog {
         month formula: 'MONTH(DATE_CREATED)'
         year formula: 'YEAR(DATE_CREATED)'
 
+        clientInformation fetch: 'join'
+        clientLocation fetch: 'join'
+
     }
 }
