@@ -10,9 +10,14 @@ class Navbar extends Module {
         _myShorteners(required: false) { $("#myShorteners") }
         _allShorteners(required: false) { $("#allShorteners") }
         _statistics { $("#statistics") }
+        _users(required: false) { $("#users") }
 
         _logoutButton { $("#logout") }
 
+    }
+
+    void isUsersMenuAvailable() {
+        _users.present
     }
 
     void allShorteners() {

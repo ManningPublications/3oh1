@@ -1,6 +1,7 @@
 package user
 
 import geb.spock.GebReportingSpec
+import pages.AccessDeniedPage
 import pages.LoginPage
 import pages.ShortenerCreatePage
 import pages.ShortenerIndexPage
@@ -8,6 +9,7 @@ import pages.UserCreatePage
 import pages.UserEditPage
 import pages.UserIndexPage
 import pages.UserShowPage
+
 
 class UserFunctionalSpec extends GebReportingSpec {
 
@@ -71,6 +73,8 @@ class UserFunctionalSpec extends GebReportingSpec {
         page.numberOfShorteners() == 2
 
     }
+
+
 
     def 'the password can be changed for a specific user via the ui'() {
 
