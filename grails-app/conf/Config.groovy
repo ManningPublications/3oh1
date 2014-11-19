@@ -99,11 +99,19 @@ environments {
 
         grails.plugin.databasemigration.updateOnStart = true
         grails.plugin.databasemigration.updateOnStartFileNames = ['changelog.groovy']
+
+
+        grails.plugin.geoip.data.cache = 0
+        grails.plugin.geoip.data.path = 'web-app/data/maxmind/GeoLiteCity.dat'
     }
     test {
         hibernate {
             format_sql = true
         }
+
+
+        grails.plugin.geoip.data.cache = 0
+        grails.plugin.geoip.data.path = 'web-app/data/maxmind/GeoLiteCity.dat'
     }
     production {
 
@@ -111,6 +119,10 @@ environments {
         grails.plugin.databasemigration.updateOnStartFileNames = ['changelog.groovy']
 
         grails.logging.jul.usebridge = false
+
+
+        grails.plugin.geoip.data.cache = 0
+        grails.plugin.geoip.data.path = '/data/maxmind/GeoLiteCity.dat'
         // TODO: grails.serverURL = "http://www.changeme.com"
     }
 }
@@ -171,5 +183,3 @@ grails.plugin.springsecurity.filterChain.chainMap = [
 
 grails.plugin.fields.disableLookupCache = true
 
-grails.plugin.geoip.data.cache = 0
-grails.plugin.geoip.data.path = 'web-app/data/maxmind/GeoLiteCity.dat'
