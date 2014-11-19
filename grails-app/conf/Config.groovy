@@ -109,7 +109,7 @@ environments {
     qa {
         grails.plugin.databasemigration.updateOnStart = true
         grails.logging.jul.usebridge = false
-        grails.plugin.geoip.data.path = '/data/maxmind/GeoLiteCity.dat'
+        grails.plugin.geoip.data.path = 'data/maxmind/GeoLiteCity.dat'
     }
     production {
 
@@ -117,7 +117,7 @@ environments {
 
         grails.logging.jul.usebridge = false
 
-        grails.plugin.geoip.data.path = '/data/maxmind/GeoLiteCity.dat'
+        grails.plugin.geoip.data.path = 'data/maxmind/GeoLiteCity.dat'
         // TODO: grails.serverURL = "http://www.changeme.com"
     }
 }
