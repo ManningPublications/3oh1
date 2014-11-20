@@ -80,6 +80,8 @@ class ShortenerSearchService {
             if (userCreated) {
                 eq("userCreated", userCreated)
             }
+
+            order('key')
         }
     }
 }
