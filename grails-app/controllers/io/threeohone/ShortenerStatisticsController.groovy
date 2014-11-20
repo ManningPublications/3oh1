@@ -22,13 +22,18 @@ class ShortenerStatisticsController {
 
         def totalNumberOfRedirectsPerMonth = statisticsService.getTotalRedirectsPerMonthBetween(new Date() - 365, new Date(), shortenerInstance)
 
+        def monthNames = totalNumberOfRedirectsPerMonth.collect { "${it.month} / ${it.year}" }
+
+        def redirectCounters = totalNumberOfRedirectsPerMonth.collect { it.redirectCounter }
 
         def redirectCounter = RedirectLog.where { shortener == shortenerInstance }.count()
 
         def statisticsResponse = [
                 key: shortenerInstance.key,
                 redirectCounter: redirectCounter,
-                totalNumberOfRedirectsPerMonth: totalNumberOfRedirectsPerMonth
+                totalNumberOfRedirectsPerMonth: totalNumberOfRedirectsPerMonth,
+                monthNames: monthNames,
+                redirectCounters: redirectCounters
         ]
 
         render statisticsResponse as JSON
