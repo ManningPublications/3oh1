@@ -54,7 +54,10 @@ class ShortenerController {
             return
         }
 
-        respond shortenerList, model: [shortenerInstanceCount: shortenerList.getTotalCount(), user: user]
+        def shortenerInstanceCount = shortenerList.getTotalCount()
+        response.setHeader("total-count", Integer.toString(shortenerInstanceCount))
+
+        respond shortenerList, model: [shortenerInstanceCount: shortenerInstanceCount, user: user]
     }
 
     private String cutServerUrlIfNecessary(searchString) {
