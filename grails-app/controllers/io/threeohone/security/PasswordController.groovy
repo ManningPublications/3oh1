@@ -13,16 +13,22 @@ class PasswordController {
 
     static responseFormats = ['html']
 
-    static allowedMethods = [update: "PUT"]
+    static allowedMethods = [edit: "GET", update: "PUT"]
 
-    def index() {
+    def edit() {
 
-        def userInstance = User.findByUsername(params.id)
+        def userInstance = User.findByUsername(params.userId)
 
         if (!userInstance) {
             notFound()
             return
         }
+
+        if (!isCurrentUserAllowedToChangeTheUser(userInstance)) {
+            accessDenied()
+            return
+        }
+
 
         def passwordChangeCommand = new PasswordChangeCommand(username: userInstance.username)
 
@@ -32,45 +38,28 @@ class PasswordController {
 
     @Transactional
     def update(PasswordChangeCommand passwordChangeCommand) {
-        if (passwordChangeCommand == null) {
-            println "passwordChangeCommand == null"
+
+        def userInstance = User.findByUsername(passwordChangeCommand?.username)
+
+        if (!passwordChangeCommand || !userInstance) {
             notFound()
             return
         }
 
-        if (passwordChangeCommand.hasErrors()) {
+        if (!isCurrentUserAllowedToChangeTheUser(userInstance)) {
+            accessDenied()
+            return
+        }
 
-            println "passwordChangeCommand.hasErrors()"
+
+        if (passwordChangeCommand.hasErrors()) {
             respond passwordChangeCommand.errors, view: 'edit'
             return
         }
 
-        def userInstance = User.findByUsername(passwordChangeCommand.username)
-
-
-        if (!hasCurrentUserAdminRole()) {
-            println "!hasCurrentUserAdminRole"
-            def currentUserUsername = springSecurityService.getCurrentUser().username
-
-            if (currentUserUsername != userInstance.username) {
-
-                println "accessDenied"
-                accessDenied()
-                return
-            }
-        }
-
-        if (userInstance == null) {
-
-            println "userInstance == null"
-            notFound()
-            return
-        }
 
         userInstance.password = passwordChangeCommand.password
         userInstance.save flush: true
-
-        println userInstance
 
         request.withFormat {
             form multipartForm {
@@ -79,6 +68,16 @@ class PasswordController {
             }
             '*' { respond userInstance, [status: OK] }
         }
+    }
+
+    private boolean isCurrentUserAllowedToChangeTheUser(User userInstance) {
+        def currentUserUsername = springSecurityService.getCurrentUser().username
+
+        if (!hasCurrentUserAdminRole() && currentUserUsername != userInstance.username) {
+            return false
+        }
+
+        return true
     }
 
     private boolean hasCurrentUserAdminRole() {
@@ -94,13 +93,8 @@ class PasswordController {
     }
 
     protected void accessDenied() {
-        request.withFormat {
-            form multipartForm {
-                flash.message = message(code: 'springSecurity.denied.message')
-                redirect controller: "shortener", action: "index", method: "GET"
-            }
-            '*' { render status: FORBIDDEN }
-        }
+        flash.error = message(code: 'springSecurity.denied.message')
+        redirect controller: "shortener", action: "index", method: "GET"
     }
 
     protected void notFound() {
@@ -112,4 +106,5 @@ class PasswordController {
             '*' { render status: NOT_FOUND }
         }
     }
+
 }

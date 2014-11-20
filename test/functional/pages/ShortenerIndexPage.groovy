@@ -20,8 +20,14 @@ class ShortenerIndexPage extends Page {
         _destinationColHead { $("a", text: "Destination") }
         _pagingLinkTwo { $("a", text: "2") }
 
+        _flash(required: true) { $("div.alert.alert-warning") }
 
     }
+
+    boolean isSuccessMessageHere() {
+        _flash.displayed
+    }
+
 
     int numberOfShorteners() {
         _shortenerTable.size

@@ -33,6 +33,21 @@
 
                 </g:form>
 
+                <g:link
+                        elementId="changePassword"
+                        url="[
+                                resource: 'user/password',
+                                action: 'edit',
+                                userId: sec.loggedInUserInfo(field:'username')]"
+                        class="btn btn-primary pull-right"
+                        style="margin-left:10px;"
+                        data-toggle="tooltip"
+                        data-placement="bottom"
+                        title="${message(code: 'user.password.edit.label')}">
+                    <span class="glyphicon glyphicon-cog"></span>
+                </g:link>
+
+
                 <sec:ifAllGranted roles="ROLE_ADMIN">
                     <g:link
                             elementId="users"
@@ -102,6 +117,14 @@
             <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span
                     class="sr-only">Close</span></button>
             ${flash.message}
+        </div>
+    </g:if>
+
+    <g:if test="${flash.error}">
+        <div class="alert alert-danger alert-dismissible" role="alert">
+            <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span
+                    class="sr-only">Close</span></button>
+            ${flash.error}
         </div>
     </g:if>
 

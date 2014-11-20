@@ -1,5 +1,5 @@
 <g:link class="btn btn-default btn-block" elementId="changePassword" action="edit"
-        resource="${userInstance}">
+        resource="user/password" userId="${userInstance.username}">
     <span class="glyphicon glyphicon-pencil"></span>
     <g:message code="user.password.edit.label"/>
 </g:link>

@@ -93,8 +93,8 @@ class UserFunctionalSpec extends GebReportingSpec {
         when: 'i fill in the correct password'
         page.updateUsersPassword('admin')
 
-        then: 'i am at the show page'
-        at UserShowPage
+        then: 'i am at the shortener index page'
+        at ShortenerIndexPage
         page.isSuccessMessageHere()
     }
 

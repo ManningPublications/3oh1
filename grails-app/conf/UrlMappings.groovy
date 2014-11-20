@@ -22,6 +22,7 @@ class UrlMappings {
 
         "/users"(resources:"user") {
             "/shorteners"(resources:"shortener", includes: ['index'])
+            "/password"(resource: "password", includes: ['edit', 'update'])
         }
 
         "/api/users"(resources:"user") {

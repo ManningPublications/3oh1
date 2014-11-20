@@ -13,30 +13,59 @@ class PasswordControllerSpec extends Specification {
         controller.springSecurityService = Mock(SpringSecurityService)
     }
 
-    void "index method renders the form with the correct user"() {
+    void "edit method renders the form with the correct user"() {
 
         given:
         def expectedUser = new User(username: "user", password: "password").save(failOnError: true, flush: true)
-        params.id = expectedUser.username
+        params.userId = expectedUser.username
+
+        and: "the same user is logged in"
+        controller.springSecurityService.getCurrentUser() >> expectedUser
 
         when:
-        controller.index()
+        controller.edit()
 
         then:
         model.passwordChangeCommandInstance.username == expectedUser.username
 
     }
 
-    def "index returns 404 if the username is not given"() {
+    def "edit returns 404 if the username is not given"() {
 
         given:
-        params.id = null
+        params.userId = null
+
+        and: "the admin is logged in"
+        controller.springSecurityService.getCurrentUser() >> createAdmin()
 
         when:
-        controller.index()
+        controller.edit()
 
         then:
         response.status == 404
+    }
+
+    def "edit form will not be shown if a not-admin will try to change another users password"() {
+
+        given:
+        def loggedInUser = new User(username: "loggedInUser", password: "password").save(failOnError: true, flush: true)
+        def expectedUser = new User(username: "userWithPasswordChange", password: "oldPassword").save(failOnError: true, flush: true)
+
+        and:
+        params.userId = expectedUser.username
+
+
+        and: "not the expected user is logged in"
+        controller.springSecurityService.getCurrentUser() >> loggedInUser
+
+        when:
+        controller.edit()
+
+        then:
+        response.status == 302
+
+        and:
+        flash.error == 'springSecurity.denied.message'
     }
 
     def "execute update as a admin with the correct password values will change the password of a user"() {
@@ -45,7 +74,9 @@ class PasswordControllerSpec extends Specification {
         def expectedUser = new User(username: "userWithPasswordChange", password: "oldPassword").save(failOnError: true, flush: true)
 
         and: "a logged in administrator will be emulated"
-        controller.springSecurityService.loadCurrentUser() >> createAdmin()
+        def admin = createAdmin()
+        controller.springSecurityService.loadCurrentUser() >> admin
+        controller.springSecurityService.getCurrentUser() >> admin
 
         and: "the form data is set up"
         def passwordChangeCommand = new PasswordChangeCommand(
@@ -78,7 +109,9 @@ class PasswordControllerSpec extends Specification {
         def expectedUser = new User(username: "userWithPasswordChange", password: "oldPassword").save(failOnError: true, flush: true)
 
         and: "a logged in administrator will be emulated"
-        controller.springSecurityService.loadCurrentUser() >> createAdmin()
+        def admin = createAdmin()
+        controller.springSecurityService.loadCurrentUser() >> admin
+        controller.springSecurityService.getCurrentUser() >> admin
 
         and: "the form data is set up"
         def passwordChangeCommand = new PasswordChangeCommand(
@@ -173,7 +206,7 @@ class PasswordControllerSpec extends Specification {
         expectedUser.password == "oldPassword"
 
         and: "access denied message is shown"
-        flash.message == 'springSecurity.denied.message'
+        flash.error == 'springSecurity.denied.message'
 
 
     }
