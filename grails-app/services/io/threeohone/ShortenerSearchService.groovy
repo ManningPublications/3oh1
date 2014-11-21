@@ -81,7 +81,6 @@ class ShortenerSearchService {
                 eq("userCreated", userCreated)
             }
 
-            order('key')
         }
     }
 }
