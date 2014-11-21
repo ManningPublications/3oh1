@@ -119,7 +119,7 @@ databaseChangeLog = {
                 constraints(nullable: "false")
             }
 
-            column(name: "key", type: "varchar(255)")
+            column(name: "shortener_key", type: "varchar(255)")
 
             column(name: "last_updated", type: "timestamp") {
                 constraints(nullable: "false")
@@ -203,19 +203,19 @@ databaseChangeLog = {
 
     changeSet(author: "mario (generated)", id: "1416120497231-17") {
         createIndex(indexName: "UK_qgn160t4t99bsnthnk8pn5lev", tableName: "shortener", unique: "true") {
-            column(name: "key")
+            column(name: "shortener_key")
         }
     }
 
     changeSet(author: "mario (generated)", id: "1416120497231-18") {
         createIndex(indexName: "key_idx", tableName: "shortener") {
-            column(name: "key")
+            column(name: "shortener_key")
         }
     }
 
     changeSet(author: "mario (generated)", id: "1416120497231-19") {
         createIndex(indexName: "key_uniq_1416120497167", tableName: "shortener", unique: "true") {
-            column(name: "key")
+            column(name: "shortener_key")
         }
     }
 
