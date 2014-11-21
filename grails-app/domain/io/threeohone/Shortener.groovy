@@ -63,6 +63,7 @@ class Shortener {
 
     static mapping = {
         key index: 'key_idx', column: 'shortener_key'
+        destinationUrl type: 'text'
     }
 
     boolean isStarted() {
