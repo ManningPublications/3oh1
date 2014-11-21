@@ -27,7 +27,7 @@ class ShortenerController {
 
         params.max = Math.min(max ?: 10, 100)
         params.offset = params.offset ?: 0
-        params.sort = params.sort ?: 'destinationUrl'
+        params.sort = params.sort ?: 'key'
         params.order = params.order ?: 'asc'
 
 
