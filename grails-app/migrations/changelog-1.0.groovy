@@ -115,7 +115,7 @@ databaseChangeLog = {
                 constraints(nullable: "false")
             }
 
-            column(name: "destination_url", type: "varchar(255)") {
+            column(name: "destination_url", type: "longtext") {
                 constraints(nullable: "false")
             }
 
@@ -133,7 +133,9 @@ databaseChangeLog = {
                 constraints(nullable: "false")
             }
 
-            column(name: "valid_until", type: "timestamp")
+            column(name: "valid_until", type: "datetime") {
+                constraints(nullable: "true")
+            }
         }
     }
 
