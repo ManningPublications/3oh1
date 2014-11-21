@@ -16,13 +16,10 @@ class ShortenerCreateAPIFunctionalSpec extends APIFunctionalSpec {
         /////////////////////////////////////////////////////////
 
         when: "a HTTP POST with JSON content is executed to /api/shorteners"
-        RestResponse createResponse = client.post(SHORTENERS_API_URL) {
-            auth "apiUser", "apiUser"
-            accept JSON
-            contentType "application/json"
-
-            json destinationUrl: "http://www.urlViaJsonApi.com"
-        }
+        RestResponse createResponse = httpPostJson(
+                SHORTENERS_API_URL,
+                [destinationUrl: "http://www.urlViaJsonApi.com"]
+        )
 
 
         and: "the response information are extracted"
