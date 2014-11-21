@@ -82,7 +82,7 @@ grails.project.dependency.resolution = {
 
         compile ":excel-export:0.2.1"
         compile ":browser-detection:2.1.0"
-        compile ":geoip:0.3.2"
+        compile ":geoip:0.3.3"
 
     }
 }
