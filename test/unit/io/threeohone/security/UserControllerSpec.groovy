@@ -100,15 +100,16 @@ class UserControllerSpec extends Specification {
 
     void "Test that the edit action returns the correct model"() {
         when: "The edit action is executed with a null domain"
-        controller.edit(null)
+        controller.edit()
 
         then: "A 404 error is returned"
         response.status == 404
 
         when: "A domain instance is passed to the edit action"
-        populateValidParams(params)
-        def userInstance = new User(params)
-        controller.edit(userInstance)
+        def userInstance = new User(username: "user", password: "user").save(failOnError: true, flush: true)
+        params.id = userInstance.username
+
+        controller.edit()
 
         then: 'the editCommand Object is correct'
         model.passwordChangeCommandInstance.username == userInstance.username

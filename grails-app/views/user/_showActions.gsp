@@ -1,7 +1,14 @@
+
 <g:link class="btn btn-default btn-block" elementId="changePassword" action="edit"
         resource="user/password" userId="${userInstance.username}">
     <span class="glyphicon glyphicon-pencil"></span>
     <g:message code="user.password.edit.label"/>
+</g:link>
+
+<g:link class="btn btn-default btn-block" elementId="edit" action="edit" controller="user"
+        id="${userInstance.username}">
+    <span class="glyphicon glyphicon-cog"></span>
+    <g:message code="default.edit.label" args="[message(code:'user.label')]"/>
 </g:link>
 
 

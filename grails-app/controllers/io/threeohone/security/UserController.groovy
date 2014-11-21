@@ -69,7 +69,9 @@ class UserController {
         }
     }
 
-    def edit(User userInstance) {
+    def edit() {
+        User userInstance = User.findByUsername(params.id)
+
         if (userInstance == null) {
             notFound()
             return
