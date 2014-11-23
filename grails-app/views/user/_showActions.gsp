@@ -1,16 +1,14 @@
-
 <g:link class="btn btn-default btn-block" elementId="changePassword" action="edit"
         resource="user/password" userId="${userInstance.username}">
     <span class="glyphicon glyphicon-pencil"></span>
     <g:message code="user.password.edit.label"/>
 </g:link>
 
-<g:link class="btn btn-default btn-block" elementId="edit" action="edit" controller="user"
+<g:link class="btn btn-default btn-block" elementId="editRole" action="edit" controller="userRole"
         id="${userInstance.username}">
     <span class="glyphicon glyphicon-cog"></span>
-    <g:message code="default.edit.label" args="[message(code:'user.label')]"/>
+    <g:message code="userRole.edit.label" args="[message(code:'user.label')]"/>
 </g:link>
-
 
 <g:form class="delete" url="[resource: userInstance, action: 'delete']" method="DELETE">
 

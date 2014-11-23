@@ -2,15 +2,15 @@ package pages
 
 import geb.Page
 import pages.modules.Navbar
-import pages.modules.UserForm
+import pages.modules.PasswordForm
 
-class UserEditPage extends Page {
+class PasswordEditPage extends Page {
 
-    static at = { title == "Edit User" }
+    static at = { title == "Assign role" }
 
     static content = {
 
-        form { module UserForm }
+        form { module PasswordForm }
 
         navbar { module Navbar }
     }

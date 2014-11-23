@@ -2,14 +2,14 @@ package pages
 
 import geb.Page
 import pages.modules.Navbar
-import pages.modules.UserForm
+import pages.modules.PasswordForm
 
 class UserCreatePage extends Page {
 
     static at = { title == "Create User" }
 
     static content = {
-        form { module UserForm }
+        form { module PasswordForm }
 
         navbar { module Navbar }
     }

@@ -1,12 +1,12 @@
 package user
 
 import geb.spock.GebReportingSpec
-import pages.AccessDeniedPage
 import pages.LoginPage
+import pages.RoleAssignPage
 import pages.ShortenerCreatePage
 import pages.ShortenerIndexPage
 import pages.UserCreatePage
-import pages.UserEditPage
+import pages.PasswordEditPage
 import pages.UserIndexPage
 import pages.UserShowPage
 
@@ -88,13 +88,36 @@ class UserFunctionalSpec extends GebReportingSpec {
         page.changePassword()
 
         then: 'i am at the edit page'
-        at UserEditPage
+        at PasswordEditPage
 
         when: 'i fill in the correct password'
         page.updateUsersPassword('admin')
 
         then: 'i am at the shortener index page'
         at ShortenerIndexPage
+        page.isSuccessMessageHere()
+    }
+
+
+    def 'the role can be changed for a specific user via the ui'() {
+
+        when: 'i click at the username'
+        page.showUser('user')
+
+        then: 'i am at the show page'
+        at UserShowPage
+
+        when: 'i change the password'
+        page.editRole()
+
+        then: 'i am at the edit page'
+        at RoleAssignPage
+
+        when: 'i fill in the correct password'
+        page.assignRoleByValue('ROLE_ADMIN')
+
+        then: 'i am at the shortener index page'
+        at UserShowPage
         page.isSuccessMessageHere()
     }
 

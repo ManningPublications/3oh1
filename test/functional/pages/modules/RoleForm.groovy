@@ -2,11 +2,10 @@ package pages.modules
 
 import geb.Module
 
-class UserForm extends Module {
+class RoleForm extends Module {
     static content = {
         _username { $('#username') }
-        _password { $('#password') }
-        _confirmPassword { $('#confirmPassword') }
+        _role { $('#role') }
         _saveButton { $("button.save") }
 
     }
@@ -18,9 +17,9 @@ class UserForm extends Module {
         _confirmPassword = password
     }
 
-    void setPassword(String password) {
-        _password = password
-        _confirmPassword = password
+    void setRoleByValue(String value) {
+
+        _role.value(value)
     }
 
     void save() {
