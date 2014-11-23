@@ -6,7 +6,7 @@ import pages.modules.PasswordForm
 
 class PasswordEditPage extends Page {
 
-    static at = { title == "Assign role" }
+    static at = { title == "Edit User" }
 
     static content = {
 
