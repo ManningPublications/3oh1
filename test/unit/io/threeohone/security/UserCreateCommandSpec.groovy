@@ -51,14 +51,5 @@ class UserCreateCommandSpec extends Specification {
         userCreateCommand.errors['password'].code == 'blank'
     }
 
-    def 'role can not be blank'() {
-        when:
-        userCreateCommand.role = null
-        userCreateCommand.validate()
-
-        then:
-        userCreateCommand.hasErrors()
-        userCreateCommand.errors['role'].code == 'nullable'
-    }
 
 }

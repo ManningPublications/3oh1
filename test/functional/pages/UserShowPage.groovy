@@ -12,7 +12,7 @@ class UserShowPage extends Page {
         _flash(required: true) { $("div.alert.alert-warning") }
 
         _changePassword { $("#changePassword") }
-        _editRole { $("#editRole")}
+        _edit { $("#edit")}
         _delete {$('#delete')}
 
         navbar { module Navbar }
@@ -26,8 +26,8 @@ class UserShowPage extends Page {
         _changePassword.click()
     }
 
-    void editRole() {
-        _editRole.click()
+    void edit() {
+        _edit.click()
     }
 
     void deleteUser(){

@@ -9,6 +9,7 @@ class UserCreateCommand {
     Role role
 
     static constraints = {
+        role nullable: true
         password blank: false, nullable: false, password: true, validator: { password, obj ->
             def confirm = obj.confirmPassword
             confirm == password ? true : ['invalid.matchingpasswords']

@@ -1,5 +1,6 @@
 package io.threeohone.security
 
+import grails.plugin.springsecurity.SpringSecurityService
 import grails.test.GrailsMock
 import grails.test.mixin.Mock
 import grails.test.mixin.TestFor
@@ -9,6 +10,10 @@ import spock.lang.Specification
 @Mock([User, Role, UserRole])
 class UserControllerSpec extends Specification {
 
+
+    def setup() {
+        controller.springSecurityService = Mock(SpringSecurityService)
+    }
     def populateValidParams(params) {
         params['username'] = 'username'
         params['password'] = 'password'
@@ -98,22 +103,41 @@ class UserControllerSpec extends Specification {
     }
 
 
-    void "Test that the edit action returns the correct model"() {
-        when: "The edit action is executed with a null domain"
+
+    def "edit does not find the user if params.id is not a valid username"() {
+        when:
+        params.id = null
         controller.edit()
 
-        then: "A 404 error is returned"
+        then:
         response.status == 404
 
-        when: "A domain instance is passed to the edit action"
-        def userInstance = new User(username: "user", password: "user").save(failOnError: true, flush: true)
-        params.id = userInstance.username
-
+        when:
+        params.id = "noValidUsername"
         controller.edit()
 
-        then: 'the editCommand Object is correct'
-        model.passwordChangeCommandInstance.username == userInstance.username
+        then:
+        response.status == 404
+
     }
+
+    def 'edit creates a correct userChangeCommand if a valid username is given'() {
+
+        setup:
+        def role = new Role(authority: 'testAuth').save(failOnError: true, flush: true)
+        def user = new User(username: 'testUser', password: 'testpass').save(failOnError: true, flush: true)
+        new UserRole(user: user, role: role).save(failOnError: true, flush: true)
+
+        params.id = user.username
+
+        when:
+        controller.edit()
+
+        then:
+        response.status == 200
+        model.userChangeCommandInstance.username == user.username
+    }
+
 
     void "Test the update action performs an update on a valid domain instance"() {
         setup:
@@ -137,24 +161,41 @@ class UserControllerSpec extends Specification {
         when: "An invalid domain instance is passed to the update action"
         response.reset()
 
-        def passwordChangeCommand = new PasswordChangeCommand()
-        passwordChangeCommand.validate()
-        controller.update(passwordChangeCommand)
+        def userChangeCommand = new UserChangeCommand()
+        userChangeCommand.validate()
+        controller.update(userChangeCommand)
 
         then: "The edit view is rendered again with the invalid instance"
         view == 'edit'
-        model.passwordChangeCommandInstance == passwordChangeCommand
+        model.userChangeCommandInstance == userChangeCommand
 
-        when: "A valid domain instance is passed to the update action"
-        response.reset()
-        populateValidParams(params)
-        passwordChangeCommand = new PasswordChangeCommand(
-                username: params.username,
-                password: params.password,
-                confirmPassword: params.password)
-        controller.update(passwordChangeCommand)
+    }
+
+    def "the update action updates a user if valid form inputs are given"() {
+        given:
+        def role = new Role(authority: 'testAuth').save(failOnError: true, flush: true)
+        def user = new User(username: 'testUser', password: 'testpass').save(failOnError: true, flush: true)
+        new UserRole(user: user, role: role).save(failOnError: true, flush: true)
+
+
+        controller.springSecurityService.currentUser >> user
+
+        and: "the form values are setup"
+        def userChangeCommand = new UserChangeCommand(
+                username: user.username,
+                role: role
+        )
+        userChangeCommand.validate()
+
+        and: "the request is marked as a form submit"
+        request.contentType = FORM_CONTENT_TYPE
+        request.method = 'PUT'
+
+        when: "the form is send to the controller"
+        controller.update(userChangeCommand)
 
         then: "A redirect is issues to the show action"
+        response.status == 302
         response.redirectedUrl == "/users/$user.username"
         flash.message != null
     }

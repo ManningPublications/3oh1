@@ -7,8 +7,10 @@ import static org.springframework.http.HttpStatus.*
 import grails.transaction.Transactional
 
 @Secured(['ROLE_ADMIN'])
+@Transactional(readOnly = true)
 class UserController {
 
+    def springSecurityService
 
     static responseFormats = ['html', 'json']
 
@@ -29,6 +31,7 @@ class UserController {
         respond userCreateCommand
     }
 
+    @Transactional
     def save(UserCreateCommand userCreateCommand) {
 
         if (userCreateCommand.hasErrors()) {
@@ -77,35 +80,57 @@ class UserController {
             return
         }
 
-        def passwordChangeCommand = new PasswordChangeCommand(username: userInstance.username)
-        respond passwordChangeCommand
+        def roleChangeCommand = new UserChangeCommand(username: userInstance.username, role: UserRole.findByUser(userInstance).role)
+        respond roleChangeCommand
     }
 
     @Transactional
-    def update(PasswordChangeCommand passwordChangeCommand) {
-        if (passwordChangeCommand == null) {
+    def update(UserChangeCommand userChangeCommand) {
+
+        if (userChangeCommand == null) {
             notFound()
             return
         }
 
-        if (passwordChangeCommand.hasErrors()) {
-            respond passwordChangeCommand.errors, view: 'edit'
+        if (userChangeCommand.hasErrors()) {
+            respond userChangeCommand.errors, view: 'edit'
             return
         }
 
-        def userInstance = User.findByUsername(passwordChangeCommand.username)
+        def userInstance = User.findByUsername(userChangeCommand.username)
 
         if (userInstance == null) {
             notFound()
             return
         }
 
-        userInstance.password = passwordChangeCommand.password
-        userInstance.save flush: true
+        def userRole = UserRole.findByUser(userInstance)
+
+        if (userRole == null) {
+            notFound()
+            return
+        }
+
+        /*
+            if the user-role is the same the user-role had to be removed before a new will be created
+            that will only work in a new transaction
+        */
+        UserRole.withNewTransaction {
+            UserRole.remove(userInstance, userRole.role)
+        }
+
+        UserRole.withNewTransaction {
+            UserRole.create(userInstance, userChangeCommand.role)
+        }
+
+        if (!userInstance.hasErrors() && userInstance.save(flush: true)) {
+            springSecurityService.reauthenticate springSecurityService.currentUser.username
+
+        }
 
         request.withFormat {
             form multipartForm {
-                flash.message = message(code: 'password.updated.message', args: [message(code: 'user.label'), passwordChangeCommand.username])
+                flash.message = message(code: 'default.updated.message', args: [message(code: 'user.label'), userChangeCommand.username])
                 redirect url: [resource: "user", action: "show", id: userInstance.username]
             }
             '*' { respond userInstance, [status: OK] }

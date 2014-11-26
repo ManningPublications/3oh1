@@ -5,13 +5,13 @@ import org.springframework.transaction.annotation.Transactional
 import static org.springframework.http.HttpStatus.*
 
 
-@Secured(['isFullyAuthenticated()'])
+@Secured(['isAuthenticated()'])
 class PasswordController {
 
 
     def springSecurityService
 
-    static responseFormats = ['html']
+    static responseFormats = ['html', 'json']
 
     static allowedMethods = [edit: "GET", update: "PUT"]
 

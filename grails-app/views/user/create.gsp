@@ -10,9 +10,8 @@
 <h1><g:message code="default.create.label" args="[entityName]"/></h1>
 
 <g:form url="[resource: userInstance, action: 'save']">
-    <g:render template="form"/>
+    <g:render template="formCreate"/>
 
-    <f:field bean="${userCreateCommandInstance}" property="role" input-class="form-control"/>
 
     <button type="submit" class="btn btn-success save" onclick="submit();">
         <span class="glyphicon glyphicon-disk"></span>

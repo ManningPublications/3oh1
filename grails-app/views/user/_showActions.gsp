@@ -4,10 +4,10 @@
     <g:message code="user.password.edit.label"/>
 </g:link>
 
-<g:link class="btn btn-default btn-block" elementId="editRole" action="edit" controller="userRole"
+<g:link class="btn btn-default btn-block" elementId="edit" action="edit" controller="user"
         id="${userInstance.username}">
     <span class="glyphicon glyphicon-cog"></span>
-    <g:message code="userRole.edit.label" args="[message(code:'user.label')]"/>
+    <g:message code="default.edit.label" args="[message(code:'user.label')]"/>
 </g:link>
 
 <g:form class="delete" url="[resource: userInstance, action: 'delete']" method="DELETE">

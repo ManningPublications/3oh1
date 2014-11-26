@@ -28,7 +28,7 @@ grails.project.dependency.resolution = {
     checksums true
     legacyResolve false
 
-    def gebVersion = "0.9.3"
+    def gebVersion = "0.10.0"
     def seleniumVersion = "2.43.1"
 
     repositories {
