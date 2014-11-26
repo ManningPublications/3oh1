@@ -5,7 +5,7 @@ import org.springframework.transaction.annotation.Transactional
 import static org.springframework.http.HttpStatus.*
 
 
-@Secured(['isAuthenticated()'])
+@Secured(['isFullyAuthenticated()'])
 class PasswordController {
 
 
