@@ -116,6 +116,14 @@ class ShortenerControllerSpec extends Specification {
 
     void "Test that the show action returns the correct model"() {
 
+        given: "the expected results are created"
+        def osStatsResult = [[redirectCounter: 1, label: "Windows"]]
+        def browserStatsResult = [[redirectCounter: 1, label: "Chrome"]]
+
+        and: "the mock results are set up"
+        controller.statisticsService.getRedirectCounterGroupedBy(_,'operatingSystem') >> osStatsResult
+        controller.statisticsService.getRedirectCounterGroupedBy(_,'browserName') >> browserStatsResult
+
         when: "The show action is executed with a null domain"
         controller.show()
 
@@ -131,6 +139,10 @@ class ShortenerControllerSpec extends Specification {
 
         then: "A model is populated containing the domain instance"
         model.shortenerInstance == shortener
+
+        and: "the expected results are given"
+        model.redirectCountersPerOperatingSystem == osStatsResult
+        model.redirectCountersPerBrowser == browserStatsResult
     }
 
     void "Test that the edit action returns the correct model"() {

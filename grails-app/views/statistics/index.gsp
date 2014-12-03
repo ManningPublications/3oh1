@@ -54,8 +54,7 @@
                 </div>
             <div class="col-sm-6">
                 <g:render template="redirectCountsPerOperatingSystem"/>
-                </div>
-
+            </div>
         </div>
 
 

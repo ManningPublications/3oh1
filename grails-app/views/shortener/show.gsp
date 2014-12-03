@@ -28,12 +28,15 @@
 
 </div>
 
+<h2>
+    <span class="glyphicon glyphicon-stats"></span>
+    <g:message code="button.statistics.label"/>
+</h2>
 
-<h1><g:message code="button.statistics.label" /></h1>
 
 
 <div class="row">
-    <div class="col-sm-6">
+    <div class="col-sm-9">
         <div class="pull-right">
             Redirect-Counter: <span class="badge">${redirectCounter}</span>
             <g:link class="btn btn-default"
@@ -48,11 +51,17 @@
 
 
     </div>
+
+
 </div>
 
 <div class="row">
     <div class="col-sm-6">
         <g:render template="/statistics/totalRedirectsPerMonth"/>
+    </div>
+    <div class="col-sm-3">
+        <g:render template="/statistics/redirectCountsPerBrowser"/>
+        <g:render template="/statistics/redirectCountsPerOperatingSystem"/>
     </div>
 </div>
 

@@ -94,6 +94,8 @@ class ShortenerController {
         Shortener shortenerInstance = Shortener.findByKey(params.id)
 
         def result = statisticsService.getTotalRedirectsPerMonthBetween(new Date() - 365, new Date(), shortenerInstance)
+        def redirectCountersPerOperatingSystem = statisticsService.getRedirectCounterGroupedBy(shortenerInstance, 'operatingSystem')
+        def redirectCountersPerBrowser = statisticsService.getRedirectCounterGroupedBy(shortenerInstance, 'browserName')
 
         def totalNumberOfRedirectsPerMonth = [monthNames: [], redirectCounters: []]
         totalNumberOfRedirectsPerMonth.monthNames = result.collect { "${it.month} / ${it.year}" }
@@ -104,7 +106,9 @@ class ShortenerController {
 
         respond shortenerInstance, model: [
                 totalNumberOfRedirectsPerMonth: totalNumberOfRedirectsPerMonth,
-                redirectCounter: redirectCounter
+                redirectCounter: redirectCounter,
+                redirectCountersPerOperatingSystem: redirectCountersPerOperatingSystem,
+                redirectCountersPerBrowser: redirectCountersPerBrowser
         ]
     }
 
