@@ -12,29 +12,52 @@ class StatisticsServiceIntegrationSpec extends Specification {
 
 
 
-    void "getRedirectCounterGroupedByOperatingSystem returns a list of OS - redirectCounter tuples"() {
+    void "getRedirectCounterGroupedBy returns a list of redirectCounters for the operatingSystem"() {
 
         given: "one windows and three mac redirects"
         1.times { createRedirectWithOs("Windows") }
         3.times { createRedirectWithOs("Mac OS X") }
 
         when: "get redirect counters of all shorteners"
-        def osRedirectCounters = service.getRedirectCounterGroupedByOperatingSystem()
+        def osRedirectCounters = service.getRedirectCounterGroupedBy(null, 'operatingSystem')
 
         then: "there are two entries due to two operating systems"
         osRedirectCounters.size() == 2
 
         and: "the first result is mac with three counts"
-        osRedirectCounters[0].operatingSystem == "Mac OS X"
+        osRedirectCounters[0].label == "Mac OS X"
         osRedirectCounters[0].redirectCounter == 3
 
         and: "the second result is windows with one count"
-        osRedirectCounters[1].operatingSystem == "Windows"
+        osRedirectCounters[1].label == "Windows"
         osRedirectCounters[1].redirectCounter == 1
     }
 
 
-    void "getRedirectCounterGroupedByOperatingSystem with a given shortener only counts for this shortener"() {
+
+    void "getRedirectCounterGroupedBy returns a list of redirectCounters for the browsers"() {
+
+        given: "one windows and three mac redirects"
+        1.times { createRedirectWithBrowser("Chrome") }
+        3.times { createRedirectWithBrowser("Internet Explorer") }
+
+        when: "get redirect counters of all shorteners"
+        def browserRedirectCounters = service.getRedirectCounterGroupedBy(null, 'browserName')
+
+        then: "there are two entries due to two operating systems"
+        browserRedirectCounters.size() == 2
+
+        and: "the first result is mac with three counts"
+        browserRedirectCounters[0].label == "Internet Explorer"
+        browserRedirectCounters[0].redirectCounter == 3
+
+        and: "the second result is windows with one count"
+        browserRedirectCounters[1].label == "Chrome"
+        browserRedirectCounters[1].redirectCounter == 1
+    }
+
+
+    void "getRedirectCounterGroupedBy with a given shortener only counts for this shortener"() {
 
         given: "one windows redirect for twitter"
         def twitter = Shortener.findByKey("httpsTwitterCom")
@@ -46,10 +69,10 @@ class StatisticsServiceIntegrationSpec extends Specification {
 
 
         when: "get redirect counters of all shorteners"
-        def osRedirectCounters = service.getRedirectCounterGroupedByOperatingSystem(twitter)
+        def osRedirectCounters = service.getRedirectCounterGroupedBy(twitter, 'operatingSystem')
 
         then:"windows with has only one count"
-        osRedirectCounters[0].operatingSystem == "Windows"
+        osRedirectCounters[0].label == "Windows"
         osRedirectCounters[0].redirectCounter == 1
     }
 
@@ -181,6 +204,22 @@ class StatisticsServiceIntegrationSpec extends Specification {
                         browserName: "Chrome 38",
                         browserVersion: "38.0.1.34",
                         operatingSystem: os,
+                        mobileBrowser: false
+                )
+
+        ).save()
+    }
+
+
+    def createRedirectWithBrowser(String browser, Shortener shortener = null) {
+
+        def log = new RedirectLog(
+                shortener: shortener ?: Shortener.findByKey("httpsTwitterCom"),
+                referer: "http://www.google.com",
+                clientInformation: new ClientInformation(
+                        browserName: browser,
+                        browserVersion: "38.0.1.34",
+                        operatingSystem: "Windows",
                         mobileBrowser: false
                 )
 

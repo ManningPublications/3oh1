@@ -1,17 +1,16 @@
 <div class="panel panel-default">
     <div class="panel-heading">
         <span class="glyphicon glyphicon-stats"></span> <g:message
-            code="statistics.redirectCountsPerOperatingSystem.title"/>
+            code="statistics.redirectCountsPerBrowser.title"/>
     </div>
 
-    <canvas id="redirectsPerOperatingSystem"  width="250" height="100"></canvas>
+
+    <canvas id="redirectsPerBrowser"  width="250" height="100"></canvas>
 
 </div>
 
 
 <asset:script>
-
-
 
     // create some random colors
     var colors = []
@@ -24,11 +23,11 @@
 
 
     var data = [];
-    <g:each in="${redirectCountersPerOperatingSystem}" var="os">
+    <g:each in="${redirectCountersPerBrowser}" var="browser">
         var randomColorIndex = Math.floor((Math.random() * 30) + 1);
         data.push({
-            value: ${os.redirectCounter},
-            label: "${os.label}",
+            value: ${browser.redirectCounter},
+            label: "${browser.label}",
             color: colors[randomColorIndex]
         });
 
@@ -39,8 +38,8 @@
 
     Chart.defaults.global.responsive = true;
 
-    var osPieChartctx = $("#redirectsPerOperatingSystem").get(0).getContext("2d");
-    var osPieChart = new Chart(osPieChartctx).Pie(data, {});
+    var browserPieChartCtx = $("#redirectsPerBrowser").get(0).getContext("2d");
+    var browserPieChart = new Chart(browserPieChartCtx).Pie(data, {});
 
 
 </asset:script>

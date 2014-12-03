@@ -22,7 +22,7 @@ class StatisticsService {
     }
 
 
-    def getRedirectCounterGroupedByOperatingSystem(Shortener shortener = null) {
+    def getRedirectCounterGroupedBy(Shortener shortener = null, String groupAttribute) {
 
         def c = RedirectLog.createCriteria()
 
@@ -36,7 +36,7 @@ class StatisticsService {
                 countDistinct 'id', 'myCount'
 
                 clientInformation {
-                    groupProperty 'operatingSystem'
+                    groupProperty groupAttribute
                 }
 
             }
@@ -47,7 +47,7 @@ class StatisticsService {
         def result = queryResult.collect {
             [
                 redirectCounter: it[0],
-                operatingSystem: it[1],
+                label: it[1],
                 color: getColorForOperatingSystem(it[1]),
                 hilightColor: getHighlightColorForOperatingSystem(it[1])
             ]

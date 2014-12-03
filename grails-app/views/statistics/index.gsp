@@ -34,7 +34,7 @@
 
 
 <div class="row">
-    <div class="col-sm-6">
+    <div class="col-sm-5">
 
         <g:render template="top5Panel" />
 
@@ -43,11 +43,21 @@
 
 
 
-    <div class="col-sm-6">
+    <div class="col-sm-7">
 
         <g:render template="totalRedirectsPerMonth"/>
 
-        <g:render template="redirectCountsPerOperatingSystem"/>
+
+        <div class="row">
+            <div class="col-sm-6">
+                <g:render template="redirectCountsPerBrowser"/>
+                </div>
+            <div class="col-sm-6">
+                <g:render template="redirectCountsPerOperatingSystem"/>
+                </div>
+
+        </div>
+
 
     </div>
 

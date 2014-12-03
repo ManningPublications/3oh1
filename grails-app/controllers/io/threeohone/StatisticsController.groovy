@@ -12,7 +12,8 @@ class StatisticsController {
 
         def top5 = statisticsService.getTopShorteners()
         def redirectCounterTotal = RedirectLog.count()
-        def redirectCountersPerOperatingSystem = statisticsService.getRedirectCounterGroupedByOperatingSystem()
+        def redirectCountersPerOperatingSystem = statisticsService.getRedirectCounterGroupedBy(null, 'operatingSystem')
+        def redirectCountersPerBrowser = statisticsService.getRedirectCounterGroupedBy(null, 'browserName')
 
         def result = statisticsService.getTotalRedirectsPerMonthBetween(new Date() - 365, new Date())
 
@@ -24,7 +25,8 @@ class StatisticsController {
                 top5: top5,
                 totalNumberOfRedirectsPerMonth: totalNumberOfRedirectsPerMonth,
                 redirectCounterTotal: redirectCounterTotal,
-                redirectCountersPerOperatingSystem: redirectCountersPerOperatingSystem
+                redirectCountersPerOperatingSystem: redirectCountersPerOperatingSystem,
+                redirectCountersPerBrowser: redirectCountersPerBrowser
         ]
     }
 }
