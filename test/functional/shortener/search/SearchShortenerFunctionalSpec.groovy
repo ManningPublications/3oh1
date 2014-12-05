@@ -46,8 +46,8 @@ class SearchShortenerFunctionalSpec extends GebReportingSpec {
         when: 'sort by destination'
         page.sortDestinationURL()
 
-        then: "the shortener for test22.com is found"
-        page.containsShortener("test22.com")
+        then: "the shortener for test17.com is found"
+        page.containsShortener("test17.com")
 
     }
 
