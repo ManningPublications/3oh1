@@ -5,6 +5,5 @@ branches:
   only:
     - master
 script: ./grailsw refresh-dependencies
-  && ./grailsw "test-app unit:"
-  && ./grailsw refresh-dependencies
-  && ./grailsw "test-app functional:"
+  && ./grailsw clean
+  && ./grailsw "test-app --stacktrace"
