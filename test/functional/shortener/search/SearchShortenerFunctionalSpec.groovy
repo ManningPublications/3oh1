@@ -67,13 +67,8 @@ class SearchShortenerFunctionalSpec extends GebReportingSpec {
         page.search("google.com")
 
         then: "the shortener for google.com is found"
-        // page.containsShortener("google.com")
-
-        then: 'the shortener google.com is found and displayed on show view'
-        at ShortenerShowPage
-
-        and: 'the link is displayed'
-        page.hasLinkWithText('http://www.google.com')
+        at ShortenerIndexPage
+        page.containsShortener("google.com")
 
     }
 
@@ -100,13 +95,9 @@ class SearchShortenerFunctionalSpec extends GebReportingSpec {
         page.search("google.com")
 
         then: "the shortener for google.com is found"
-        // page.containsShortener("google.com")
+        at ShortenerIndexPage
+        page.containsShortener("google.com")
 
-        then: 'the shortener google.com is found and displayed on show view'
-        at ShortenerShowPage
-
-        and: 'the link is displayed'
-        page.hasLinkWithText('http://www.google.com')
     }
 
 
