@@ -67,14 +67,13 @@ class SearchShortenerFunctionalSpec extends GebReportingSpec {
         page.search("google.com")
 
         then: "the shortener for google.com is found"
-        page.containsShortener("google.com")
+        // page.containsShortener("google.com")
 
-// with forked test mode failed:
-//        then: 'the shortener google.com is found and displayed on show view'
-//        at ShortenerShowPage
-//
-//        and: 'the link is displayed'
-//        page.hasLinkWithText('http://www.google.com')
+        then: 'the shortener google.com is found and displayed on show view'
+        at ShortenerShowPage
+
+        and: 'the link is displayed'
+        page.hasLinkWithText('http://www.google.com')
 
     }
 
@@ -101,14 +100,13 @@ class SearchShortenerFunctionalSpec extends GebReportingSpec {
         page.search("google.com")
 
         then: "the shortener for google.com is found"
-        page.containsShortener("google.com")
+        // page.containsShortener("google.com")
 
-// with forked test mode failed:
-//        then: 'the shortener google.com is found and displayed on show view'
-//        at ShortenerShowPage
-//
-//        and: 'the link is displayed'
-//        page.hasLinkWithText('http://www.google.com')
+        then: 'the shortener google.com is found and displayed on show view'
+        at ShortenerShowPage
+
+        and: 'the link is displayed'
+        page.hasLinkWithText('http://www.google.com')
     }
 
 
