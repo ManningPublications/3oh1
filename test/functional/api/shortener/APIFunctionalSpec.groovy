@@ -23,6 +23,8 @@ abstract class APIFunctionalSpec extends GebReportingSpec {
 
     def setup() {
         client = new RestBuilder()
+        client.restTemplate.messageConverters.removeAll { it.class.name == 'org.springframework.http.converter.json.GsonHttpMessageConverter' }
+
     }
 
 

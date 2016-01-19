@@ -86,17 +86,16 @@
                         <li>
                             <g:link
                                     elementId="myShorteners"
-                                    controller="shortener"
-                                    action="index"
-                                    params="[userId: sec.loggedInUserInfo(field:'username')]">
+                                    url="[resource: 'user/shortener', userId: sec.loggedInUserInfo(field:'username') ]"
+                                    >
                                 <g:message code="shortener.menu.my.label" />
                             </g:link>
                         </li>
                         <li>
                             <g:link
                                     elementId="allShorteners"
-                                    controller="shortener"
-                                    action="index">
+                                    url="[resource: 'shortener']"
+                                    >
                                 <g:message code="shortener.menu.all.label" />
                             </g:link>
                         </li>

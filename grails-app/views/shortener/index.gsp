@@ -80,8 +80,14 @@
     </div>
 </g:if>
 
-<g:paginate total="${shortenerInstanceCount ?: 0}" action="index" controller="shortener"
-            params="['validity': params.validity, search: params.search, userId: params.userId]"/>
+<g:if test="${params.userId}">
+    <g:paginate total="${shortenerInstanceCount ?: 0}" action="index" controller="shortener"
+                params="['validity': params.validity, search: params.search, userId: params.userId]"/>
+</g:if>
+<g:else>
+    <g:paginate total="${shortenerInstanceCount ?: 0}" action="index" controller="shortener"
+                params="['validity': params.validity, search: params.search]"/>
+</g:else>
 </body>
 </html>
 

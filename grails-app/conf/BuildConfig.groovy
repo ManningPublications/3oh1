@@ -56,28 +56,28 @@ grails.project.dependency.resolution = {
 
     plugins {
         // grails default plugins
-        build ":tomcat:7.0.55"
-        runtime ":hibernate4:4.3.6.1"
-        runtime ":database-migration:1.4.0"
+        build ':tomcat:7.0.55.3'
+        runtime ':hibernate4:4.3.10'
+        runtime ":database-migration:1.4.1"
         compile ":scaffolding:2.1.2"
         compile ':cache:1.1.8'
 
         // how to deliver static assets to the client
-        compile ":asset-pipeline:1.9.9"
-        compile ":less-asset-pipeline:1.10.0"
+        compile ":asset-pipeline:2.5.0"
+        compile ":less-asset-pipeline:2.3.0"
 
         // for a good looking frontend
-        compile ":twitter-bootstrap:3.3.0"
+        compile ":twitter-bootstrap:3.3.4"
         runtime ":jquery:1.11.1"
 
         // stuff for functional testing
         test ":geb:$gebVersion"
-        compile ":rest-client-builder:2.0.3"
+        compile ":rest-client-builder:2.1.1"
 
         // fields plugin makes creating forms a breeze
         compile ":fields:1.4"
 
-        compile ':spring-security-core:2.0-RC4'
+        compile ':spring-security-core:2.0.0'
 
 
         compile ":excel-export:0.2.1"
