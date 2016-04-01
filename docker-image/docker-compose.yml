@@ -1,0 +1,16 @@
+web:
+  image: 3oh1 
+  ports:
+    - "9000:8000"
+  links:
+    - db
+  environment:
+    - DB_HOST=db
+    - DB_PORT=5432
+    - DB_NAME=postgres
+    - DB_USER=postgres
+    - DB_PASS=postgres
+db:
+  image: postgres
+  environment:
+   - POSTGRES_PASSWORD=postgres

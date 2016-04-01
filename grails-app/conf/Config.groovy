@@ -157,6 +157,7 @@ grails.plugin.springsecurity.authority.className = 'io.threeohone.security.Role'
 grails.plugin.springsecurity.controllerAnnotations.staticRules = [
         '/docs/**'       : ['permitAll'],
         '/dbconsole'     : ['permitAll'],
+	'/console'	 : ['permitAll'],
         '/'              : ['permitAll'],
         '/index'         : ['permitAll'],
         '/index.gsp'     : ['permitAll'],

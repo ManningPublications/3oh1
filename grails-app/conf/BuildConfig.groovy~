@@ -84,7 +84,5 @@ grails.project.dependency.resolution = {
         compile ":browser-detection:2.1.0"
         compile ":geoip:0.3.3"
 
-
-	compile "org.grails.plugins:console:1.5.7"
     }
 }

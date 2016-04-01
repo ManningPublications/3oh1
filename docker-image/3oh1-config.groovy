@@ -1,6 +1,10 @@
+grails.plugin.geoip.data.path="/GeoLiteCity.dat"
+grails.plugin.console.enabled=true
+grails.dbconsole.enabled = true
 
 def db = [
         host: System.getenv("DB_HOST"),
+        port: System.getenv("DB_PORT"),
         name: System.getenv("DB_NAME"),
         user: System.getenv("DB_USER"),
         pass: System.getenv("DB_PASS"),

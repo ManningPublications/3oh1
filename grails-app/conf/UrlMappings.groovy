@@ -8,6 +8,8 @@ class UrlMappings {
             }
         }
 
+	"/console"(controller: "console")
+
         "/dbconsole"(controller: "db")
 
         "/shorteners"(resources:"shortener") {
