@@ -12,12 +12,16 @@ def db = [
 
 if (db.host && db.name && db.user && db.pass) {
 
+
+    println "DB-Connection settings:"
+    println db
+
     dataSource {
         dbCreate = ""
         url = "jdbc:postgresql://${db.host}:${db.port}/${db.name}"
 
-        username = db.user
-        password = db.pass
+        username = "${db.user}"
+        password = "${db.pass}"
 
         properties {
             // See http://grails.org/doc/latest/guide/conf.html#dataSource for documentation
