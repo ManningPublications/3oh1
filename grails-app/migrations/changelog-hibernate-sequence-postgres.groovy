@@ -1,5 +1,5 @@
 databaseChangeLog = {
-    changeSet(author: "mario (generated)", id: "1416120497231-30", dbms: "postgres") {
+    changeSet(author: "mario (generated)", id: "1316120497231-01", dbms: "postgres") {
         createSequence(sequenceName: "hibernate_sequence")
     }
 }
