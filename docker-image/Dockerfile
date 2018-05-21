@@ -17,4 +17,4 @@ ADD 3oh1-config.groovy /usr/local/tomcat/conf/
 ADD https://jdbc.postgresql.org/download/postgresql-9.4.1208.jar /usr/local/tomcat/lib/
 
 # external config file
-ENV CATALINA_OPTS="-D3oh1.config.location=/usr/local/tomcat/conf/3oh1-config.groovy"
+ENV CATALINA_OPTS="-Dm3oh1.config.location=/usr/local/tomcat/conf/3oh1-config.groovy"

@@ -3,7 +3,7 @@ package io.threeohone
 import grails.plugin.springsecurity.annotation.Secured
 import grails.transaction.Transactional
 import io.threeohone.security.User
-import org.codehaus.groovy.grails.web.servlet.HttpHeaders
+import grails.web.http.HttpHeaders
 
 import static org.springframework.http.HttpStatus.*
 
@@ -20,8 +20,6 @@ class ShortenerController {
     ShortenerService shortenerService
 
     ShortenerSearchService shortenerSearchService
-
-    def grailsApplication
 
     def index(Integer max) {
 
