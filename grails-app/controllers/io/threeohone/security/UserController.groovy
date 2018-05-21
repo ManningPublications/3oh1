@@ -1,9 +1,8 @@
 package io.threeohone.security
 
 import grails.plugin.springsecurity.annotation.Secured
-import org.codehaus.groovy.grails.web.servlet.HttpHeaders
-
-import static org.springframework.http.HttpStatus.*
+import grails.web.http.HttpHeaders
+import static grails.web.http.HttpHeaders.*
 import grails.transaction.Transactional
 
 @Secured(['ROLE_ADMIN'])

@@ -1,7 +1,8 @@
 package io.threeohone.security
 
-@grails.validation.Validateable
-class UserChangeCommand {
+import grails.validation.Validateable
+
+class UserChangeCommand implements Validateable {
     String username
     Role role
 

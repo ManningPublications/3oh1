@@ -1,7 +1,8 @@
 package io.threeohone.security
 
-@grails.validation.Validateable
-class PasswordChangeCommand {
+import grails.validation.Validateable
+
+class PasswordChangeCommand implements Validateable {
     String username
     String password
     String confirmPassword

@@ -1,6 +1,6 @@
 package io.threeohone
 
-import fm.jiecao.lib.Hashids
+import org.hashids.Hashids
 import io.threeohone.security.User
 
 
