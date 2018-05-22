@@ -52,7 +52,7 @@ class ShortenerController {
             return
         }
 
-        def shortenerInstanceCount = shortenerList.getTotalCount()
+        def shortenerInstanceCount = shortenerList.size()
         response.setHeader("total-count", Integer.toString(shortenerInstanceCount))
 
         respond shortenerList, model: [shortenerInstanceCount: shortenerInstanceCount, user: user]

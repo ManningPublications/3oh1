@@ -47,40 +47,41 @@ class ShortenerSearchService {
 
         def now = new Date()
 
-        Shortener.createCriteria().list(paginationParams) {
-            createAlias('userCreated', 'u', JoinType.LEFT_OUTER_JOIN)
-            for (token in tokens) {
-                and {
-                    or {
-                        ilike('destinationUrl', "%${token}%")
-                        ilike('key', "%${token}%")
-                        ilike('u.username', "%${token}%")
-                    }
-                }
-            }
-
-            if (validity == Shortener.Validity.ACTIVE) {
-                le('validFrom', now)
-                and {
-                    or {
-                        isNull('validUntil')
-                        ge('validUntil', now)
-                    }
-                }
-            }
-
-            if (validity == Shortener.Validity.EXPIRED) {
-                lt("validUntil", now)
-            }
-
-            if (validity == Shortener.Validity.FUTURE) {
-                gt("validFrom", now)
-            }
-
-            if (userCreated) {
-                eq("userCreated", userCreated)
-            }
-
-        }
+        Shortener.list()
+//        Shortener.createCriteria().list(paginationParams) {
+//            createAlias('userCreated', 'u', JoinType.LEFT_OUTER_JOIN)
+//            for (token in tokens) {
+//                and {
+//                    or {
+//                        ilike('destinationUrl', "%${token}%")
+//                        ilike('key', "%${token}%")
+//                        ilike('u.username', "%${token}%")
+//                    }
+//                }
+//            }
+//
+//            if (validity == Shortener.Validity.ACTIVE) {
+//                le('validFrom', now)
+//                and {
+//                    or {
+//                        isNull('validUntil')
+//                        ge('validUntil', now)
+//                    }
+//                }
+//            }
+//
+//            if (validity == Shortener.Validity.EXPIRED) {
+//                lt("validUntil", now)
+//            }
+//
+//            if (validity == Shortener.Validity.FUTURE) {
+//                gt("validFrom", now)
+//            }
+//
+//            if (userCreated) {
+//                eq("userCreated", userCreated)
+//            }
+//
+//        }
     }
 }
