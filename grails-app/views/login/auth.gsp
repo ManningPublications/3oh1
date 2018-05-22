@@ -24,7 +24,7 @@
                             <input
                                     class="form-control"
                                     placeholder="${message(code: 'springSecurity.login.username.label')}"
-                                    name="j_username"
+                                    name="username"
                                     id="username"
                                     type="text"
                                     autofocus="">
@@ -34,7 +34,7 @@
                             <input
                                     class="form-control"
                                     placeholder="${message(code: 'springSecurity.login.password.label')}"
-                                    name="j_password"
+                                    name="password"
                                     type="password"
                                     id="password"
                                     value="">
