@@ -24,6 +24,7 @@ spring:
 endpoints:
     enabled: false
     jmx:
+        unique-names: true
         enabled: true
 
 ---
@@ -86,16 +87,15 @@ grails:
         - 'password'
     plugin:
         springsecurity:
-            active: false
             userLookup:
                 userDomainClassName: 'io.threeohone.security.User'
                 authorityJoinClassName: 'io.threeohone.security.UserRole'
                 authority.className: 'io.threeohone.security.Role'
             userBasicAuth: true
             basic.realmName: '3oh1'
-            passsword:
-                algorithm: 'SHA-256'
-                hash.iterations: 1
+#            passsword:
+#                algorithm: 'SHA-256'
+#                hash.iterations: 1
             logout:
                 postOnly: false
             controllerAnnotations.staticRules:
@@ -141,10 +141,6 @@ grails:
                   filters: 'JOINED_FILTERS,-basicAuthenticationFilter,-basicExceptionTranslationFilter'
         fields.disableLookupCache: true
         geoip.data.cache: 0
-
-endpoints:
-    jmx:
-        unique-names: true
 
 ---
 hibernate:

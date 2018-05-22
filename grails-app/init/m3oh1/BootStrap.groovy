@@ -1,6 +1,7 @@
 package m3oh1
 
 import grails.converters.JSON
+import grails.plugin.springsecurity.SpringSecurityService
 import io.threeohone.ClientInformation
 import io.threeohone.RedirectLog
 import io.threeohone.Shortener
@@ -9,6 +10,7 @@ import io.threeohone.security.User
 import io.threeohone.security.UserRole
 
 class BootStrap {
+    SpringSecurityService springSecurityService
 
     def init = {
 
@@ -60,25 +62,25 @@ class BootStrap {
 
         def adminRole = Role.findByAuthority('ROLE_ADMIN') ?: new Role(authority: 'ROLE_ADMIN').save(failOnError: true)
 
-        def adminUser = User.findByUsername('admin') ?: new User(username: 'admin', password: 'admin', enabled: true).save(failOnError: true)
+        def adminUser = User.findByUsername('admin') ?: new User(username: 'admin', password: springSecurityService.encodePassword('admin'), enabled: true).save(failOnError: true)
         if (!adminUser.authorities.contains(adminRole)) {
             UserRole.create adminUser, adminRole
         }
 
 
         def userRole = Role.findByAuthority('ROLE_USER') ?: new Role(authority: 'ROLE_USER').save(failOnError: true)
-        def user = User.findByUsername('user') ?: new User(username: 'user', password: 'user', enabled: true).save(failOnError: true)
+        def user = User.findByUsername('user') ?: new User(username: 'user', password: springSecurityService.encodePassword('user'), enabled: true).save(failOnError: true)
         if (!user.authorities.contains(userRole)) {
             UserRole.create user, userRole
         }
 
-        def apiUser = User.findByUsername('apiUser') ?: new User(username: 'apiUser', password: 'apiUser', enabled: true).save(failOnError: true)
+        def apiUser = User.findByUsername('apiUser') ?: new User(username: 'apiUser', password: springSecurityService.encodePassword('apiUser'), enabled: true).save(failOnError: true)
         if (!apiUser.authorities.contains(userRole)) {
             UserRole.create apiUser, userRole
         }
 
 
-        def showAllShortenersOfUserUser = User.findByUsername('showAllShortenersOfUserUser') ?: new User(username: 'showAllShortenersOfUserUser', password: 'password', enabled: true).save(failOnError: true)
+        def showAllShortenersOfUserUser = User.findByUsername('showAllShortenersOfUserUser') ?: new User(username: 'showAllShortenersOfUserUser', password: springSecurityService.encodePassword('password'), enabled: true).save(failOnError: true)
         if (!showAllShortenersOfUserUser.authorities.contains(userRole)) {
             UserRole.create showAllShortenersOfUserUser, userRole
         }
