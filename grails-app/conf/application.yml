@@ -86,6 +86,7 @@ grails:
         - 'password'
     plugin:
         springsecurity:
+            active: false
             userLookup:
                 userDomainClassName: 'io.threeohone.security.User'
                 authorityJoinClassName: 'io.threeohone.security.UserRole'
