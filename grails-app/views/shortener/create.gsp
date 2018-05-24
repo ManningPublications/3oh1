@@ -13,7 +13,7 @@
     <g:form url="[resource: shortenerInstance, action: 'save']">
         <g:render template="form"/>
         <button type="submit" class="btn btn-success save" onclick="submit();">
-            <span class="glyphicon glyphicon-disk"></span>
+            <span class="fa fa-save"></span>
             <g:message code="default.button.create.label" />
         </button>
 

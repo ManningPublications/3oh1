@@ -38,12 +38,8 @@ assets {
             optimizationLevel: 'SIMPLE'
     ]
 
-    excludes = ['**/*.less', 'bootstrap/**/*'] //Example Exclude GLOB pattern
-
-    includes = [
-            'bootstrap/bootstrap.less',
-            'bootstrap/fonts/*'
-    ]
+    excludes = [ '**/*.less' ]
+    includes = [ 'fontawesome/fontawesome.less', 'fonts/*' ]
 
     //developmentRuntime can be turned off
     //developmentRuntime=true
@@ -110,7 +106,4 @@ tasks.withType(Test) {
     systemProperty "webdriver.gecko.driver", System.getProperty('webdriver.gecko.driver')
 }
 
-assets {
-    minifyJs = true
-    minifyCss = true
-}
+

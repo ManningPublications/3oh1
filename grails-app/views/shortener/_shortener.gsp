@@ -13,7 +13,7 @@
                 absolute="true"
                 url="${shortener.key}"
         >
-            <span class="glyphicon glyphicon-share"></span>
+            <span class="fa fa-share"></span>
         </g:link>
     </td>
 

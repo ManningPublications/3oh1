@@ -1,6 +1,6 @@
 <div class="panel panel-default">
     <div class="panel-heading">
-        <span class="glyphicon glyphicon-share"></span> <g:message code="statistics.lastRedirects.title" />
+        <span class="fa fa-share"></span> <g:message code="statistics.lastRedirects.title" />
     </div>
 
 

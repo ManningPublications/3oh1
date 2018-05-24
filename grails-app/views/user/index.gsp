@@ -8,7 +8,7 @@
 
 <body>
 <h2>
-    <span class="glyphicon glyphicon-th-list"></span>
+    <span class="fa fa-list"></span>
     <g:message code="default.list.label" args="[entityName]"/>
 </h2>
 
@@ -16,7 +16,7 @@
     <div class="col-sm-2 col-sm-push-10">
 
         <g:link elementId="addUser" class="btn btn-default pull-right" action="create">
-            <span class="glyphicon glyphicon-plus"></span>
+            <span class="fa fa-plus"></span>
             <g:message code="default.new.label" args="[entityName]"/>
         </g:link>
 

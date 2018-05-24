@@ -9,7 +9,7 @@
 <body>
 
 <h2>
-    <span class="glyphicon glyphicon-th-list"></span>
+    <span class="fa fa-list"></span>
     <g:message code="default.list.label" args="[entityName]"/>
 
     <g:if test="${user}">
@@ -49,7 +49,7 @@
     <div class="col-sm-2 col-sm-push-2">
 
         <g:link elementId="addShortener" class="btn btn-default pull-right" action="create">
-            <span class="glyphicon glyphicon-plus"></span>
+            <span class="fa fa-plus"></span>
             <g:message code="default.new.label" args="[entityName]"/>
         </g:link>
 
@@ -75,18 +75,22 @@
 
 <g:if test="${!shortenerInstanceList}">
     <div class="alert alert-danger">
-        <span class="glyphicon glyphicon-remove"></span>
+        <span class="fa fa-trash"></span>
         <g:message code="search.noResults"/>
     </div>
 </g:if>
 
 <g:if test="${params.userId}">
-    <g:paginate total="${shortenerInstanceCount ?: 0}" action="index" controller="shortener"
-                params="['validity': params.validity, search: params.search, userId: params.userId]"/>
+    <div class="paginate">
+        <g:paginate total="${shortenerInstanceCount ?: 0}" action="index" controller="shortener"
+                    params="['validity': params.validity, search: params.search, userId: params.userId]"/>
+    </div>
 </g:if>
 <g:else>
-    <g:paginate total="${shortenerInstanceCount ?: 0}" action="index" controller="shortener"
-                params="['validity': params.validity, search: params.search]"/>
+    <div class="pagination">
+        <g:paginate total="${shortenerInstanceCount ?: 0}" action="index" controller="shortener"
+                    params="['validity': params.validity, search: params.search]"/>
+    </div>
 </g:else>
 </body>
 </html>

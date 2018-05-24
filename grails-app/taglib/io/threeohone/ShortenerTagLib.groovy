@@ -37,7 +37,7 @@ class ShortenerTagLib {
             def messageKey = null
 
             out << '<div id="shortener-not-active-warning" class="alert alert-danger alert-dismissible" role="alert">'
-            out << '<span class="glyphicon glyphicon-time"></span> '
+            out << '<span class="fa fa-clock"></span> '
 
             if (!shortener.isStarted()) {
                 messageKey = 'shortener.redirection.validFrom.disabled'

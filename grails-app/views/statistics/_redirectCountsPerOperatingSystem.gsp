@@ -1,6 +1,6 @@
 <div class="panel panel-default">
     <div class="panel-heading">
-        <span class="glyphicon glyphicon-stats"></span> <g:message
+        <span class="fa fa-chart-bar"></span> <g:message
             code="statistics.redirectCountsPerOperatingSystem.title"/>
     </div>
 
