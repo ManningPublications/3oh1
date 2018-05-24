@@ -91,9 +91,9 @@ grails:
                 userDomainClassName: 'io.threeohone.security.User'
                 authorityJoinClassName: 'io.threeohone.security.UserRole'
                 authority.className: 'io.threeohone.security.Role'
-            userBasicAuth: true
+            useBasicAuth: true
             basic.realmName: '3oh1'
-#            passsword:
+#            password:
 #                algorithm: 'SHA-256'
 #                hash.iterations: 1
             logout:
@@ -138,7 +138,8 @@ grails:
                 - pattern: '/api/**'
                   filters: 'JOINED_FILTERS,-exceptionTranslationFilter'
                 - pattern: '/**'
-                  filters: 'JOINED_FILTERS,-basicAuthenticationFilter,-basicExceptionTranslationFilter'
+                  filters: 'statelessSecurityContextPersistenceFilter,logoutFilter,authenticationProcessingFilter,basicAuthenticationFilter,securityContextHolderAwareRequestFilter,rememberMeAuthenticationFilter,anonymousAuthenticationFilter,basicExceptionTranslationFilter,filterInvocationInterceptor'
+                  #filters: 'JOINED_FILTERS,-basicAuthenticationFilter,-basicExceptionTranslationFilter'
         fields.disableLookupCache: true
         geoip.data.cache: 0
 
