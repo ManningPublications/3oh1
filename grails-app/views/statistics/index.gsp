@@ -8,7 +8,7 @@
 <body>
 
 <h2>
-    <span class="glyphicon glyphicon-stats"></span>
+    <span class="fa fa-chart-bar"></span>
     <g:message code="button.statistics.label"/>
 </h2>
 
@@ -24,7 +24,7 @@
                     elementId="statistics-download-redirect-logs"
                     controller="redirectLog"
                     action="index">
-                <span class="glyphicon glyphicon-file"></span>
+                <span class="fa fa-file"></span>
                 <g:message code="shortener.redirectLogs.label"/>
             </g:link>
         </div>

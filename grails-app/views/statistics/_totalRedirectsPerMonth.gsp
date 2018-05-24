@@ -1,6 +1,6 @@
 <div class="panel panel-default">
     <div class="panel-heading">
-        <span class="glyphicon glyphicon-calendar"></span> <g:message
+        <span class="fa fa-calendar"></span> <g:message
             code="statistics.totalRedirectsLastYearPerMonth.title"/>
     </div>
 

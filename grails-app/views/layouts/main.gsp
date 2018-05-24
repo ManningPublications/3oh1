@@ -28,7 +28,7 @@
                             data-toggle="tooltip"
                             data-placement="bottom"
                             title="${message(code: 'default.button.logout.label')}">
-                        <span class="glyphicon glyphicon-off"></span>
+                        <span class="fa fa-power-off"></span>
                     </button>
 
                 </g:form>
@@ -44,7 +44,7 @@
                         data-toggle="tooltip"
                         data-placement="bottom"
                         title="${message(code: 'user.password.edit.label')}">
-                    <span class="glyphicon glyphicon-cog"></span>
+                    <span class="fa fa-cog"></span>
                 </g:link>
 
 
@@ -58,7 +58,7 @@
                             data-toggle="tooltip"
                             data-placement="bottom"
                             title="${message(code: 'button.users.label')}">
-                        <span class="glyphicon glyphicon-user"></span>
+                        <span class="fa fa-user"></span>
                     </g:link>
                 </sec:ifAllGranted>
 
@@ -71,7 +71,7 @@
                         data-toggle="tooltip"
                         data-placement="bottom"
                         title="${message(code: 'button.statistics.label')}">
-                    <span class="glyphicon glyphicon-stats"></span>
+                    <span class="fa fa-chart-bar"></span>
                 </g:link>
 
                 <div class="btn-group pull-right">
@@ -80,7 +80,7 @@
                             type="button"
                             class="btn btn-primary dropdown-toggle"
                             data-toggle="dropdown">
-                        <span class="glyphicon glyphicon-th-list"></span> <span class="caret"></span>
+                        <span class="fa fa-list"></span> <span class="caret"></span>
                     </button>
                     <ul class="dropdown-menu" role="menu">
                         <li>

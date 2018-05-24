@@ -21,7 +21,7 @@
     <g:hiddenField name="version" value="${shortenerInstance?.version}"/>
     <g:render template="form"/>
     <button type="submit" class="btn btn-success save" onclick="submit();">
-        <span class="glyphicon glyphicon-disk"></span>
+        <span class="fa fa-save"></span>
         <g:message code="default.button.update.label"/>
     </button>
 </g:form>

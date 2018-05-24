@@ -1,6 +1,6 @@
 <div class="panel panel-default">
     <div class="panel-heading">
-        <span class="glyphicon glyphicon-signal"></span> <g:message code="statistics.topShorteners.title" />
+        <span class="fa fa-signal"></span> <g:message code="statistics.topShorteners.title" />
     </div>
 
 
