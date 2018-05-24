@@ -5,7 +5,7 @@ buildscript {
     }
     dependencies {
         classpath "org.grails:grails-gradle-plugin:$grailsVersion"
-        classpath "org.grails.plugins:hibernate5:${gormVersion-".RELEASE"}"
+        classpath "org.grails.plugins:hibernate5:${gormVersion - ".RELEASE"}"
         classpath "com.bertramlabs.plugins:asset-pipeline-gradle:2.14.8"
         classpath "com.bertramlabs.plugins:less-asset-pipeline:2.14.8"
     }
@@ -14,16 +14,42 @@ buildscript {
 version "0.1"
 group "m3oh1"
 
-apply plugin:"eclipse"
-apply plugin:"idea"
-apply plugin:"war"
-apply plugin:"org.grails.grails-web"
-apply plugin:"asset-pipeline"
-apply plugin:"org.grails.grails-gsp"
+apply plugin: "eclipse"
+apply plugin: "idea"
+apply plugin: "war"
+apply plugin: "org.grails.grails-web"
+apply plugin: "asset-pipeline"
+apply plugin: "org.grails.grails-gsp"
 
 repositories {
     mavenLocal()
     maven { url "https://repo.grails.org/grails/core" }
+}
+
+assets {
+    minifyJs = true
+    minifyCss = true
+    enableSourceMaps = false
+    configOptions = [:]
+
+    minifyOptions = [
+            languageMode     : 'ES5',
+            targetLanguage   : 'ES5', //Can go from ES6 to ES5 for those bleeding edgers
+            optimizationLevel: 'SIMPLE'
+    ]
+
+    excludes = ['**/*.less', 'bootstrap/**/*'] //Example Exclude GLOB pattern
+
+    includes = [
+            'bootstrap/bootstrap.less',
+            'bootstrap/fonts/*'
+    ]
+
+    //developmentRuntime can be turned off
+    //developmentRuntime=true
+
+    // Can add custom asset locations (directories or individual jar files)
+    //from '/path/to/file.jar'
 }
 
 dependencies {
