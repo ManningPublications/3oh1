@@ -9,6 +9,7 @@ class UserRole implements Serializable {
 	User user
 	Role role
 
+
 	boolean equals(other) {
 		if (!(other instanceof UserRole)) {
 			return false
@@ -39,45 +40,6 @@ class UserRole implements Serializable {
 		}.count() > 0
 	}
 
-	static UserRole create(User user, Role role, boolean flush = false) {
-		def instance = new UserRole(user: user, role: role)
-		instance.save(flush: flush, insert: true)
-		instance
-	}
-
-	static boolean remove(User u, Role r, boolean flush = false) {
-		if (u == null || r == null) return false
-
-		int rowCount = UserRole.where {
-			user == User.load(u.id) &&
-			role == Role.load(r.id)
-		}.deleteAll()
-
-		if (flush) { UserRole.withSession { it.flush() } }
-
-		rowCount > 0
-	}
-
-	static void removeAll(User u, boolean flush = false) {
-		if (u == null) return
-
-		UserRole.where {
-			user == User.load(u.id)
-		}.deleteAll()
-
-		if (flush) { UserRole.withSession { it.flush() } }
-	}
-
-	static void removeAll(Role r, boolean flush = false) {
-		if (r == null) return
-
-		UserRole.where {
-			role == Role.load(r.id)
-		}.deleteAll()
-
-		if (flush) { UserRole.withSession { it.flush() } }
-	}
-
 	static constraints = {
 		role validator: { Role r, UserRole ur ->
 			if (ur.user == null) return
@@ -92,6 +54,7 @@ class UserRole implements Serializable {
 	}
 
 	static mapping = {
+		datasource 'userLookup'
 		id composite: ['role', 'user']
 		version false
 	}

@@ -37,7 +37,7 @@ class ShortenerController {
 
         def shortenerList
 
-        def user = User.findByUsername(params.userId)
+        def user = User.withTransaction{User.findByUsername(params.userId)}
 
         if (user) {
             shortenerList = shortenerSearchService.searchByUser(searchQuery, validity, user, params)
@@ -111,7 +111,8 @@ class ShortenerController {
     }
 
     def create() {
-        respond new Shortener(params)
+        Shortener shortenerInstance = new Shortener()
+        respond shortenerInstance, model: [shortenerInstance: shortenerInstance]
     }
 
     def save(ShortenerCreateCommand createCommand) {
@@ -224,6 +225,7 @@ class ShortenerController {
  */
 class ShortenerCreateCommand {
 
+    long userId
     String userCreated
     String key
     String destinationUrl

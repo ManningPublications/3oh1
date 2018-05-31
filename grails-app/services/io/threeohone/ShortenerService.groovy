@@ -62,7 +62,7 @@ class ShortenerService {
 
 
         def shortenerParams = [
-                userCreated: determineUserForShortener(createCommand),
+                userCreated: determineUserForShortener(createCommand.userId),
                 destinationUrl: createCommand.destinationUrl,
                 key: createCommand.key,
                 validFrom: createCommand.validFrom ?: new Date(),
@@ -75,10 +75,10 @@ class ShortenerService {
         return shortener
     }
 
-    private User determineUserForShortener(params) {
-        def assignedUser = User.findByUsername(params.userCreated)
+    private User determineUserForShortener(long userId) {
+        def assignedUser = User.withTransaction{User.get(userId)}
 
-        return assignedUser ?: springSecurityService.currentUser
+        return assignedUser ?: springSecurityService.authentication.principal
 
     }
 

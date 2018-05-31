@@ -17,7 +17,7 @@ class PasswordController {
 
     def edit() {
 
-        def userInstance = User.findByUsername(params.userId)
+        def userInstance = User.withTransaction{ findByUsername(params.userId) }
 
         if (!userInstance) {
             notFound()
@@ -39,7 +39,7 @@ class PasswordController {
     @Transactional
     def update(PasswordChangeCommand passwordChangeCommand) {
 
-        def userInstance = User.findByUsername(passwordChangeCommand?.username)
+        def userInstance = User.withTransaction { User.findByUsername(passwordChangeCommand?.username) }
 
         if (!passwordChangeCommand || !userInstance) {
             notFound()
