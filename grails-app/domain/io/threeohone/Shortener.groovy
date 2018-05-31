@@ -39,9 +39,9 @@ class Shortener {
     Date lastUpdated
 
 
-    User userCreated
+    Long userId
 
-
+    static transients  = ["userCreated"]
     static constraints = {
         /*
           nullable has to be true in order to create a temp shortener (with an id). This shortener is used directly
@@ -57,7 +57,6 @@ class Shortener {
 
         }
         destinationUrl url: true, nullable: false
-        userCreated nullable: false
         validUntil nullable: true
     }
 
@@ -76,5 +75,13 @@ class Shortener {
 
     boolean isActive() {
         isStarted() && !isEnded()
+    }
+
+    User getUserCreated() {
+        userId ? User.withTransaction{User.get(userId)} : null
+    }
+
+    void setUserCreated(User user) {
+        userId  = user.id
     }
 }

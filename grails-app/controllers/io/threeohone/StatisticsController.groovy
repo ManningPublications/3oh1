@@ -29,4 +29,26 @@ class StatisticsController {
                 redirectCountersPerBrowser: redirectCountersPerBrowser
         ]
     }
+
+    def shortener() {
+        Shortener shortenerInstance = Shortener.findByKey(params.id)
+
+        def result = statisticsService.getTotalRedirectsPerMonthBetween(new Date() - 365, new Date(), shortenerInstance)
+        def redirectCountersPerOperatingSystem = statisticsService.getRedirectCounterGroupedBy(shortenerInstance, 'operatingSystem')
+        def redirectCountersPerBrowser = statisticsService.getRedirectCounterGroupedBy(shortenerInstance, 'browserName')
+
+        def totalNumberOfRedirectsPerMonth = [monthNames: [], redirectCounters: []]
+        totalNumberOfRedirectsPerMonth.monthNames = result.collect { "${it.month} / ${it.year}" }
+        totalNumberOfRedirectsPerMonth.redirectCounters = result.collect { it.redirectCounter }
+
+        def redirectCounter = RedirectLog.where { shortener == shortenerInstance }.count()
+
+        respond ([
+                totalNumberOfRedirectsPerMonth: totalNumberOfRedirectsPerMonth,
+                redirectCounter: redirectCounter,
+                redirectCountersPerOperatingSystem: redirectCountersPerOperatingSystem,
+                redirectCountersPerBrowser: redirectCountersPerBrowser
+        ])
+
+    }
 }

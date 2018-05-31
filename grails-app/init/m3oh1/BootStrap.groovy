@@ -1,22 +1,16 @@
 package m3oh1
 
 import grails.converters.JSON
-import grails.plugin.springsecurity.SpringSecurityService
 import io.threeohone.ClientInformation
 import io.threeohone.RedirectLog
 import io.threeohone.Shortener
-import io.threeohone.security.Role
 import io.threeohone.security.User
-import io.threeohone.security.UserRole
 
 class BootStrap {
-    SpringSecurityService springSecurityService
 
     def init = {
 
         registerCustomJSONMarshallers()
-
-        createTestusers()
 
         environments {
             test {
@@ -38,12 +32,12 @@ class BootStrap {
 
 
     def registerCustomJSONMarshallers() {
-
+        JSON.registerObjectMarshaller(Date) { it?.format("yyyy-MM-dd'T'HH:mm:ssZ") }
         JSON.registerObjectMarshaller(Shortener) { Shortener shortener ->
             [
                 key: shortener.key,
                 destinationUrl: shortener.destinationUrl,
-                userCreated: shortener.userCreated.username,
+                userCreated: shortener.userCreated,
                 dateCreated: shortener.dateCreated,
                 validFrom: shortener.validFrom,
                 validUntil: shortener.validUntil
@@ -58,41 +52,12 @@ class BootStrap {
 
     }
 
-    private void createTestusers() {
-
-        def adminRole = Role.findByAuthority('ROLE_ADMIN') ?: new Role(authority: 'ROLE_ADMIN').save(failOnError: true)
-
-        def adminUser = User.findByUsername('admin') ?: new User(username: 'admin', password: springSecurityService.encodePassword('admin'), enabled: true).save(failOnError: true)
-        if (!adminUser.authorities.contains(adminRole)) {
-            UserRole.create adminUser, adminRole
-        }
-
-
-        def userRole = Role.findByAuthority('ROLE_USER') ?: new Role(authority: 'ROLE_USER').save(failOnError: true)
-        def user = User.findByUsername('user') ?: new User(username: 'user', password: springSecurityService.encodePassword('user'), enabled: true).save(failOnError: true)
-        if (!user.authorities.contains(userRole)) {
-            UserRole.create user, userRole
-        }
-
-        def apiUser = User.findByUsername('apiUser') ?: new User(username: 'apiUser', password: springSecurityService.encodePassword('apiUser'), enabled: true).save(failOnError: true)
-        if (!apiUser.authorities.contains(userRole)) {
-            UserRole.create apiUser, userRole
-        }
-
-
-        def showAllShortenersOfUserUser = User.findByUsername('showAllShortenersOfUserUser') ?: new User(username: 'showAllShortenersOfUserUser', password: springSecurityService.encodePassword('password'), enabled: true).save(failOnError: true)
-        if (!showAllShortenersOfUserUser.authorities.contains(userRole)) {
-            UserRole.create showAllShortenersOfUserUser, userRole
-        }
-
-    }
-
     private void createTestShorteners() {
 
-        def user = User.findByUsername('user')
+        def user = User.findByUsername('api_user')
 
         25.times {
-            createActiveShortenerBySimpleName('test' + it)
+            createActiveShortenerBySimpleName('api_user' + it)
         }
 
         Shortener.findOrSaveWhere(
@@ -100,7 +65,7 @@ class BootStrap {
                 destinationUrl: 'https://www.twitter.com',
                 validFrom: new Date(),
                 validUntil: new Date() + 1,
-                userCreated: user
+                userId: user.id
         )
 
         Shortener.findOrSaveWhere(
@@ -108,7 +73,7 @@ class BootStrap {
                 destinationUrl: 'http://www.google.com',
                 validFrom: new Date(),
                 validUntil: new Date() + 1,
-                userCreated: user
+                userId: user.id
         )
 
         Shortener.findOrSaveWhere(
@@ -116,7 +81,7 @@ class BootStrap {
                 destinationUrl: 'http://www.w3.org/Protocols/rfc2616/rfc2616.html',
                 validFrom: new Date(),
                 validUntil: new Date() + 1,
-                userCreated: user
+                userId: user.id
         )
 
 
@@ -125,20 +90,20 @@ class BootStrap {
                 destinationUrl: 'https://www.ietf.org/rfc/rfc2616.txt',
                 validFrom: new Date(),
                 validUntil: new Date() + 1,
-                userCreated: user
+                userId: user.id
         )
 
 
     }
 
     def createActiveShortenerBySimpleName(String s) {
-        def user = User.findByUsername('user')
+        def user = User.findByUsername('api_user')
         Shortener.findOrSaveWhere(
                 key: s,
                 destinationUrl: 'http://www.' + s + '.com',
                 validFrom: new Date(),
                 validUntil: new Date() + 1,
-                userCreated: user
+                userId: user.id
         )
     }
 
