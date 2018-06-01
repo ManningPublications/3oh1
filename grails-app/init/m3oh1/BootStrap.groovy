@@ -36,6 +36,7 @@ class BootStrap {
         JSON.registerObjectMarshaller(Shortener) { Shortener shortener ->
             [
                 key: shortener.key,
+                userId: shortener.userId,
                 destinationUrl: shortener.destinationUrl,
                 userCreated: shortener.userCreated,
                 dateCreated: shortener.dateCreated,

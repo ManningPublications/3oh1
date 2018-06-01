@@ -102,7 +102,7 @@ class ShortenerController {
         def redirectCounter = RedirectLog.where { shortener == shortenerInstance }.count()
 
 
-        respond shortenerInstance, model: [
+        respond shortenerInstance, model: [ shortenerInstance: shortenerInstance,
                 totalNumberOfRedirectsPerMonth: totalNumberOfRedirectsPerMonth,
                 redirectCounter: redirectCounter,
                 redirectCountersPerOperatingSystem: redirectCountersPerOperatingSystem,
