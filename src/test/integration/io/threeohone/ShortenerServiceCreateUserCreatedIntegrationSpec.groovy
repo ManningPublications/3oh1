@@ -10,7 +10,7 @@ class ShortenerServiceCreateUserCreatedIntegrationSpec extends Specification {
     ShortenerService service
     def springSecurityService
     User basicAuthUser
-    ShortenerCreateCommand createCommand
+    ShortenerCommand createCommand
     User ownerOfTheShortener
 
 
@@ -21,7 +21,7 @@ class ShortenerServiceCreateUserCreatedIntegrationSpec extends Specification {
         basicAuthUser = new User(username: "basicAuthUser", password: "basicAuthUser", enabled: true).save(failOnError: true)
         ownerOfTheShortener = new User(username: "ownerOfTheShortener", password: "ownerOfTheShortener", enabled: true).save(failOnError: true)
 
-        createCommand  = new ShortenerCreateCommand(
+        createCommand  = new ShortenerCommand(
                 destinationUrl: "http://www.example.com",
                 validFrom: new Date(),
                 validUntil: new Date() + 1

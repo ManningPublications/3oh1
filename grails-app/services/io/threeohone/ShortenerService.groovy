@@ -35,7 +35,7 @@ class ShortenerService {
      *               The key can not be set here (@see ShortenerService.importExistingShortener)
      * @return the (un)saved shortener
      */
-    def createShortener(ShortenerCreateCommand createCommand) {
+    def createShortener(ShortenerCommand createCommand) {
 
         Shortener shortener = tryToSaveShortener(createCommand)
 
@@ -53,12 +53,12 @@ class ShortenerService {
      *               The key has to be set here
      * @return the (un)saved shortener
      */
-    def importExistingShortener(ShortenerCreateCommand createCommand) {
+    def importExistingShortener(ShortenerCommand createCommand) {
         return tryToSaveShortener(createCommand)
     }
 
 
-    private Shortener tryToSaveShortener(ShortenerCreateCommand createCommand) {
+    private Shortener tryToSaveShortener(ShortenerCommand createCommand) {
 
 
         def shortenerParams = [

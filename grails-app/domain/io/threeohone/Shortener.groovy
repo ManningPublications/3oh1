@@ -82,6 +82,8 @@ class Shortener {
     }
 
     void setUserCreated(User user) {
-        userId  = user.id
+        if (user) {
+            userId  = user.id
+        }
     }
 }

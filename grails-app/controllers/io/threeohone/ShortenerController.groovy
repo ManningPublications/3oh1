@@ -115,7 +115,7 @@ class ShortenerController {
         respond shortenerInstance, model: [shortenerInstance: shortenerInstance]
     }
 
-    def save(ShortenerCreateCommand createCommand) {
+    def save(ShortenerCommand createCommand) {
 
 
         Shortener shortenerInstance
@@ -154,7 +154,7 @@ class ShortenerController {
     }
 
     @Transactional
-    def update() {
+    def update(ShortenerCommand shortenerCommand) {
         Shortener shortenerInstance = Shortener.findByKey(params.id)
 
         if (shortenerInstance == null) {
@@ -162,7 +162,7 @@ class ShortenerController {
             return
         }
 
-        bindData(shortenerInstance, params)
+        bindData(shortenerInstance, shortenerCommand)
 
         shortenerInstance.validate()
 
@@ -223,7 +223,7 @@ class ShortenerController {
  * The userCreated attribute is a String that holds the username.
  * To get a valid binding in the save method of the controller we use this class
  */
-class ShortenerCreateCommand {
+class ShortenerCommand {
 
     long userId
     String userCreated
