@@ -1,12 +1,10 @@
 package io.threeohone
 
-import grails.test.mixin.TestFor
 import io.threeohone.security.Role
 import io.threeohone.security.User
 import io.threeohone.security.UserRole
 import spock.lang.Specification
 
-@TestFor(ShortenerSearchService)
 class ShortenerSearchServiceIntegrationSpec extends Specification {
 
 
@@ -43,7 +41,7 @@ class ShortenerSearchServiceIntegrationSpec extends Specification {
     def 'find shortener by destinationUrl and username'() {
 
         given:
-        createShortener(destinationUrl: 'http://www.testUrl.com', userCreated: createTestUser('username') )
+        createShortener(destinationUrl: 'http://www.testUrl.com', userCreated: createTestUser('username'))
 
         when:
         def results = service.search('testUrl username', Shortener.Validity.ACTIVE, createDefaultParams())
@@ -59,7 +57,7 @@ class ShortenerSearchServiceIntegrationSpec extends Specification {
     def 'one search query hat leads to no results - no results are shown even if the other queries would show results'() {
 
         given:
-        createShortener(destinationUrl: 'http://www.testUrl.com', userCreated: createTestUser('username') )
+        createShortener(destinationUrl: 'http://www.testUrl.com', userCreated: createTestUser('username'))
         def query = 'testUrl username someThingNotBeFound'
 
         when:
@@ -72,7 +70,7 @@ class ShortenerSearchServiceIntegrationSpec extends Specification {
     def 'find shortener by destinationUrl'() {
 
         given:
-        createShortener(destinationUrl: 'http://www.myDestinationUrl.com' )
+        createShortener(destinationUrl: 'http://www.myDestinationUrl.com')
 
         when:
         def results = service.search('myDestinationUrl', Shortener.Validity.ACTIVE, createDefaultParams())
@@ -87,7 +85,7 @@ class ShortenerSearchServiceIntegrationSpec extends Specification {
 
         setup: 'create new shortener for tom'
         def tom = createTestUser('tom')
-        createShortener(destinationUrl: 'http://www.tom.com', userCreated: tom )
+        createShortener(destinationUrl: 'http://www.tom.com', userCreated: tom)
 
         when:
         def results = service.search('tom', Shortener.Validity.ACTIVE, createDefaultParams())
@@ -102,10 +100,10 @@ class ShortenerSearchServiceIntegrationSpec extends Specification {
 
         given: 'there is a google shortener for tom'
         def tom = createTestUser('tom')
-        createShortener(key: 'first', destinationUrl: 'http://www.google.com', userCreated: tom )
+        createShortener(key: 'first', destinationUrl: 'http://www.google.com', userCreated: tom)
 
         and: 'there is a google shortener for nick'
-        createShortener(destinationUrl: 'http://www.google.com', userCreated: createTestUser('nick') )
+        createShortener(destinationUrl: 'http://www.google.com', userCreated: createTestUser('nick'))
 
         when: 'search for google is executed'
         def results = service.searchByUser('google', Shortener.Validity.ACTIVE, tom, createDefaultParams())
@@ -120,13 +118,11 @@ class ShortenerSearchServiceIntegrationSpec extends Specification {
     }
 
 
-
-
     def 'find a future shortener'() {
 
         given: 'create new shortener for tom'
         def tom = createTestUser('tom')
-        createFutureShortener(destinationUrl: 'http://www.tom.com', userCreated: tom )
+        createFutureShortener(destinationUrl: 'http://www.tom.com', userCreated: tom)
 
         when:
         def results = service.search('tom', Shortener.Validity.FUTURE, createDefaultParams())
@@ -154,13 +150,12 @@ class ShortenerSearchServiceIntegrationSpec extends Specification {
     }
 
 
-
     def createShortener(Map params) {
         def now = new Date()
         def user = User.findByUsername('user')
 
         def defaultValues = [
-                key  : 'abc',
+                key           : 'abc',
                 destinationUrl: 'http://example.com',
                 userCreated   : user,
                 validFrom     : now,
@@ -189,10 +184,10 @@ class ShortenerSearchServiceIntegrationSpec extends Specification {
 
     Map createDefaultParams(Map params = [:]) {
         def defaults = [
-                max: 10,
+                max   : 10,
                 offset: 0,
-                sort: 'id',
-                order: 'asc'
+                sort  : 'id',
+                order : 'asc'
         ]
 
         return defaults + params

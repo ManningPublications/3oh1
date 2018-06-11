@@ -17,6 +17,8 @@ class ShortenerControllerSpec extends Specification implements ControllerUnitTes
 
     def setup() {
         controller.statisticsService = Mock(StatisticsService)
+        controller.redirectLogService= Mock(RedirectLogService)
+        controller.shortenerService = Mock(ShortenerService)
 
         // the shortener taglib is mocked
         controller.metaClass.shortener = [shortUrl: { "shortUrl" }]
@@ -50,7 +52,7 @@ class ShortenerControllerSpec extends Specification implements ControllerUnitTes
         controller.save()
 
         then: "The create view is rendered again with the correct model"
-        model.shortenerInstance != null
+        model.shortener != null
         view == 'create'
 
     }
@@ -77,7 +79,7 @@ class ShortenerControllerSpec extends Specification implements ControllerUnitTes
         controller.save()
 
         then: "A redirect is issued to the show action"
-        response.redirectedUrl == '/shorteners/abc'
+        response.redirectedUrl == '/shortener/show/abc'
         controller.flash.message != null
 
     }
@@ -107,7 +109,7 @@ class ShortenerControllerSpec extends Specification implements ControllerUnitTes
         controller.save()
 
         then: "A redirect is issued to the show action"
-        response.redirectedUrl == '/shorteners/abc'
+        response.redirectedUrl == '/shortener/show/abc'
         controller.flash.message != null
 
     }
@@ -158,7 +160,7 @@ class ShortenerControllerSpec extends Specification implements ControllerUnitTes
         controller.edit()
 
         then: "A model is populated containing the domain instance"
-        model.shortenerInstance == shortener
+        model.shortener == shortener
     }
 
     void "Test the update action performs an update on a valid domain instance"() {
@@ -168,7 +170,7 @@ class ShortenerControllerSpec extends Specification implements ControllerUnitTes
         controller.update()
 
         then: "A 404 error is returned"
-        response.redirectedUrl == '/shorteners'
+        response.redirectedUrl == '/shortener/index'
         flash.message != null
 
 
@@ -185,7 +187,7 @@ class ShortenerControllerSpec extends Specification implements ControllerUnitTes
 
         then: "The edit view is rendered again with the invalid instance"
         view == 'edit'
-        model.shortenerInstance == shortener
+        model.shortener == shortener
 
         when: "A valid domain instance is passed to the update action"
         response.reset()
@@ -196,7 +198,7 @@ class ShortenerControllerSpec extends Specification implements ControllerUnitTes
         controller.update()
 
         then: "A redirect is issues to the show action"
-        response.redirectedUrl == "/shorteners/$shortener.key"
+        response.redirectedUrl == "/shortener/show"
         flash.message != null
     }
 
@@ -207,7 +209,7 @@ class ShortenerControllerSpec extends Specification implements ControllerUnitTes
         controller.delete()
 
         then: "A 404 is returned"
-        response.redirectedUrl == '/shorteners'
+        response.redirectedUrl == '/shortener/index'
         flash.message != null
 
         when: "A domain instance is created"
@@ -225,7 +227,7 @@ class ShortenerControllerSpec extends Specification implements ControllerUnitTes
 
         then: "The instance is deleted"
         Shortener.count() == 0
-        response.redirectedUrl == '/shorteners'
+        response.redirectedUrl == '/shortener/index'
         flash.message != null
     }
 

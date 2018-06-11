@@ -1,8 +1,10 @@
 package io.threeohone.security
 
 import grails.plugin.springsecurity.SpringSecurityService
+import spock.lang.Ignore
 import spock.lang.Specification
 
+@Ignore
 class PasswordControllerSpec extends Specification {
 
     def setup() {

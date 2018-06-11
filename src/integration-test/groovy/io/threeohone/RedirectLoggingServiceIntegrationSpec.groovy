@@ -1,20 +1,20 @@
 package io.threeohone
 
+import com.maxmind.geoip.LookupService
 import io.threeohone.security.User
 import org.geeks.browserdetection.UserAgentIdentService
-import org.grails.plugin.geoip.GeoIpService
 import spock.lang.Specification
 
 import javax.servlet.http.HttpServletRequest
 
-
 class RedirectLoggingServiceIntegrationSpec extends Specification {
+
 
     RedirectLoggingService service
     Shortener redirectedShortener
     HttpServletRequest request
 
-    GeoIpService geoIpService
+    LookupService geoIpService
 
 
     def setup() {
@@ -26,8 +26,6 @@ class RedirectLoggingServiceIntegrationSpec extends Specification {
 
         request = Mock(HttpServletRequest)
         request.getHeader("referer") >> "http://www.google.com"
-
-
 
 
     }
@@ -93,11 +91,11 @@ class RedirectLoggingServiceIntegrationSpec extends Specification {
         def now = new Date()
 
         def defaultValues = [
-                key: 'abc',
+                key           : 'abc',
                 destinationUrl: 'http://example.com',
-                userCreated: User.first(),
-                validFrom: now,
-                validUntil: now + 1
+                userCreated   : User.first(),
+                validFrom     : now,
+                validUntil    : now + 1
         ]
 
         new Shortener(defaultValues + params).save(failOnError: true)
