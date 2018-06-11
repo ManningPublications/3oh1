@@ -19,6 +19,7 @@ class ShortenerController {
     ShortenerService shortenerService
     ShortenerSearchService shortenerSearchService
     UserService userService
+    RedirectLogService redirectLogService
 
     def index(Integer max) {
 
@@ -98,8 +99,7 @@ class ShortenerController {
         totalNumberOfRedirectsPerMonth.monthNames = result.collect { "${it.month} / ${it.year}" }
         totalNumberOfRedirectsPerMonth.redirectCounters = result.collect { it.redirectCounter }
 
-        def redirectCounter = RedirectLog.where { shortener == shortenerInstance }.count()
-
+        def redirectCounter = redirectLogService.countRedirects(shortenerInstance)
 
         respond shortenerInstance, model: [ shortenerInstance: shortenerInstance,
                 totalNumberOfRedirectsPerMonth: totalNumberOfRedirectsPerMonth,
@@ -152,7 +152,6 @@ class ShortenerController {
         respond shortenerInstance
     }
 
-    @Transactional
     def update(ShortenerCommand shortenerCommand) {
         Shortener shortenerInstance = Shortener.findByKey(params.id)
 
@@ -170,7 +169,7 @@ class ShortenerController {
             return
         }
 
-        shortenerInstance.save flush: true
+        shortenerService.save(shortenerInstance)
 
         request.withFormat {
             form multipartForm {
