@@ -1,12 +1,8 @@
 package io.threeohone
 
 import io.threeohone.security.User
-import grails.test.mixin.Mock
-import grails.test.mixin.TestFor
 import spock.lang.Specification
 
-@TestFor(StatisticsController)
-@Mock([Shortener, RedirectLog, User])
 class StatisticsControllerSpec extends Specification {
 
     void "index returns the last 10 redirects"() {
@@ -32,7 +28,7 @@ class StatisticsControllerSpec extends Specification {
         then:
         model.redirectLogInstanceList.size() == 10
 
-        1 * statisticsService.getTopShorteners() >> RedirectLog.list(max:10)
+        1 * statisticsService.getTopShorteners() >> RedirectLog.list(max: 10)
 
     }
 }

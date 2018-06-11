@@ -1,12 +1,8 @@
 package io.threeohone
 
-import grails.test.mixin.Mock
-import grails.test.mixin.TestFor
 import io.threeohone.security.User
 import spock.lang.Specification
 
-@TestFor(ShortenerStatisticsController)
-@Mock([Shortener, RedirectLog])
 class ShortenerStatisticsControllerSpec extends Specification {
 
     StatisticsService statisticsServiceMock

@@ -1,12 +1,11 @@
 package io.threeohone
 
+import grails.testing.gorm.DomainUnitTest
 import io.threeohone.security.User
-import grails.test.mixin.TestFor
 import spock.lang.Specification
 import spock.lang.Unroll
 
-@TestFor(Shortener)
-class ShortenerSpec extends Specification {
+class ShortenerSpec extends Specification implements DomainUnitTest<Shortener>{
 
     Shortener shortener
     Date yesterday
@@ -110,7 +109,7 @@ class ShortenerSpec extends Specification {
     }
 
 
-    void "userCreated is required"() {
+    void "userCreated is not required"() {
 
         given:
         shortener.userCreated = null
@@ -119,7 +118,7 @@ class ShortenerSpec extends Specification {
         def shortenerIsValid = shortener.validate()
 
         then:
-        !shortenerIsValid
+        shortenerIsValid
 
         when:
         shortener.userCreated = new User(username: "Dummy User")
@@ -129,6 +128,24 @@ class ShortenerSpec extends Specification {
         shortenerIsValid
     }
 
+    void "userId is not required"() {
+
+        given:
+        shortener.userId = null
+
+        when:
+        def shortenerIsValid = shortener.validate()
+
+        then:
+        !shortenerIsValid
+
+        when:
+        shortener.userId = 3
+        shortenerIsValid = shortener.validate()
+
+        then:
+        shortenerIsValid
+    }
 
     def "a shortener has autoTimestamping feature activated due to the existence of dateCreated and lastUpdated"() {
 

@@ -1,13 +1,11 @@
 package io.threeohone
 
-import grails.orm.PagedResultList
+import grails.testing.gorm.DomainUnitTest
+import grails.testing.web.controllers.ControllerUnitTest
 import io.threeohone.security.User
-import grails.test.mixin.*
-import spock.lang.*
+import spock.lang.Specification
 
-@TestFor(ShortenerController)
-@Mock([Shortener, RedirectLog])
-class ShortenerControllerSpec extends Specification {
+class ShortenerControllerSpec extends Specification implements ControllerUnitTest<ShortenerController>, DomainUnitTest<Shortener> {
 
     def populateValidParams(params) {
         assert params != null

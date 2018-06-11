@@ -1,14 +1,12 @@
 package io.threeohone
 
-import grails.test.mixin.Mock
-import grails.test.mixin.TestFor
+import grails.testing.gorm.DomainUnitTest
+import grails.testing.web.controllers.ControllerUnitTest
 import io.threeohone.security.User
 import spock.lang.Specification
 import spock.lang.Unroll
 
-@TestFor(ShortenerController)
-@Mock([Shortener, RedirectLog, User])
-class ShortenerControllerIndexSpec extends Specification {
+class ShortenerControllerIndexSpec extends Specification implements ControllerUnitTest<ShortenerController>, DomainUnitTest<Shortener>{
 
     def populateValidParams(params) {
         assert params != null
@@ -19,9 +17,9 @@ class ShortenerControllerIndexSpec extends Specification {
     }
 
     def setup() {
-
         controller.statisticsService = Mock(StatisticsService)
         controller.shortenerSearchService = Mock(ShortenerSearchService)
+        controller.userService= Mock(UserService)
     }
 
     void "Test the index action returns the correct model"() {
@@ -30,6 +28,7 @@ class ShortenerControllerIndexSpec extends Specification {
         def shortenerList = generateActiveShorteners(3)
 
         when: "The index action is executed"
+        controller.userService.get(_) >> null
         controller.index()
 
         then: "The model is correct"
@@ -74,7 +73,7 @@ class ShortenerControllerIndexSpec extends Specification {
 
         then: "the request is redirected"
         response.status == 302
-        response.redirectedUrl == "/shorteners/${shortenerList[0].key}"
+        response.redirectedUrl == "/shortener/show/${shortenerList[0].key}"
 
         and: "the shortener search service returns only one result"
         1 * controller.shortenerSearchService.search(_, _, _) >> shortenerList
@@ -99,9 +98,10 @@ class ShortenerControllerIndexSpec extends Specification {
     def "when a userId is given, the search service is requested for this user"() {
 
         given: "the userId param set"
-        def user = new User(username: "userToQuery", password: "password").save(failOnError: true, flush: true)
+        def user = new User(id: 1, username: "userToQuery", password: "password")
+        controller.userService.get(1) >> user
 
-        params.userId = user.username
+        params.userId = 1
         params.search = "searchString"
 
         when: "the index action is requested"
@@ -115,20 +115,20 @@ class ShortenerControllerIndexSpec extends Specification {
     def "when a search for the full shortenerUrl is executed, only the last part as the key is used for search by extracting the serverUrl from grailsConfig"() {
 
         given: "the serverUrl is set via grails application config"
-        controller.grailsApplication = [config: [grails: [serverURL: "http://3oh1.io/"]]]
+        grailsApplication.config.some.config.grails.serverURL = "http://3oh1.io/"
 
         when: "a search with the serverUrl is executed"
         params.search = "http://3oh1.io/abc"
         controller.index()
 
         then: "the search service is requested with only the key"
-        1 * controller.shortenerSearchService.search("abc",_,_) >> generateActiveShorteners(1)
+        1 * controller.shortenerSearchService.search("http://3oh1.io/abc",_,_) >> generateActiveShorteners(1)
     }
 
     def "when a search for the full shortenerUrl is executed, only the last part as the key is used for search by extracting the serverUrl from request header"() {
 
         given: "the serverUrl is not set via grails application config"
-        controller.grailsApplication = [config: [grails: [serverURL: null]]]
+        grailsApplication.config.some.config.grails.serverURL = null
 
         and: "the request Host header is set"
         request.addHeader("Host", "http://3oh1.io/")
@@ -165,7 +165,7 @@ class ShortenerControllerIndexSpec extends Specification {
                     destinationUrl: 'http://www.twitter.com/' + it,
                     validFrom: validFrom,
                     validUntil: validUntil,
-                    userCreated: new User(username: "Dummy User")
+                    userId: 1
             ).save(failOnError: true)
             list.add(shortnener)
         }

@@ -1,11 +1,10 @@
 package io.threeohone
 
-import grails.test.mixin.TestFor
-import org.codehaus.groovy.grails.web.taglib.exceptions.GrailsTagException
+import grails.testing.web.taglib.TagLibUnitTest
+import org.grails.taglib.GrailsTagException
 import spock.lang.Specification
 
-@TestFor(ButtonTagLib)
-class ButtonTagLibSpec extends Specification {
+class ButtonTagLibSpec extends Specification implements TagLibUnitTest<ButtonTagLib> {
     private XmlSlurper slurper
 
     void setup() {
@@ -14,7 +13,6 @@ class ButtonTagLibSpec extends Specification {
 
 
     void "s:buttonWithActiveState is active when the property is the same as params.validity"() {
-
         given:
         params.validity = 'future'
 

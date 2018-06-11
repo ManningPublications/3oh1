@@ -1,4 +1,4 @@
-package m3oh1
+package io.threeohone
 
 class UrlMappings {
 

@@ -16,10 +16,9 @@ class ShortenerController {
 
 
     StatisticsService statisticsService
-
     ShortenerService shortenerService
-
     ShortenerSearchService shortenerSearchService
+    UserService userService
 
     def index(Integer max) {
 
@@ -37,7 +36,7 @@ class ShortenerController {
 
         def shortenerList
 
-        def user = User.withTransaction{User.findByUsername(params.userId)}
+        def user = userService.get(params.userId)
 
         if (user) {
             shortenerList = shortenerSearchService.searchByUser(searchQuery, validity, user, params)
@@ -52,7 +51,7 @@ class ShortenerController {
             return
         }
 
-        def shortenerInstanceCount = shortenerList.size()
+        def shortenerInstanceCount = shortenerList ? shortenerList.size() : 0
         response.setHeader("total-count", Integer.toString(shortenerInstanceCount))
 
         respond shortenerList, model: [shortenerInstanceList: shortenerList, shortenerInstanceCount: shortenerInstanceCount, user: user]
@@ -84,7 +83,7 @@ class ShortenerController {
     }
 
     private boolean isOnlyOneSearchResult(shortenerList) {
-        shortenerList.size() == 1 && params.search
+        shortenerList && shortenerList.size() == 1 && params.search
     }
 
 

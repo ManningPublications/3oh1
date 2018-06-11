@@ -1,12 +1,10 @@
 package io.threeohone
 
-import grails.test.mixin.TestFor
-import org.codehaus.groovy.grails.web.taglib.exceptions.GrailsTagException
+import grails.testing.web.taglib.TagLibUnitTest
+import org.grails.taglib.GrailsTagException
 import spock.lang.Specification
 
-@TestFor(ShortenerTagLib)
-class ShortenerTagLibSpec extends Specification {
-
+class ShortenerTagLibSpec extends Specification implements TagLibUnitTest<ShortenerTagLib> {
 
 
     void "shortener:shortUrl needs a shortener attribute"() {
@@ -50,9 +48,6 @@ class ShortenerTagLibSpec extends Specification {
         then:
         actualUrl == 'http://localhost:8080/abc'
     }
-
-
-
 
 
     void "shortener:showRedirectionValidityMessage needs a shortener attribute"() {
