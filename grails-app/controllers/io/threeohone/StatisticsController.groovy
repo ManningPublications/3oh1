@@ -21,13 +21,15 @@ class StatisticsController {
         totalNumberOfRedirectsPerMonth.monthNames = result.collect { "${it.month} / ${it.year}" }
         totalNumberOfRedirectsPerMonth.redirectCounters = result.collect { it.redirectCounter }
 
-        respond RedirectLog.list(max: 10, fetch: [shortener: "eager"]), model: [
+        respond ([
+//                redirectLogInstanceList: RedirectLog.list(max: 10, fetch: [shortener: "join"]),
+                redirectLogInstanceList: RedirectLog.list(max: 10),
                 top5: top5,
                 totalNumberOfRedirectsPerMonth: totalNumberOfRedirectsPerMonth,
                 redirectCounterTotal: redirectCounterTotal,
                 redirectCountersPerOperatingSystem: redirectCountersPerOperatingSystem,
                 redirectCountersPerBrowser: redirectCountersPerBrowser
-        ]
+        ])
     }
 
     def shortener() {
