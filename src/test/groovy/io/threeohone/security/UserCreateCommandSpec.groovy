@@ -1,10 +1,7 @@
 package io.threeohone.security
 
-import grails.test.mixin.TestMixin
-import grails.test.mixin.support.GrailsUnitTestMixin
 import spock.lang.Specification
 
-@TestMixin(GrailsUnitTestMixin)
 class UserCreateCommandSpec extends Specification {
     def userCreateCommand = new UserCreateCommand(username: 'username', role: new Role(authority: "admin"))
 

@@ -1,12 +1,8 @@
 package io.threeohone.security
 
 import grails.plugin.springsecurity.SpringSecurityService
-import grails.test.mixin.Mock
-import grails.test.mixin.TestFor
 import spock.lang.Specification
 
-@TestFor(PasswordController)
-@Mock([User, UserRole, Role])
 class PasswordControllerSpec extends Specification {
 
     def setup() {

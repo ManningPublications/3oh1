@@ -1,10 +1,9 @@
 package io.threeohone
 
-import grails.test.mixin.TestFor
+import grails.testing.gorm.DomainUnitTest
 import spock.lang.Specification
 
-@TestFor(RedirectLog)
-class RedirectLogSpec extends Specification {
+class RedirectLogSpec extends Specification implements DomainUnitTest<RedirectLog>{
     RedirectLog log
 
     def setup() {
@@ -45,7 +44,7 @@ class RedirectLogSpec extends Specification {
 
 
 
-    def "a log has a creation autoTimestamp feature activated"() {
+    void "a log has a creation autoTimestamp feature activated"() {
 
         expect:
         log.hasProperty('dateCreated')

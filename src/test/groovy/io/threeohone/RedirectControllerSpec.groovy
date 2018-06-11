@@ -1,14 +1,13 @@
 package io.threeohone
 
-import grails.test.mixin.TestFor
-import org.grails.plugin.geoip.GeoIpService
+import grails.testing.web.controllers.ControllerUnitTest
 import spock.lang.Specification
 
-import static org.springframework.http.HttpStatus.*
+import static org.springframework.http.HttpStatus.MOVED_PERMANENTLY
+import static org.springframework.http.HttpStatus.NOT_FOUND
 
 
-@TestFor(RedirectController)
-class RedirectControllerSpec extends Specification {
+class RedirectControllerSpec extends Specification implements ControllerUnitTest<RedirectController>{
 
 
     def shortenerServiceMock
