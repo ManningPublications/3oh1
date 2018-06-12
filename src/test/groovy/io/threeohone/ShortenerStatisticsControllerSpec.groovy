@@ -1,14 +1,17 @@
 package io.threeohone
 
+import grails.testing.gorm.DomainUnitTest
+import grails.testing.web.controllers.ControllerUnitTest
 import io.threeohone.security.User
 import spock.lang.Specification
 
-class ShortenerStatisticsControllerSpec extends Specification {
+class ShortenerStatisticsControllerSpec extends Specification implements ControllerUnitTest<ShortenerStatisticsController>, DomainUnitTest<Shortener>{
 
     StatisticsService statisticsServiceMock
     private shortener
 
     def setup() {
+        mockDomains(RedirectLog)
         statisticsServiceMock = Mock()
         controller.statisticsService = statisticsServiceMock
 
@@ -51,7 +54,7 @@ class ShortenerStatisticsControllerSpec extends Specification {
     }
 
 
-    def "a shortener with redirects will display the correct redirectCounter"() {
+    void "a shortener with redirects will display the correct redirectCounter"() {
 
         given: "there are 10 redirects for the shortener"
         def expectedRedirectCounter = 10
@@ -73,7 +76,7 @@ class ShortenerStatisticsControllerSpec extends Specification {
         response.json.redirectCounter == expectedRedirectCounter
     }
 
-    def "a show request with an invalid shortener returns a 404"() {
+    void "a show request with an invalid shortener returns a 404"() {
 
         when: "an invalid shortener is requested"
         params.shortenerId = null
