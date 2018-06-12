@@ -185,7 +185,6 @@ class ShortenerController {
         }
     }
 
-    @Transactional
     def delete() {
         Shortener shortenerInstance = Shortener.findByKey(params.id)
 

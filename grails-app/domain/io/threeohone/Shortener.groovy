@@ -40,7 +40,7 @@ class Shortener {
 
 
     Long userId
-
+    static hasMany = [redirectLogs: RedirectLog]
     static transients  = ["userCreated"]
     static constraints = {
         /*

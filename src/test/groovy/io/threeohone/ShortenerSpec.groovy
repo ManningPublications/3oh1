@@ -13,6 +13,7 @@ class ShortenerSpec extends Specification implements DomainUnitTest<Shortener>{
     Date now
 
     def setup() {
+        mockDomains(RedirectLog)
         shortener = createValidShortener()
 
         now = new Date()
@@ -147,14 +148,14 @@ class ShortenerSpec extends Specification implements DomainUnitTest<Shortener>{
         shortenerIsValid
     }
 
-    def "a shortener has autoTimestamping feature activated due to the existence of dateCreated and lastUpdated"() {
+    void "a shortener has autoTimestamping feature activated due to the existence of dateCreated and lastUpdated"() {
 
         expect:
         shortener.hasProperty('dateCreated') && shortener.hasProperty('lastUpdated')
     }
 
 
-    def "a shortener is started when a validFrom is before now"() {
+    void "a shortener is started when a validFrom is before now"() {
 
         when:
         shortener = new Shortener(validFrom: yesterday)
@@ -170,7 +171,7 @@ class ShortenerSpec extends Specification implements DomainUnitTest<Shortener>{
 
     }
 
-    def "a shortener is ended when a validUntil is before now"() {
+    void "a shortener is ended when a validUntil is before now"() {
 
         when:
         shortener = new Shortener(validUntil: yesterday)
@@ -186,7 +187,7 @@ class ShortenerSpec extends Specification implements DomainUnitTest<Shortener>{
 
     }
 
-    def "if a shortener has no validUntil set, it is never ended"() {
+    void "if a shortener has no validUntil set, it is never ended"() {
 
         when:
         shortener = new Shortener(validUntil: null)
@@ -196,20 +197,20 @@ class ShortenerSpec extends Specification implements DomainUnitTest<Shortener>{
 
     }
 
-    def "a shortener is active, if is has started yesterday and ends tomorrow"() {
+    void "a shortener is active, if is has started yesterday and ends tomorrow"() {
 
         expect:
         new Shortener(validFrom: yesterday, validUntil: tomorrow).isActive()
 
     }
 
-    def "a shortener is active if it is already started and has no end"() {
+    void "a shortener is active if it is already started and has no end"() {
 
         expect:
         new Shortener(validFrom: yesterday).isActive()
     }
 
-    def "a shortener is not active if it has not started"() {
+    void "a shortener is not active if it has not started"() {
 
         when:
         shortener = new Shortener(validFrom: tomorrow)
@@ -218,7 +219,7 @@ class ShortenerSpec extends Specification implements DomainUnitTest<Shortener>{
         !shortener.isActive()
     }
 
-    def "a shortener is not active if it has ended"() {
+    void "a shortener is not active if it has ended"() {
 
         when:
         shortener = new Shortener(validFrom: tomorrow)
@@ -226,6 +227,18 @@ class ShortenerSpec extends Specification implements DomainUnitTest<Shortener>{
         then:
         !shortener.isActive()
     }
+
+    void "Test shortener delete with a linked redirectLog"() {
+        given:
+        RedirectLog redirectLog = new RedirectLog(referer: "aReferer", shortener: shortener).save(flush:true)
+
+        when:
+        shortener.delete()
+
+        then:
+        Shortener.count() == 0
+    }
+
 
 
     private Shortener createValidShortener() {

@@ -20,10 +20,11 @@ class StatisticsController {
         def totalNumberOfRedirectsPerMonth = [monthNames: [], redirectCounters: []]
         totalNumberOfRedirectsPerMonth.monthNames = result.collect { "${it.month} / ${it.year}" }
         totalNumberOfRedirectsPerMonth.redirectCounters = result.collect { it.redirectCounter }
+        List recirectLogList = RedirectLog.list(fetch: [shortener: "join"])
 
         respond ([
-//                redirectLogInstanceList: RedirectLog.list(max: 10, fetch: [shortener: "join"]),
-                redirectLogInstanceList: RedirectLog.list(max: 10),
+                redirectLogInstanceList: recirectLogList,
+//                redirectLogInstanceList: RedirectLog.list(max: 10),
                 top5: top5,
                 totalNumberOfRedirectsPerMonth: totalNumberOfRedirectsPerMonth,
                 redirectCounterTotal: redirectCounterTotal,
