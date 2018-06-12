@@ -1,11 +1,12 @@
 package io.threeohone
 
+import grails.testing.gorm.DomainUnitTest
+import grails.testing.web.controllers.ControllerUnitTest
 import spock.lang.Specification
 
-class RedirectLogControllerSpec extends Specification {
+class RedirectLogControllerSpec extends Specification implements ControllerUnitTest<RedirectLogController>, DomainUnitTest<Shortener>{
 
-
-    def "a invalid shortenerId will return a 404"() {
+    void "a invalid shortenerId will return a 404"() {
 
         given:
         params.shortenerId = null
