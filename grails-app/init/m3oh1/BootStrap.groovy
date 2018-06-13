@@ -50,6 +50,17 @@ class BootStrap {
              [ username: user.username ]
         }
 
+        JSON.registerObjectMarshaller(RedirectLog) { RedirectLog redirectLog ->
+            [
+                    referer: redirectLog.referer,
+                    shortener: redirectLog.shortener,
+                    clientInformation: redirectLog.clientInformation,
+                    clientLocation: redirectLog.clientLocation,
+                    dateCreated: redirectLog.dateCreated,
+                    month: redirectLog.month,
+                    year: redirectLog.year
+            ]
+        }
 
     }
 

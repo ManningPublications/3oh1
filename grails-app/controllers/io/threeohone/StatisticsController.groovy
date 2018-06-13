@@ -9,7 +9,7 @@ class StatisticsController {
 
 
     def index() {
-
+        def redirectLogList = RedirectLog.list(max:10, fetch: [shortener: "join"])
         def top5 = statisticsService.getTopShorteners()
         def redirectCounterTotal = RedirectLog.count()
         def redirectCountersPerOperatingSystem = statisticsService.getRedirectCounterGroupedBy(null, 'operatingSystem')
@@ -20,11 +20,9 @@ class StatisticsController {
         def totalNumberOfRedirectsPerMonth = [monthNames: [], redirectCounters: []]
         totalNumberOfRedirectsPerMonth.monthNames = result.collect { "${it.month} / ${it.year}" }
         totalNumberOfRedirectsPerMonth.redirectCounters = result.collect { it.redirectCounter }
-        List recirectLogList = RedirectLog.list(fetch: [shortener: "join"])
 
         respond ([
-                redirectLogInstanceList: recirectLogList,
-//                redirectLogInstanceList: RedirectLog.list(max: 10),
+                redirectLogInstanceList: redirectLogList,
                 top5: top5,
                 totalNumberOfRedirectsPerMonth: totalNumberOfRedirectsPerMonth,
                 redirectCounterTotal: redirectCounterTotal,
