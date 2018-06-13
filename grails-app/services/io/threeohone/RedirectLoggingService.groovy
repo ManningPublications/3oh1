@@ -1,6 +1,7 @@
 package io.threeohone
 
 import com.maxmind.geoip.Location
+import com.maxmind.geoip.LookupService
 
 import javax.servlet.http.HttpServletRequest
 
@@ -8,19 +9,19 @@ class RedirectLoggingService {
 
     def userAgentIdentService
 
-    def geoIpService
+    LookupService geoIpService
 
     def log(Shortener shortener, HttpServletRequest request = null) {
 
         def log = new RedirectLog(
                 shortener: shortener,
                 referer: request?.getHeader("referer"),
-                clientInformation: parseClientInformationFromRequest()
+                lientInformation: parseClientInformationFromRequest()
         )
 
 
         if (request) {
-            def ip = geoIpService.getIpAddress(request)
+            def ip = request.remoteAddr
             def location = geoIpService.getLocation(ip)
             if (location) {
                 log.clientLocation = createClientLocationFromLocation(location)
