@@ -7,7 +7,7 @@ import grails.web.http.HttpHeaders
 
 import static org.springframework.http.HttpStatus.*
 
-@Secured(['ROLE_ADMIN', 'ROLE_AUTHOR'])
+@Secured(['isAuthenticated()'])
 class ShortenerController {
 
     static responseFormats = ['html', 'json']
