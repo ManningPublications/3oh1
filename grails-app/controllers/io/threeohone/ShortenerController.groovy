@@ -7,7 +7,7 @@ import org.codehaus.groovy.grails.web.servlet.HttpHeaders
 
 import static org.springframework.http.HttpStatus.*
 
-@Secured(['isAuthenticated()'])
+@Secured(['ROLE_ADMIN', 'ROLE_AUTHOR'])
 class ShortenerController {
 
     static responseFormats = ['html', 'json']
